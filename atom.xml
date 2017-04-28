@@ -1,0 +1,680 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Simiam</title>
+  <subtitle>求知若渴，虚怀若谷</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://cloudnoter.com/"/>
+  <updated>2017-04-28T02:13:38.000Z</updated>
+  <id>http://cloudnoter.com/</id>
+  
+  <author>
+    <name>simiam</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Java小问题汇总</title>
+    <link href="http://cloudnoter.com/2016/11/09/Java%E5%B0%8F%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/"/>
+    <id>http://cloudnoter.com/2016/11/09/Java小问题汇总/</id>
+    <published>2016-11-08T22:09:00.000Z</published>
+    <updated>2017-04-28T02:13:38.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="1-MySQL5-7下的JSON字段中文乱码问题"><a href="#1-MySQL5-7下的JSON字段中文乱码问题" class="headerlink" title="1. MySQL5.7下的JSON字段中文乱码问题"></a>1. MySQL5.7下的JSON字段中文乱码问题</h2><p>中文乱码问题在Java Web开发中经常碰到，大部分原因是后端与前端的编码不一致造成的（如tomcat的默认编码为ISO-8859-1，而前端为GBK），解决办法也简单，只需要加一个<code>CharsetEncodingFilter</code>就行。但本文要讲的不是这一类总是，而是纯粹的后端问题。</p>
+<h3 id="1-1-环境准备"><a href="#1-1-环境准备" class="headerlink" title="1.1 环境准备"></a>1.1 环境准备</h3><blockquote>
+<p>假设MySQL的默认CharSet为UTF-8，应用及部署环境也为UTF-8</p>
+</blockquote>
+<ul>
+<li>创建包含JSON字段的数据库表</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">"ipms_device_feature"</span> (</div><div class="line">  <span class="string">"ID"</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</div><div class="line">  <span class="string">"DEVICE_SERIAL_NUMBER"</span> <span class="built_in">varchar</span>(<span class="number">100</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">''</span> <span class="keyword">COMMENT</span> <span class="string">'设备SN'</span>,</div><div class="line">  <span class="string">"DEVICE_IP"</span> <span class="built_in">varchar</span>(<span class="number">32</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">''</span> <span class="keyword">COMMENT</span> <span class="string">'设备IP'</span>,</div><div class="line">  <span class="string">"FEATURES"</span> <span class="keyword">json</span> <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'设备巡检指标集'</span>,</div><div class="line">  <span class="string">"UPDATETIME"</span> <span class="keyword">timestamp</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="keyword">CURRENT_TIMESTAMP</span> <span class="keyword">ON</span> <span class="keyword">UPDATE</span> <span class="keyword">CURRENT_TIMESTAMP</span> <span class="keyword">COMMENT</span> <span class="string">'更新时间'</span>,</div><div class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">"ID"</span>)</div><div class="line">)</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<ul>
+<li>运行如下脚本查看字段详细信息</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">show</span> <span class="keyword">full</span> <span class="keyword">fields</span> <span class="keyword">from</span> ipms_device_feature</div></pre></td></tr></table></figure>
+<p>结果如下：<br><img src="/img/mysql_json.jpg" alt="mysql_json"></p>
+<blockquote>
+<p>上图中<code>features</code>这个字段的<code>Collation</code>列为<code>Null</code></p>
+</blockquote>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># 使用如下SQL时，JDBC在解析返回的数据（包含中文）时会出现乱码</span></div><div class="line"><span class="keyword">select</span> features <span class="keyword">from</span> ipms_device_feature</div></pre></td></tr></table></figure>
+<ul>
+<li>解决办法</li>
+</ul>
+<p>第一步：使用MySQL提供的json_unquote方法</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">select</span> <span class="title">json_unquote</span>(<span class="params">features</span>) <span class="keyword">as</span> features <span class="keyword">from</span> ipms_device_feature</span></div></pre></td></tr></table></figure>
+<p>第二步：在Java中调用上面的SQL时，将会返回一个<code>byte</code>数组，因此只需要通过<code>String</code>提供的方法进行转码就行。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">List</span>&lt;<span class="built_in">Map</span>&gt; rows = em.createNamedQuery(<span class="string">"XXX"</span>).list();</div><div class="line"><span class="keyword">for</span>(<span class="built_in">Map</span> row : rows) &#123;</div><div class="line">	byte[] bytes = (byte[]) row.<span class="keyword">get</span>(<span class="string">"features"</span>);</div><div class="line">	<span class="built_in">String</span> features = <span class="keyword">new</span> <span class="built_in">String</span>(bytes, <span class="string">"UTF-8"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样的话，Java变更<code>features</code>就是正常的中文，就可以直接回传给前端页面了。</p>
+<h2 id="2-几个容易踩的坑"><a href="#2-几个容易踩的坑" class="headerlink" title="2. 几个容易踩的坑"></a>2. 几个容易踩的坑</h2><h3 id="2-1-Integer对象之间比较的坑"><a href="#2-1-Integer对象之间比较的坑" class="headerlink" title="2.1. Integer对象之间比较的坑"></a>2.1. <code>Integer</code>对象之间比较的坑</h3><p>对于<code>Integer var=?</code>在<code>-128</code>至<code>127</code>之间的赋值，<code>Integer</code> 对象是在<code>IntegerCache.cache</code>产生，会复用已有对象，这个区间内的<code>Integer</code>值可以直接使用==进行判断，但是这个区间之外的所有数据，都会在堆上产生，并不会复用已有对象。因此建议<code>Integer</code>对象在比较时应使用<code>equals</code>方法。</p>
+<h3 id="2-2-ArrayList的subList-方法返回值的坑"><a href="#2-2-ArrayList的subList-方法返回值的坑" class="headerlink" title="2.2. ArrayList的subList()方法返回值的坑"></a>2.2. <code>ArrayList</code>的<code>subList()</code>方法返回值的坑</h3><p><code>ArrayList</code>的<code>subList</code>方法返回的结果不可强转成<code>ArrayList</code>，否则会抛出<code>ClassCastException</code>异常：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">java</span><span class="selector-class">.util</span><span class="selector-class">.RandomAccessSubList</span> <span class="selector-tag">cannot</span> <span class="selector-tag">be</span> <span class="selector-tag">cast</span> <span class="selector-tag">to</span> <span class="selector-tag">java</span><span class="selector-class">.util</span><span class="selector-class">.ArrayList</span>;</div></pre></td></tr></table></figure>
+<p>因为<code>subList</code>方法返回的是<code>ArrayList</code>的内部类<code>SubList</code>，并不是<code>ArrayList</code>，而是<code>ArrayList</code>的一个视图，对于内部类<code>SubList</code>的所有操作最终会反映到原列表上。</p>
+<h3 id="2-3-Arrays-asList-方法返回值的坑"><a href="#2-3-Arrays-asList-方法返回值的坑" class="headerlink" title="2.3. Arrays.asList()方法返回值的坑"></a>2.3. <code>Arrays.asList()</code>方法返回值的坑</h3><p>使用工具类<code>Arrays.asList()</code>把数组转换成集合时，不能使用其修改集合相关的方法，它的 <code>add/remove/clear</code>方法会抛出<code>UnsupportedOperationException</code>异常。因为<code>asList</code>方法的返回对象是一个<code>Arrays</code>内部类，并没有实现集合的修改方法。<code>Arrays.asList</code>体现的是适配器模式，只是转换接口，后台的数据仍是数组。</p>
+ <figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">String</span>[] <span class="built_in">str</span> = <span class="keyword">new</span> <span class="keyword">String</span>[] &#123; <span class="string">"a"</span>, <span class="string">"b"</span> &#125;;</div><div class="line">List list = Arrays.asList(<span class="built_in">str</span>);</div><div class="line">list.<span class="built_in">add</span>(<span class="string">"c"</span>); <span class="comment">// 运行时异常。</span></div><div class="line"><span class="built_in">str</span>[<span class="number">0</span>]= <span class="string">"gujin"</span>; <span class="comment">// 则list.get(0)也会随之修改。</span></div></pre></td></tr></table></figure>
+<h2 id="3-待续…"><a href="#3-待续…" class="headerlink" title="3. 待续…"></a>3. 待续…</h2><blockquote>
+<p>转载请注明出处：<a href="http://cloudnoter.com">cloudnoter.com</a></p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;1-MySQL5-7下的JSON字段中文乱码问题&quot;&gt;&lt;a href=&quot;#1-MySQL5-7下的JSON字段中文乱码问题&quot; class=&quot;headerlink&quot; title=&quot;1. MySQL5.7下的JSON字段中文乱码问题&quot;&gt;&lt;/a&gt;1. MySQL5.7下的JSON字段中文乱码问题&lt;/h2&gt;&lt;p&gt;中文乱码问题在Java Web开发中经常碰到，大部分原因是后端与前端的编码不一致造成的（如tomcat的默认编码为ISO-8859-1，而前端为GBK），解决办法也简单，只需要加一个&lt;code&gt;CharsetEncodingFilter&lt;/code&gt;就行。但本文要讲的不是这一类总是，而是纯粹的后端问题。&lt;/p&gt;
+&lt;h3 id=&quot;1-1-环境准备&quot;&gt;&lt;a href=&quot;#1-1-环境准备&quot; class=&quot;headerlink&quot; title=&quot;1.1 环境准备&quot;&gt;&lt;/a&gt;1.1 环境准备&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;假设MySQL的默认CharSet为UTF-8，应用及部署环境也为UTF-8&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;创建包含JSON字段的数据库表&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight sql&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;ipms_device_feature&quot;&lt;/span&gt; (&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;string&quot;&gt;&quot;ID&quot;&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;int&lt;/span&gt;(&lt;span class=&quot;number&quot;&gt;11&lt;/span&gt;) &lt;span class=&quot;keyword&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;NULL&lt;/span&gt; AUTO_INCREMENT,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;string&quot;&gt;&quot;DEVICE_SERIAL_NUMBER&quot;&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;varchar&lt;/span&gt;(&lt;span class=&quot;number&quot;&gt;100&lt;/span&gt;) &lt;span class=&quot;keyword&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;NULL&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;&#39;&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;设备SN&#39;&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;string&quot;&gt;&quot;DEVICE_IP&quot;&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;varchar&lt;/span&gt;(&lt;span class=&quot;number&quot;&gt;32&lt;/span&gt;) &lt;span class=&quot;keyword&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;NULL&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;&#39;&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;设备IP&#39;&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;string&quot;&gt;&quot;FEATURES&quot;&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;json&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;NULL&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;设备巡检指标集&#39;&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;string&quot;&gt;&quot;UPDATETIME&quot;&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;timestamp&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;NULL&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;CURRENT_TIMESTAMP&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;ON&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;UPDATE&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;CURRENT_TIMESTAMP&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;更新时间&#39;&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  PRIMARY &lt;span class=&quot;keyword&quot;&gt;KEY&lt;/span&gt; (&lt;span class=&quot;string&quot;&gt;&quot;ID&quot;&lt;/span&gt;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;)&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="http://cloudnoter.com/tags/Java/"/>
+    
+      <category term="MySQL" scheme="http://cloudnoter.com/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Composer学习笔记</title>
+    <link href="http://cloudnoter.com/2016/09/01/Composer%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    <id>http://cloudnoter.com/2016/09/01/Composer学习笔记/</id>
+    <published>2016-09-01T00:01:12.000Z</published>
+    <updated>2017-04-28T02:13:38.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>#Composer学习笔记</p>
+<h2 id="一、安装-MacOS"><a href="#一、安装-MacOS" class="headerlink" title="一、安装(MacOS)"></a>一、安装(MacOS)</h2><blockquote>
+<p>系统要求：PHP5.3.2+以上版本<br>学习参考：<a href="https://getcomposer.org/doc/" target="_blank" rel="external">Composer官方文档</a></p>
+</blockquote>
+<p>Composer安装分两种：</p>
+<h3 id="1-局部安装"><a href="#1-局部安装" class="headerlink" title="1.局部安装"></a>1.局部安装</h3><p>将<code>composer.phar</code>文件内嵌于PHP应用目录下，命令如下：</p>
+<figure class="highlight scilab"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">php -r <span class="string">"copy('</span>https:<span class="comment">//getcomposer.org/installer', 'composer-setup.php');"</span></div><div class="line">php -r <span class="string">"if (hash_file('</span>SHA384', <span class="string">'composer-setup.php'</span>) === <span class="string">'e115a8dc7871f15d853148a7fbac7da27d6c0030b848d9b3dc09e2a0388afed865e6a3d6b3c0fad45c48e2b5fc1196ae'</span>) &#123; echo <span class="string">'Installer verified'</span>; &#125; <span class="keyword">else</span> &#123; echo <span class="string">'Installer corrupt'</span>; unlink(<span class="string">'composer-setup.php'</span>); &#125; echo PHP_EOL;<span class="string">"</span></div><div class="line">php composer-setup.php</div><div class="line">php -r "unlink(<span class="string">'composer-setup.php'</span>);<span class="string">"</span></div></pre></td></tr></table></figure>
+<blockquote>
+<p>以上命令分别做如下几件事件：</p>
+<ul>
+<li>下载安装器</li>
+<li>校验</li>
+<li>执行安装</li>
+<li>删除安装器</li>
+</ul>
+</blockquote>
+<p>安装完成后，会在当前工作目录下生成可执行文件：<code>composer.phar</code>，你可以通过如下方式使用（运行）composer来进行项目的依赖管理：</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">php composer.phar &lt;<span class="keyword">command</span>&gt;</div><div class="line"><span class="comment"># command指install等composer命令</span></div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="2-全局安装"><a href="#2-全局安装" class="headerlink" title="2.全局安装"></a>2.全局安装</h3><p>将可执行二进制文件放在系统PATH路径下，命令如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> 假设局部安装中生成的composer.phar文件在当前目录下</span></div><div class="line"><span class="meta">#</span><span class="bash"> /usr/<span class="built_in">local</span>/bin/目录是一个现成的PATH目录，</span></div><div class="line"><span class="meta">#</span><span class="bash"> 你也可以将可执行文件放置于其他PATH目录下</span></div><div class="line">mv composer.phar /usr/local/bin/composer</div></pre></td></tr></table></figure>
+<p>通过这种方式，你就可以直接按如下方式来使用composer：</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">composer &lt;<span class="keyword">command</span>&gt;</div><div class="line"><span class="comment"># command指install等composer命令</span></div></pre></td></tr></table></figure>
+<h2 id="二、基本概念"><a href="#二、基本概念" class="headerlink" title="二、基本概念"></a>二、基本概念</h2><h3 id="1-composer-json文件"><a href="#1-composer-json文件" class="headerlink" title="1. composer.json文件"></a>1. composer.json文件</h3><p>每个基于Composer的项目都需要包含<code>composer.json</code>文件，该文件用于声明项目所依赖的第三方库，其为JSON文件，格式类似：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">       	<span class="attr">"require"</span>: &#123;</div><div class="line">       		<span class="attr">"monolog/monolog"</span>: <span class="string">"1.2.*"</span></div><div class="line">       	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>require属性是用于声明依赖信息的地方。</p>
+</blockquote>
+<p>当运行<code>composer install</code>安装依赖时，Composer会将依赖库下载到项目根目录的<code>vendor</code>目录下。如monolog依赖安装后，其存放在<code>vendor\monolog\monolog</code>目录下。</p>
+<h3 id="2-composer-lock文件"><a href="#2-composer-lock文件" class="headerlink" title="2. composer.lock文件"></a>2. composer.lock文件</h3><p>当执行如下命令安装依赖后，Composer将会在项目目录下创建<code>composer.lock</code>文件。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">composer <span class="keyword">install</span></div></pre></td></tr></table></figure>
+<blockquote>
+<p>Composer将把安装时确切的版本号列表写入<code>composer.lock</code>文件。这将锁定改项目的特定版本。<br>后续再次运行<code>composer install</code>时，Composer将先检查目录下是否有<code>composer.lock</code>，若有则直接忽略<code>composer.json</code>，而使用<code>composer.lock</code>中的确切的版本信息。团队成员可以共享该lock文件以解决版本不一致问题。<br>当依赖版本有升级时，若想更新依赖至最新版本可以运行如下命令</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> 全部更新</span></div><div class="line">composer update</div><div class="line"><span class="meta">#</span><span class="bash"> 只更新某个依赖库</span></div><div class="line">composer update monolog/monolog [...]</div></pre></td></tr></table></figure>
+<h3 id="3-自动加载"><a href="#3-自动加载" class="headerlink" title="3. 自动加载"></a>3. 自动加载</h3><p>对于库的自动加载信息，Composer 生成了一个<code>vendor/autoload.php</code>文件。通过引入这个文件，就实现了自动加载功能。</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">require</span> <span class="string">'vendor/autoload.php'</span>;</div></pre></td></tr></table></figure>
+<p>通过自动加载功能我们可以很容易的使用第三方代码。例如：项目依赖monolog，我们就可以像这样开始使用这个类库，并且他们将被自动加载。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"><span class="built_in">log</span> = new Monolog\Logger(<span class="string">'name'</span>);</span></div><div class="line"><span class="meta">$</span><span class="bash"><span class="built_in">log</span>-&gt;pushHandler(new Monolog\Handler\StreamHandler(<span class="string">'app.log'</span>, Monolog\Logger::WARNING));</span></div><div class="line"><span class="meta"></span></div><div class="line">$<span class="bash"><span class="built_in">log</span>-&gt;addWarning(<span class="string">'Foo'</span>);</span></div></pre></td></tr></table></figure>
+<p>当然，我们也可以在<code>composer.json</code>的<code>autoload</code>字段中增加自己的<code>autoloader</code>。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="attr">"autoload"</span>: &#123;</div><div class="line">        <span class="attr">"psr-4"</span>: &#123;<span class="attr">"Acme\\"</span>: <span class="string">"src/"</span>&#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Composer将注册一个<code>PSR-4 autoloader</code>到<code>Acme</code>命名空间。</p>
+<p>你可以定义一个从命名空间到目录的映射。此时src会在你项目的根目录，与<code>vendor</code>文件夹同级。例如<code>src/Foo.php</code>文件应该包含<code>Acme\Foo</code>类。</p>
+<p>添加<code>autoload</code>字段后，你应该再次运行<code>install</code>命令来生成 <code>vendor/autoload.php</code>文件。</p>
+<p>引用这个文件也将返回<code>autoloader</code>的实例，你可以将包含调用的返回值存储在变量中，并添加更多的命名空间。这对于在一个测试套件中自动加载类文件是非常有用的，例如：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$loader = <span class="keyword">require</span> <span class="string">'vendor/autoload.php'</span>;</div><div class="line">$loader-&gt;add(<span class="string">'Acme\\Test\\'</span>, <span class="keyword">__DIR__</span>);</div></pre></td></tr></table></figure>
+<h2 id="三、库"><a href="#三、库" class="headerlink" title="三、库"></a>三、库</h2><p>不重复造轮子，这是大伙天天喊的，因为社区已经为大伙提供了很多可直接引用的轮子，这些轮子的学名就叫“库”。如果你觉得自己的项目可以帮到别人，你可以选择将其打包成库，并大告天下。你只要按如下步骤操作就行：</p>
+<ol>
+<li>为项目的composer.json添加name属性 [必需]</li>
+<li>发布至git等版本管理系统或<a href="https://packagist.org/" target="_blank" rel="external">packagist</a></li>
+</ol>
+<blockquote>
+<ul>
+<li>composer.json中还有一个<code>version</code>属性，但一般不建议设置，因为composer会根据tag标签自行推算版本号，如果项目代码为master，则版本会被推算为<code>dev-master</code></li>
+<li>packagist可理解为一个公共的组件仓库，类似maven中央库</li>
+<li>对于未发布至packagist库的组件，引用方需要指定<code>repositories</code></li>
+</ul>
+</blockquote>
+<p>比如，假如我们将项目发布至<a href="https://github.com/monkeychen/simiam" target="_blank" rel="external">Github</a>下，项目的<code>composer.json</code>如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="attr">"name"</span>: <span class="string">"simiam/composer-demo"</span>,</div><div class="line">    <span class="attr">"require"</span>: &#123;</div><div class="line">        <span class="attr">"monolog/monolog"</span>: <span class="string">"1.0.*"</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接下来，我们的另一个项目blog需要引用上面发布的<code>simiam/composer-demo</code>组件，则blog项目的<code>composer.json</code>内容如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="attr">"name"</span>: <span class="string">"simiam/blog"</span>,</div><div class="line">    <span class="attr">"repositories"</span>: [</div><div class="line">        &#123;</div><div class="line">            <span class="attr">"type"</span>: <span class="string">"vcs"</span>,</div><div class="line">            <span class="attr">"url"</span>: <span class="string">"https://github.com/monkeychen/simiam"</span></div><div class="line">        &#125;</div><div class="line">    ],</div><div class="line">    <span class="attr">"require"</span>: &#123;</div><div class="line">        <span class="attr">"simiam/composer-demo"</span>: <span class="string">"dev-master"</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>因为我们发布的是master分支，所以<code>require</code>中依赖的版本号为<code>dev-master</code><br>如果组件已经发布至packagist的话，则不需要声明<code>repositories</code>，因为composer默认会从中央库中搜索。</p>
+</blockquote>
+<p>更详细的信息，可以参考<a href="https://getcomposer.org/doc/02-libraries.md" target="_blank" rel="external">这里</a>。</p>
+<blockquote>
+<p>转载请注明出处：<a href="http://cloudnoter.com">cloudnoter.com</a></p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;#Composer学习笔记&lt;/p&gt;
+&lt;h2 id=&quot;一、安装-MacOS&quot;&gt;&lt;a href=&quot;#一、安装-MacOS&quot; class=&quot;headerlink&quot; title=&quot;一、安装(MacOS)&quot;&gt;&lt;/a&gt;一、安装(MacOS)&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;系统要求：PHP5.3.2+以上版本&lt;br&gt;学习参考：&lt;a href=&quot;https://getcomposer.org/doc/&quot;&gt;Composer官方文档&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Composer安装分两种：&lt;/p&gt;
+&lt;h3 id=&quot;1-局部安装&quot;&gt;&lt;a href=&quot;#1-局部安装&quot; class=&quot;headerlink&quot; title=&quot;1.局部安装&quot;&gt;&lt;/a&gt;1.局部安装&lt;/h3&gt;&lt;p&gt;将&lt;code&gt;composer.phar&lt;/code&gt;文件内嵌于PHP应用目录下，命令如下：&lt;/p&gt;
+&lt;figure class=&quot;highlight scilab&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;php -r &lt;span class=&quot;string&quot;&gt;&quot;copy(&#39;&lt;/span&gt;https:&lt;span class=&quot;comment&quot;&gt;//getcomposer.org/installer&#39;, &#39;composer-setup.php&#39;);&quot;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;php -r &lt;span class=&quot;string&quot;&gt;&quot;if (hash_file(&#39;&lt;/span&gt;SHA384&#39;, &lt;span class=&quot;string&quot;&gt;&#39;composer-setup.php&#39;&lt;/span&gt;) === &lt;span class=&quot;string&quot;&gt;&#39;e115a8dc7871f15d853148a7fbac7da27d6c0030b848d9b3dc09e2a0388afed865e6a3d6b3c0fad45c48e2b5fc1196ae&#39;&lt;/span&gt;) &amp;#123; echo &lt;span class=&quot;string&quot;&gt;&#39;Installer verified&#39;&lt;/span&gt;; &amp;#125; &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &amp;#123; echo &lt;span class=&quot;string&quot;&gt;&#39;Installer corrupt&#39;&lt;/span&gt;; unlink(&lt;span class=&quot;string&quot;&gt;&#39;composer-setup.php&#39;&lt;/span&gt;); &amp;#125; echo PHP_EOL;&lt;span class=&quot;string&quot;&gt;&quot;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;php composer-setup.php&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;php -r &quot;&lt;/span&gt;unlink(&lt;span class=&quot;string&quot;&gt;&#39;composer-setup.php&#39;&lt;/span&gt;);&lt;span class=&quot;string&quot;&gt;&quot;&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;blockquote&gt;
+&lt;p&gt;以上命令分别做如下几件事件：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;下载安装器&lt;/li&gt;
+&lt;li&gt;校验&lt;/li&gt;
+&lt;li&gt;执行安装&lt;/li&gt;
+&lt;li&gt;删除安装器&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;安装完成后，会在当前工作目录下生成可执行文件：&lt;code&gt;composer.phar&lt;/code&gt;，你可以通过如下方式使用（运行）composer来进行项目的依赖管理：&lt;/p&gt;
+&lt;figure class=&quot;highlight livecodeserver&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;php composer.phar &amp;lt;&lt;span class=&quot;keyword&quot;&gt;command&lt;/span&gt;&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# command指install等composer命令&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+      <category term="Composer" scheme="http://cloudnoter.com/tags/Composer/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Understanding how the JVM uses native memory on Windows and Linux</title>
+    <link href="http://cloudnoter.com/2016/07/29/Understanding-how-the-JVM-uses-native-memory-on-Windows-and-Linux/"/>
+    <id>http://cloudnoter.com/2016/07/29/Understanding-how-the-JVM-uses-native-memory-on-Windows-and-Linux/</id>
+    <published>2016-07-29T00:01:07.000Z</published>
+    <updated>2017-04-28T02:13:38.000Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>MAC下搭建Apache+PHP开发环境</title>
+    <link href="http://cloudnoter.com/2016/07/02/MAC%E4%B8%8B%E6%90%AD%E5%BB%BAApache+PHP%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/"/>
+    <id>http://cloudnoter.com/2016/07/02/MAC下搭建Apache+PHP开发环境/</id>
+    <published>2016-07-01T23:18:57.000Z</published>
+    <updated>2017-04-28T02:13:38.000Z</updated>
+    
+    <content type="html"><![CDATA[<ul>
+<li>apache配置文件为：<code>/etc/apache2/httpd.conf</code></li>
+<li>OSX下默认集成了apache与php；</li>
+<li>Mac Apache 有2个默认的网站目录，一个是<code>/Library/WebServer/Documents/</code>，一个是用户目录下的Sites目录（推荐使用），默认未开启；</li>
+<li>Apache 基本命令：</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">启动<span class="selector-pseudo">:sudo</span> <span class="selector-tag">apachectl</span> <span class="selector-tag">start</span></div><div class="line">停止<span class="selector-pseudo">:sudo</span> <span class="selector-tag">apachectl</span> <span class="selector-tag">stop</span></div><div class="line">重启<span class="selector-pseudo">:sudo</span> <span class="selector-tag">apachectl</span> <span class="selector-tag">restart</span></div></pre></td></tr></table></figure>
+<h2 id="1-配置apache"><a href="#1-配置apache" class="headerlink" title="1. 配置apache"></a>1. 配置apache</h2><p>Step 1. 在用户目录下用Finder创建 Sites 文件夹；</p>
+<p>Step 2. 在<code>/etc/apache2/users/</code>目录下添加 <code>username.conf</code>文件(username要替换成真正的用户名，下同)：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">cd</span> /etc/apache2/users  </div><div class="line">sudo <span class="keyword">vim</span> username.<span class="keyword">conf</span></div></pre></td></tr></table></figure>
+<p>Step 3. 在<code>username.conf</code>文件中添加如下内容：<br>    <img src="/img/username_conf.png" alt="username.conf内容"></p>
+<a id="more"></a>
+<p>Step 4. 检查<code>username.conf</code>文件的权限是否正确，正确的应该为：</p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-rw-r--r-- <span class="number"> 1 </span>root  wheel <span class="number"> 126 </span>Mar<span class="number"> 23 </span>23:02 username.conf</div></pre></td></tr></table></figure>
+<p>如果不是，则需要修改权限，使用如下命令：  </p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">sudo</span> <span class="selector-tag">chmod</span> 644 <span class="selector-tag">username</span><span class="selector-class">.conf</span></div></pre></td></tr></table></figure>
+<p>Step 5. 修改<code>httpd.conf</code>文件配置：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo <span class="keyword">vim</span> /etc/apache2/httpd.<span class="keyword">conf</span></div></pre></td></tr></table></figure>
+<p>在<code>httpd.conf</code>找到如下3行，并确保这3行的注释＃是被删除的  </p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">LoadModule authz_core_module libexec/apache2/mod_authz_core<span class="selector-class">.so</span></div><div class="line">LoadModule authz_host_module libexec/apache2/mod_authz_host<span class="selector-class">.so</span></div><div class="line">LoadModule userdir_module libexec/apache2/mod_userdir.so</div></pre></td></tr></table></figure>
+<p>接着启用用户目录配置，同为删除对应行的＃</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">Include</span> <span class="regexp">/private/</span>etc<span class="regexp">/apache2/</span>extra<span class="regexp">/httpd-userdir.conf</span></div></pre></td></tr></table></figure>
+<p>Step 6. 修改<code>httpd-userdir.conf</code>文件配置  </p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo vim <span class="regexp">/etc/</span>apache2<span class="regexp">/extra/</span>httpd-userdir.conf</div></pre></td></tr></table></figure>
+<p>取消如下行的＃</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">Include</span> <span class="regexp">/private/</span>etc<span class="regexp">/apache2/u</span>sers<span class="comment">/*.conf</span></div></pre></td></tr></table></figure>
+<p>Step 7. 重启Apache，并检查配置是否生效</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">sudo apachectl restart</span></div></pre></td></tr></table></figure>
+<p>在浏览器输入：<code>http://localhost/~username/</code>，看是否配置成功</p>
+<p>Step 8. 让apache支持php脚本  </p>
+<ul>
+<li>修改 httpd.conf 文件配置</li>
+</ul>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo <span class="keyword">vim</span> /etc/apache2/httpd.<span class="keyword">conf</span></div></pre></td></tr></table></figure>
+<ul>
+<li>取消php库文件的＃注释</li>
+</ul>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">LoadModule php5_module libexec/apache2/libphp5.so</div></pre></td></tr></table></figure>
+<ul>
+<li>重启Apache</li>
+</ul>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">sudo apachectl restart</span></div></pre></td></tr></table></figure>
+<ul>
+<li>在Sites目录下创建index.php，内容如下：</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="php"><span class="meta">&lt;?php</span> phpinfo(); <span class="meta">?&gt;</span></span></div></pre></td></tr></table></figure>
+<ul>
+<li>在浏览器里输入：<code>http://localhost/~username</code>   </li>
+</ul>
+<blockquote>
+<p>如果能显示php环境信息，则说明php环境搭建成功  </p>
+</blockquote>
+<p>Step 9. 配置虚拟主机(vhost) </p>
+<ul>
+<li>将/etc/apache2/httpd.conf文件中的如下内容前的’#’删除:</li>
+</ul>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">Include</span> /private/etc/apache2/extra/httpd-vhosts.conf</span></div></pre></td></tr></table></figure>
+<ul>
+<li>修改/etc/apache2/extra/httpd-vhosts.conf:</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">&lt;VirtualHost *:<span class="number">80</span>&gt;</div><div class="line">    ServerAdmin admin@simiam<span class="selector-class">.vhost</span><span class="selector-class">.com</span></div><div class="line">    DocumentRoot <span class="string">"/Users/chenzhian/workspace/php/website/public"</span></div><div class="line">    ServerName simiam<span class="selector-class">.vhost</span><span class="selector-class">.com</span></div><div class="line">    DirectoryIndex main<span class="selector-class">.php</span> index<span class="selector-class">.php</span> index<span class="selector-class">.html</span></div><div class="line">    &lt;Directory <span class="string">"/Users/chenzhian/workspace/php/website/public"</span>&gt;</div><div class="line">	Options FollowSymLinks Multiviews</div><div class="line">	MultiviewsMatch Any</div><div class="line">	AllowOverride All</div><div class="line">	Require all granted</div><div class="line">    &lt;/Directory&gt;</div><div class="line">    ErrorLog <span class="string">"/private/var/log/apache2/simiam.vhost.com-error_log"</span></div><div class="line">    CustomLog <span class="string">"/private/var/log/apache2/simiam.vhost.com-access_log"</span> common</div><div class="line">&lt;/VirtualHost&gt;</div><div class="line"></div><div class="line">&lt;VirtualHost *:<span class="number">80</span>&gt;</div><div class="line">    ServerAdmin admin@<span class="number">100</span><span class="selector-class">.vhost</span><span class="selector-class">.com</span></div><div class="line">    DocumentRoot <span class="string">"/Users/chenzhian/workspace/php/website/100"</span></div><div class="line">    ServerName <span class="number">100</span><span class="selector-class">.vhost</span><span class="selector-class">.com</span></div><div class="line">    DirectoryIndex index<span class="selector-class">.php</span> index<span class="selector-class">.html</span></div><div class="line">        &lt;Directory <span class="string">"/Users/chenzhian/workspace/php/website/100"</span>&gt;</div><div class="line">	        Options FollowSymLinks Multiviews</div><div class="line">		MultiviewsMatch Any</div><div class="line">		AllowOverride All</div><div class="line">		Require all granted</div><div class="line">	&lt;/Directory&gt;</div><div class="line">    ErrorLog <span class="string">"/private/var/log/apache2/100.vhost.com-error_log"</span></div><div class="line">    CustomLog <span class="string">"/private/var/log/apache2/100.vhost.com-access_log"</span> common</div><div class="line">&lt;/VirtualHost&gt;</div></pre></td></tr></table></figure>
+<h2 id="2-修改或创建php-ini"><a href="#2-修改或创建php-ini" class="headerlink" title="2. 修改或创建php.ini"></a>2. 修改或创建php.ini</h2><p>Step 1. 为了开启php的一些扩展功能，有必要对<code>php.ini</code>进行修改。OSX默认提供的php是没有<code>php.ini</code>文件的，因此我们需要自己创建一个。可以在<code>/etc/</code>目录下创建<code>php.ini</code></p>
+<ul>
+<li>/etc/目录下有提供php.ini.default模板</li>
+</ul>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo cp <span class="regexp">/etc/</span>php.ini.<span class="keyword">default</span> <span class="regexp">/etc/</span>php.ini</div></pre></td></tr></table></figure>
+<ul>
+<li><p>如果不知道php默认是到哪里找php.ini文件的话，则使用命令<code>php --ini</code>：</p>
+</li>
+<li><p>命令输出如下类似信息：  </p>
+</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Configuration File (php.ini) Path: /etc</div><div class="line">Loaded Configuration File:         /etc/php<span class="selector-class">.ini</span></div><div class="line">Scan <span class="keyword">for</span> additional <span class="selector-class">.ini</span> files <span class="keyword">in</span>: /Library/Server/Web/Config/php</div><div class="line">Additional <span class="selector-class">.ini</span> files parsed:      (<span class="attribute">none</span>)</div></pre></td></tr></table></figure>
+<p>Step 2. 在<code>php.ini</code>文件最后添加如下内容以启用xdebug扩展:</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">[xdebug]</div><div class="line"></div><div class="line">zend_extension=/usr/lib/php/extensions/no-debug-non-zts<span class="number">-20121212</span>/xdebug.so</div><div class="line">xdebug.remote_autostart=on</div><div class="line">xdebug.remote_enable=on</div><div class="line">xdebug.remote_enable=<span class="number">1</span></div><div class="line">xdebug.remote_mode=<span class="string">"req"</span></div><div class="line">xdebug.remote_log=<span class="string">"/var/log/xdebug.log"</span></div><div class="line">xdebug.remote_host=<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></div><div class="line">xdebug.remote_port=<span class="number">9000</span></div><div class="line">xdebug.remote_handler=<span class="string">"dbgp"</span></div><div class="line">xdebug.idekey=<span class="string">"PhpStorm"</span></div></pre></td></tr></table></figure>
+<blockquote>
+<p>xdebug.remote_host的值建议设置为127.0.0.1，而不要设置为localhost（当开启调试模式时，可能会出现域名解析很慢的问题）</p>
+</blockquote>
+<h2 id="3-安装并配置PhpStorm"><a href="#3-安装并配置PhpStorm" class="headerlink" title="3. 安装并配置PhpStorm"></a>3. 安装并配置PhpStorm</h2><p>Step 1. 配置php解释器:直接在<strong><code>Preferences</code></strong>的<strong><code>Languages-&gt;PHP</code></strong>页面添加php命令路径:</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="regexp">/usr/</span>bin<span class="regexp">/php</span></div></pre></td></tr></table></figure>
+<p>Step 2. 配置debug<br>    在<strong><code>PHP-&gt;Debug-&gt;DBGp</code></strong>中添加如下信息:</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">IDE</span> <span class="selector-tag">key</span><span class="selector-pseudo">:PhpStorm</span> (与php.ini中xdebug配置项xdebug.idekey一致)  </div><div class="line"><span class="selector-tag">Host</span><span class="selector-pseudo">:localhost</span>  (apache服务地址)  </div><div class="line"><span class="selector-tag">Port</span><span class="selector-pseudo">:80</span> (apache服务端口)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>转载请注明出处：<a href="http://cloudnoter.com">cloudnoter.com</a></p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;ul&gt;
+&lt;li&gt;apache配置文件为：&lt;code&gt;/etc/apache2/httpd.conf&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;OSX下默认集成了apache与php；&lt;/li&gt;
+&lt;li&gt;Mac Apache 有2个默认的网站目录，一个是&lt;code&gt;/Library/WebServer/Documents/&lt;/code&gt;，一个是用户目录下的Sites目录（推荐使用），默认未开启；&lt;/li&gt;
+&lt;li&gt;Apache 基本命令：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight css&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;启动&lt;span class=&quot;selector-pseudo&quot;&gt;:sudo&lt;/span&gt; &lt;span class=&quot;selector-tag&quot;&gt;apachectl&lt;/span&gt; &lt;span class=&quot;selector-tag&quot;&gt;start&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;停止&lt;span class=&quot;selector-pseudo&quot;&gt;:sudo&lt;/span&gt; &lt;span class=&quot;selector-tag&quot;&gt;apachectl&lt;/span&gt; &lt;span class=&quot;selector-tag&quot;&gt;stop&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;重启&lt;span class=&quot;selector-pseudo&quot;&gt;:sudo&lt;/span&gt; &lt;span class=&quot;selector-tag&quot;&gt;apachectl&lt;/span&gt; &lt;span class=&quot;selector-tag&quot;&gt;restart&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h2 id=&quot;1-配置apache&quot;&gt;&lt;a href=&quot;#1-配置apache&quot; class=&quot;headerlink&quot; title=&quot;1. 配置apache&quot;&gt;&lt;/a&gt;1. 配置apache&lt;/h2&gt;&lt;p&gt;Step 1. 在用户目录下用Finder创建 Sites 文件夹；&lt;/p&gt;
+&lt;p&gt;Step 2. 在&lt;code&gt;/etc/apache2/users/&lt;/code&gt;目录下添加 &lt;code&gt;username.conf&lt;/code&gt;文件(username要替换成真正的用户名，下同)：&lt;/p&gt;
+&lt;figure class=&quot;highlight vim&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;cd&lt;/span&gt; /etc/apache2/users  &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sudo &lt;span class=&quot;keyword&quot;&gt;vim&lt;/span&gt; username.&lt;span class=&quot;keyword&quot;&gt;conf&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;Step 3. 在&lt;code&gt;username.conf&lt;/code&gt;文件中添加如下内容：&lt;br&gt;    &lt;img src=&quot;/img/username_conf.png&quot; alt=&quot;username.conf内容&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="php" scheme="http://cloudnoter.com/tags/php/"/>
+    
+      <category term="apache2" scheme="http://cloudnoter.com/tags/apache2/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JNI引起的堆外内存泄漏问题分析</title>
+    <link href="http://cloudnoter.com/2016/02/27/JNI%E5%BC%95%E8%B5%B7%E7%9A%84%E5%A0%86%E5%A4%96%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/"/>
+    <id>http://cloudnoter.com/2016/02/27/JNI引起的堆外内存泄漏问题分析/</id>
+    <published>2016-02-26T21:18:48.000Z</published>
+    <updated>2017-04-28T02:13:38.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>客户现场的监控系统中有一个网络听诊器功能，其每隔1分钟会对全网设备进行ping操作，以此来尽可能快的发现设备及网络是否出现异常。暂且不说通过该功能来对设备及网络作健康检测是否靠谱。由于JAVA对于网络层以下的协议是无能为力的，而ping操作涉及ICMP与ARP协议，因此监控系统只能借助JNI机制来搞定。</p>
+<h1 id="BUG现象"><a href="#BUG现象" class="headerlink" title="BUG现象"></a>BUG现象</h1><p>监控系统的java.exe进程每隔几个小时就异常退出</p>
+<h1 id="问题定位"><a href="#问题定位" class="headerlink" title="问题定位"></a>问题定位</h1><ol>
+<li>通过应用系统的日志看是否为业务相关的异常引起的 –》日志中并无任何异常信息</li>
+<li>打开GC日志，并观察一段时间，看是否存在堆内存回收异常（泄漏或溢出） –》堆内存一切正常</li>
+<li>此时忽然想起，java.exe进程异常退出应该会生成相关的hs_err<pid>.log文件，果然在应用目录下找到了一堆错误文件。该日志也叫crash日志。 </pid></li>
+<li>通过查看hs_err<pid>.log内容得知，原来是jni ping引入的dll调用异常导致java.exe进程异常中止了。<blockquote>
+<p>PS：如果能早点想起步骤3，那就不用浪费步骤2的功夫了。</p>
+</blockquote>
+</pid></li>
+</ol>
+<a id="more"></a>
+<h1 id="JNI调用异常分析"><a href="#JNI调用异常分析" class="headerlink" title="JNI调用异常分析"></a>JNI调用异常分析</h1><p>JNI异常导致java进程中止的原因可能为</p>
+<ul>
+<li>JVM自己的BUG：谷歌了一把，网上描述的BUG中，现场的JDK版本都已经修复了。</li>
+<li>JNI DLL的BUG：这个原因范围就大了，至此只能根据经验猜测可能的原因，然后一个一个排除了。</li>
+</ul>
+<p>由于linux环境下有这么一个机制：当内核检测到进程的物理内存不断增加至某一个值时，内核会直接将该进程kill掉。</p>
+<blockquote>
+<p>windows是否也有这样的机制呢？目前尚未查证，还请高手解答。</p>
+</blockquote>
+<p>在没有进一步证据的前提下，只能先猜测是否为进程物理内存出了问题，于是监测了下应用进程的物理内存损耗量，果然是缓慢递增的，但JVM堆内存仍然一切正常，由此大约知道是堆外内存使用上出了问题。</p>
+<p>关于堆外内存的相关知识，可参考下面的文章：</p>
+<ul>
+<li><a href="http://lovestblog.cn/blog/2015/08/21/rssxmx/" target="_blank" rel="external">进程物理内存远大于Xmx的问题分析</a></li>
+<li><a href="http://lovestblog.cn/blog/2015/05/12/direct-buffer/" target="_blank" rel="external">JVM源码分析之堆外内存完全解读</a></li>
+</ul>
+<blockquote>
+<p>至此，可以知道该问题与JAVA没啥关系了，但为了彻底搞明白，我还是硬着头皮找来DLL的C源码，想看看是否可以用我helloworld级别的C水平把这个问题搞定。</p>
+</blockquote>
+<h1 id="堆外内存-泄漏、异常-分析"><a href="#堆外内存-泄漏、异常-分析" class="headerlink" title="堆外内存[泄漏、异常]分析"></a>堆外内存[泄漏、异常]分析</h1><p>分析C/C++应用的内存，大伙一般都会想到perftool，可惜windows环境下我始终编译不过。于是谷歌上再搜索一把”windows内存泄漏”，发现知乎上有<a href="https://www.zhihu.com/question/19647750" target="_blank" rel="external">文章</a>推荐了一堆，但我要么下载不到，要么看不懂。最后是根据《<a href="http://www.cnblogs.com/skynet/archive/2011/02/20/1959162.html" target="_blank" rel="external">C/C++内存泄漏及检测</a>》介绍的方法定位到是dll中有一段代码使用了缓存导致内存泄漏，当内存达到JVM中设置的MaxDirectMemorySize值时，dll就会出现内存访问异常错误，最终导致java.exe进程异常退出了。</p>
+<blockquote>
+<p>PS：在定位堆外内存异常相关问题时，为了快速重现问题，可以将MaxDirectMemorySize改小，MaxDirectMemorySize的默认值可认为与-Xmx设置的值一样（严格上不是，参见<a href="http://lovestblog.cn/blog/2015/05/12/direct-buffer/" target="_blank" rel="external">JVM源码分析之堆外内存完全解读</a>）</p>
+</blockquote>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>该问题并非通用性问题，写这篇文章主要是为了记录下当时解决该问题的整个定位过程，文中一些知识点可能表述有误，还请批评指正。</p>
+<blockquote>
+<p>转载请注明出处：<a href="http://cloudnoter.com">cloudnoter.com</a></p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;客户现场的监控系统中有一个网络听诊器功能，其每隔1分钟会对全网设备进行ping操作，以此来尽可能快的发现设备及网络是否出现异常。暂且不说通过该功能来对设备及网络作健康检测是否靠谱。由于JAVA对于网络层以下的协议是无能为力的，而ping操作涉及ICMP与ARP协议，因此监控系统只能借助JNI机制来搞定。&lt;/p&gt;
+&lt;h1 id=&quot;BUG现象&quot;&gt;&lt;a href=&quot;#BUG现象&quot; class=&quot;headerlink&quot; title=&quot;BUG现象&quot;&gt;&lt;/a&gt;BUG现象&lt;/h1&gt;&lt;p&gt;监控系统的java.exe进程每隔几个小时就异常退出&lt;/p&gt;
+&lt;h1 id=&quot;问题定位&quot;&gt;&lt;a href=&quot;#问题定位&quot; class=&quot;headerlink&quot; title=&quot;问题定位&quot;&gt;&lt;/a&gt;问题定位&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;通过应用系统的日志看是否为业务相关的异常引起的 –》日志中并无任何异常信息&lt;/li&gt;
+&lt;li&gt;打开GC日志，并观察一段时间，看是否存在堆内存回收异常（泄漏或溢出） –》堆内存一切正常&lt;/li&gt;
+&lt;li&gt;此时忽然想起，java.exe进程异常退出应该会生成相关的hs_err&lt;pid&gt;.log文件，果然在应用目录下找到了一堆错误文件。该日志也叫crash日志。 &lt;/li&gt;
+&lt;li&gt;通过查看hs_err&lt;pid&gt;.log内容得知，原来是jni ping引入的dll调用异常导致java.exe进程异常中止了。&lt;blockquote&gt;
+&lt;p&gt;PS：如果能早点想起步骤3，那就不用浪费步骤2的功夫了。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="http://cloudnoter.com/tags/Java/"/>
+    
+      <category term="JNI" scheme="http://cloudnoter.com/tags/JNI/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Laravel 5.2中文文档：HTTP路由</title>
+    <link href="http://cloudnoter.com/2016/01/21/Laravel-5-2%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3%EF%BC%9AHTTP%E8%B7%AF%E7%94%B1/"/>
+    <id>http://cloudnoter.com/2016/01/21/Laravel-5-2中文文档：HTTP路由/</id>
+    <published>2016-01-20T21:31:08.000Z</published>
+    <updated>2017-04-28T02:13:38.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="基本路由"><a href="#基本路由" class="headerlink" title="基本路由"></a>基本路由</h1><p>所有的Laravel路由规则都定义在<code>app/Http/routes.php</code>文件中，Laravel框架在初始化时将自动加载该文件。Laravel中最基本的路由规则如下：</p>
+<pre><code>Route::get(&apos;foo&apos;, function () {
+    return &apos;Hello World&apos;;
+});
+</code></pre><p>其接受两个参数：匹配该路由的URI、路由处理闭包<code>Closure</code>；该闭包定义了具体的路由规则。</p>
+<p><strong>默认路由文件</strong></p>
+<p>默认情况下，<code>routes.php</code>中可以定义简单的路由，或者将这些路由定义在路由组中。路由组将利用<code>web</code>中间件为定义在其中的路由规则提供’会话状态’与<code>CSRF</code>保存等功能。<br><a id="more"></a></p>
+<p>任何未放在路由组中的路由规则将无权访问会话，也无法享受web中间件提供的<code>CSRF</code>保护等特性，因此如果您定义的路由规则需要web中间件提供的这些特性时，你需要确保将这些路由规则放入路由组中；通过情况下，我们会将大部分的路由规则都放在路由组中。</p>
+<pre><code>Route::group([&apos;middleware&apos; =&gt; [&apos;web&apos;]], function () {
+    //
+});
+</code></pre><p><strong>Route类中可用的路由方法</strong></p>
+<p>框架路由引擎允许你注册如下的路由规则来响应相应的HTTP请求动作：</p>
+<pre><code>Route::get($uri, $callback);
+Route::post($uri, $callback);
+Route::put($uri, $callback);
+Route::patch($uri, $callback);
+Route::delete($uri, $callback);
+Route::options($uri, $callback);
+</code></pre><p>有时你需要注册一个路由规则来响应多个HTTP请求动作，因此你可以使用<code>Route</code>类的<code>match</code>方法来满足该需求。甚至你可以使用<code>Route</code>类的<code>any</code>方法来响应所有的HTTP请求动作。</p>
+<pre><code>Route::match([&apos;get&apos;, &apos;post&apos;], &apos;/&apos;, function () {
+    //
+});
+
+Route::any(&apos;foo&apos;, function () {
+    //
+});
+</code></pre><h1 id="路由参数-占位符"><a href="#路由参数-占位符" class="headerlink" title="路由参数(占位符)"></a>路由参数(占位符)</h1><p>Laravel中路由规则配置中的URL中允许设置参数(占位符)，便于闭包或控制器方法提取与引用。Laravel的路由URL中参数占位符配置方式分两种：必选与可选。</p>
+<blockquote>
+<p>这种机制蛮适合开发符合RESTful规范的应用，这里有一篇由《黑客与画家》、《软件随想录》译者阮一峰写的介绍RESTful概念的文章： <a href="http://www.ruanyifeng.com/blog/2011/09/restful" target="_blank" rel="external">理解RESTful架构</a></p>
+</blockquote>
+<p><strong>必选参数占位符</strong></p>
+<p>所谓必选，即HTTP请求的URL中参数占位符的部分必需有具体的数据，否则该路由规则不会被匹配到。比如，你可能需要从请求URL中获取用户的ID时，你就可以定义如下的路由规则：</p>
+<pre><code>Route::get(&apos;user/{id}&apos;, function ($id) {
+    return &apos;User &apos;.$id;
+});
+// 当请求URL为http://somesite/user/2时，2将被提取出来并赋值给闭包函数中的变量id
+</code></pre><p>由上面的例子可知，路由参数占位符是由一对花括号来定义的。当然，我们也可以在URL中定义多个参数占位符，如下：</p>
+<pre><code>Route::get(&apos;posts/{post}/comments/{comment}&apos;, function ($postId, $commentId) {
+     //
+});
+</code></pre><blockquote>
+<p>注意：路由参数占位符的定义需要符合PHP变量命名规范，如不能包含”-“符。</p>
+</blockquote>
+<p><strong>可选参数占位符</strong></p>
+<p>如果想让路由参数占位符是可选的（有时请求URL中的占位符部分可能是空的），此时可以在占位符名称的后面加上一个问号”?”即可。</p>
+<pre><code>Route::get(&apos;user/{name?}&apos;, function ($name = null) {
+    return $name;
+});
+
+Route::get(&apos;user/{name?}&apos;, function ($name = &apos;John&apos;) {
+    return $name;
+});
+</code></pre><blockquote>
+<p>当URL参数占位符设置为可选时，后面的闭包函数的参数<strong>需要</strong>提供默认值。</p>
+</blockquote>
+<h1 id="命名路由"><a href="#命名路由" class="headerlink" title="命名路由"></a>命名路由</h1><p>命名路由将允许你方便的生成URL或重定向URL，这些生成的URL最终将匹配该路由规则。你可通过如下方式定义命名路由：</p>
+<pre><code>Route::get(&apos;profile&apos;, [&apos;as&apos; =&gt; &apos;profile&apos;, function () {
+    //
+}]);
+</code></pre><p>闭包函数的第二个数组参数的元素键值需要指定为”as”，元素值即为路由规则名。当然，你也可以为控制器的方法来代替上面的闭包函数，如下：</p>
+<pre><code>Route::get(&apos;profile&apos;, [
+    &apos;as&apos; =&gt; &apos;profile&apos;, &apos;uses&apos; =&gt; &apos;UserController@showProfile&apos;
+]);
+</code></pre><p>定义命名路由还有如下方式：</p>
+<pre><code>Route::get(&apos;user/profile&apos;, &apos;UserController@showProfile&apos;)-&gt;name(&apos;profile&apos;);
+</code></pre><p>即先定义一个普通路由，然后再调用该路由规则实例的name方法。</p>
+<p><strong>路由组与命名路由</strong></p>
+<p>如果你正在使用路由规则组时，你可以在路由规则组定义的属性数组中添加一个key为”as”，值为某字符串的元素，该元素的值将作为该路由组中包含的路由名字的前缀。如下：</p>
+<pre><code>Route::group([&apos;as&apos; =&gt; &apos;admin::&apos;], function () {
+    Route::get(&apos;dashboard&apos;, [&apos;as&apos; =&gt; &apos;dashboard&apos;, function () {
+        // Route named &quot;admin::dashboard&quot;
+    }]);
+});
+</code></pre><p><strong>生成匹配命名路由的URL</strong></p>
+<p>一旦你已经为某一路由起了相应的名字，那么你就可以通过全局函数<code>route</code>来生成相应的URL：</p>
+<pre><code>// Generating URLs...
+$url = route(&apos;profile&apos;);
+
+// Generating Redirects...
+return redirect()-&gt;route(&apos;profile&apos;);
+</code></pre><p>如果命名路由规则的URL部分包含参数占位符，则你可以将参数值作为<code>route</code>函数的第二个数组参数的元素传入，框架将自动用该参数值代替占位符以生成相应的URL。</p>
+<pre><code>Route::get(&apos;user/{id}/profile&apos;, [&apos;as&apos; =&gt; &apos;profile&apos;, function ($id) {
+    //
+}]);
+
+$url = route(&apos;profile&apos;, [&apos;id&apos; =&gt; 1]);
+</code></pre><h1 id="路由组"><a href="#路由组" class="headerlink" title="路由组"></a>路由组</h1><blockquote>
+<p>转载请注明出处：<a href="http://cloudnoter.com">cloudnoter.com</a></p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;基本路由&quot;&gt;&lt;a href=&quot;#基本路由&quot; class=&quot;headerlink&quot; title=&quot;基本路由&quot;&gt;&lt;/a&gt;基本路由&lt;/h1&gt;&lt;p&gt;所有的Laravel路由规则都定义在&lt;code&gt;app/Http/routes.php&lt;/code&gt;文件中，Laravel框架在初始化时将自动加载该文件。Laravel中最基本的路由规则如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Route::get(&amp;apos;foo&amp;apos;, function () {
+    return &amp;apos;Hello World&amp;apos;;
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;其接受两个参数：匹配该路由的URI、路由处理闭包&lt;code&gt;Closure&lt;/code&gt;；该闭包定义了具体的路由规则。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;默认路由文件&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;默认情况下，&lt;code&gt;routes.php&lt;/code&gt;中可以定义简单的路由，或者将这些路由定义在路由组中。路由组将利用&lt;code&gt;web&lt;/code&gt;中间件为定义在其中的路由规则提供’会话状态’与&lt;code&gt;CSRF&lt;/code&gt;保存等功能。&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="php" scheme="http://cloudnoter.com/tags/php/"/>
+    
+      <category term="laravel" scheme="http://cloudnoter.com/tags/laravel/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java调试工具:JDB</title>
+    <link href="http://cloudnoter.com/2016/01/13/Java%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7-JDB/"/>
+    <id>http://cloudnoter.com/2016/01/13/Java调试工具-JDB/</id>
+    <published>2016-01-12T23:25:28.000Z</published>
+    <updated>2017-04-28T02:13:38.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>代码调试是大家在日常应用开发定位BUG时会经常使用的技能。然而在客户生产环境下，一没有开发环境，二没有外网连接，如果此时应用出问题，而通过日志又无法定位时，该怎么办呢？</p>
+<p>也许有人会按如下步骤来定位问题（假设BUG可复现且客户允许应用服务重启）：</p>
+<ol>
+<li>在本地可能出问题的相关代码中添加许多的日志信息，以将应用运行状态打印出来。</li>
+<li>打包并部署至客户现场环境</li>
+<li>复现BUG并查看日志信息并最终解决问题</li>
+</ol>
+<p>其实JDK中提供的JDB是一个更加理想现场调试工具，其包含的命令列表如下：</p>
+<a id="more"></a>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div></pre></td><td class="code"><pre><div class="line">** JDB命令列表 **</div><div class="line">connectors                <span class="comment">-- 列出此 VM 中可用的连接器和传输器</span></div><div class="line"></div><div class="line">run [类 [参数]]        <span class="comment">-- 开始执行应用程序的主类</span></div><div class="line"></div><div class="line">threads [线程组]     <span class="comment">-- 列出线程</span></div><div class="line">thread &lt;线程 ID&gt;        <span class="comment">-- 设置默认线程</span></div><div class="line">suspend [线程 ID]    <span class="comment">-- 暂停线程（默认值为 all）</span></div><div class="line">resume [线程 ID]     <span class="comment">-- 恢复线程（默认值为 all）</span></div><div class="line">where [&lt;线程 ID&gt; | all] <span class="comment">-- 转储线程的堆栈</span></div><div class="line">wherei [&lt;线程 ID&gt; | all] <span class="comment">-- 转储线程的堆栈以及 pc 信息</span></div><div class="line">up [n 帧]             <span class="comment">-- 向上移动线程的堆栈</span></div><div class="line">down [n 帧]           <span class="comment">-- 向下移动线程的堆栈</span></div><div class="line"><span class="built_in">kill</span> &lt;线程 ID&gt; &lt;表达式&gt;   <span class="comment">-- 中止具有给定的异常对象的线程</span></div><div class="line">interrupt &lt;线程 ID&gt;     <span class="comment">-- 中断线程</span></div><div class="line"></div><div class="line">print &lt;表达式&gt;              <span class="comment">-- 输出表达式的值</span></div><div class="line">dump &lt;表达式&gt;               <span class="comment">-- 输出所有对象信息</span></div><div class="line">eval &lt;表达式&gt;               <span class="comment">-- 计算表达式的值（与 print 作用相同）</span></div><div class="line"><span class="built_in">set</span> &lt;lvalue&gt; = &lt;表达式&gt;     <span class="comment">-- 为字段/变量/数组元素指定新值</span></div><div class="line">locals                    <span class="comment">-- 输出当前堆栈帧中的所有本地变量</span></div><div class="line"></div><div class="line">classes                   <span class="comment">-- 列出当前已知的类</span></div><div class="line">class &lt;类 ID&gt;          <span class="comment">-- 显示已命名类的详细信息</span></div><div class="line">methods &lt;类 ID&gt;        <span class="comment">-- 列出类的方法</span></div><div class="line">fields &lt;类 ID&gt;         <span class="comment">-- 列出类的字段</span></div><div class="line"></div><div class="line">threadgroups              <span class="comment">-- 列出线程组</span></div><div class="line">threadgroup &lt;名称&gt;        <span class="comment">-- 设置当前线程组</span></div><div class="line"></div><div class="line"><span class="built_in">stop</span> <span class="keyword">in</span> &lt;类 ID&gt;.&lt;方法&gt;[(参数类型,...)]</div><div class="line">                          <span class="comment">-- 在方法中设置断点</span></div><div class="line"><span class="built_in">stop</span> <span class="keyword">at</span> &lt;类 ID&gt;:&lt;行&gt; <span class="comment">-- 在行中设置断点</span></div><div class="line"><span class="built_in">clear</span> &lt;类 ID&gt;.&lt;方法&gt;[(参数类型,...)]</div><div class="line">                          <span class="comment">-- 清除方法中的断点</span></div><div class="line"><span class="built_in">clear</span> &lt;类 ID&gt;:&lt;行&gt;   <span class="comment">-- 清除行中的断点</span></div><div class="line"><span class="built_in">clear</span>                     <span class="comment">-- 列出断点</span></div><div class="line"><span class="keyword">catch</span> [uncaught|caught|all] &lt;类 ID&gt;|&lt;类模式&gt;</div><div class="line">                          <span class="comment">-- 出现指定的异常时中断</span></div><div class="line">ignore [uncaught|caught|all] &lt;类 ID&gt;|&lt;类模式&gt;</div><div class="line">                          <span class="comment">-- 对于指定的异常，取消 'catch'</span></div><div class="line">watch [access|all] &lt;类 ID&gt;.&lt;字段名&gt;</div><div class="line">                          <span class="comment">-- 监视对字段的访问/修改</span></div><div class="line">unwatch [access|all] &lt;类 ID&gt;.&lt;字段名&gt;</div><div class="line">                          <span class="comment">-- 停止监视对字段的访问/修改</span></div><div class="line">trace [go] methods [thread]</div><div class="line">                          <span class="comment">-- 跟踪方法的进入和退出。</span></div><div class="line">                          <span class="comment">-- 除非指定 'go'，否则所有线程都将暂停</span></div><div class="line">trace [go] method exit | exits [thread]</div><div class="line">                          <span class="comment">-- 跟踪当前方法的退出或所有方法的退出</span></div><div class="line">                          <span class="comment">-- 除非指定 'go'，否则所有线程都将暂停</span></div><div class="line">untrace [方法]         <span class="comment">-- 停止跟踪方法的进入和/或退出</span></div><div class="line">step                      <span class="comment">-- 执行当前行</span></div><div class="line">step up                   <span class="comment">-- 执行到当前方法返回其调用方</span></div><div class="line">stepi                     <span class="comment">-- 执行当前指令</span></div><div class="line">next                      <span class="comment">-- 跳过一行（跨过调用）</span></div><div class="line">cont                      <span class="comment">-- 从断点处继续执行</span></div><div class="line"></div><div class="line">list [<span class="built_in">line</span> <span class="built_in">number</span>|method] <span class="comment">-- 输出源代码</span></div><div class="line">use（或 sourcepath）[源文件路径]</div><div class="line">                          <span class="comment">-- 显示或更改源路径</span></div><div class="line">exclude [&lt;类模式&gt;, ...|“无”]</div><div class="line">                          <span class="comment">-- 不报告指定类的步骤或方法事件</span></div><div class="line">classpath                 <span class="comment">-- 从目标 VM 输出类路径信息</span></div><div class="line"></div><div class="line">monitor &lt;命令&gt;         <span class="comment">-- 每次程序停止时执行命令</span></div><div class="line">monitor                   <span class="comment">-- 列出监视器</span></div><div class="line">unmonitor &lt;监视器号&gt;      <span class="comment">-- 删除某个监视器</span></div><div class="line"><span class="built_in">read</span> &lt;文件名&gt;           <span class="comment">-- 读取并执行某个命令文件</span></div><div class="line"></div><div class="line">lock &lt;表达式&gt;               <span class="comment">-- 输出对象的锁信息</span></div><div class="line">threadlocks [线程 ID]   <span class="comment">-- 输出线程的锁信息</span></div><div class="line"></div><div class="line">pop                       <span class="comment">-- 弹出整个堆栈，且包含当前帧</span></div><div class="line">reenter                   <span class="comment">-- 与 pop 作用相同，但重新进入当前帧</span></div><div class="line">redefine &lt;类 ID&gt; &lt;类文件名&gt;</div><div class="line">                          <span class="comment">-- 重新定义类代码</span></div><div class="line"></div><div class="line">disablegc &lt;表达式&gt;          <span class="comment">-- 禁止对象的垃圾回收</span></div><div class="line">enablegc &lt;表达式&gt;           <span class="comment">-- 允许对象的垃圾回收</span></div><div class="line"></div><div class="line">!!                        <span class="comment">-- 重复执行最后一个命令</span></div><div class="line">&lt;n&gt; &lt;命令&gt;             <span class="comment">-- 将命令重复执行 n 次</span></div><div class="line"><span class="comment"># &lt;命令&gt;               -- 放弃（不执行）</span></div><div class="line">help（或 ?）               <span class="comment">-- 列出命令</span></div><div class="line"><span class="built_in">version</span>                   <span class="comment">-- 输出版本信息</span></div><div class="line">exit（或 quit）            <span class="comment">-- 退出调试器</span></div><div class="line"></div><div class="line">&lt;类 ID&gt;: 带有软件包限定符的完整类名</div><div class="line">&lt;类模式&gt;: 带有前导或后缀通配符 (*) 的类名</div><div class="line">&lt;线程 ID&gt;: <span class="string">'threads'</span> 命令中所报告的线程号</div><div class="line">&lt;表达式&gt;: Java(TM) 编程语言表达式。</div><div class="line">支持大多数常见语法。</div><div class="line"></div><div class="line">可以将启动命令置于 <span class="string">"jdb.ini"</span> 或 <span class="string">".jdbrc"</span> 之中</div><div class="line">（两者位于 user.home 或 user.dir 中）</div></pre></td></tr></table></figure>
+<p>有关JDB的使用详细介绍请参考<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jdb.html" target="_blank" rel="external">官方文档</a>。接下来我将用JDB调试Tomcat（以Tomcat7为例）下的应用来介绍下JDB的简单用法。</p>
+<p>使用JDB进行调试，大概有下面几个步骤：</p>
+<ol>
+<li><p>在服务器上创建setenv.bat文件，并输入如下内容，并将该文件放在Tomcat安装目录的bin目录下，并重启Tomcat；</p>
+ <figure class="highlight actionscript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">set</span> CATALINA_OPTS=<span class="string">"-agentlib:jdwp=transport=dt_socket,address=8787,server=y,suspend=n"</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>将应用系统的源码解压至某一目录，如src_dir1与src_dir2</p>
+</li>
+<li>在CLI下输入以下命令连接至服务器上的Tomcat <figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">jdb -connect com<span class="selector-class">.sun</span><span class="selector-class">.jdi</span><span class="selector-class">.SocketAttach</span>:hostname=localhost,port=<span class="number">8787</span>,timeout=<span class="number">3000</span> -sourcepath src_dir1:src_dir2</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这样就可以进入JDB的DEBUG环境了，你可以通过stop命令创建断点，通过next命令单行调试，通过step命令单步调试，通过step up命令返回至上层调用点等，具体使用网上一堆参考资料。</p>
+<blockquote>
+<p>转载请注明出处：<a href="http://cloudnoter.com">cloudnoter.com</a></p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;代码调试是大家在日常应用开发定位BUG时会经常使用的技能。然而在客户生产环境下，一没有开发环境，二没有外网连接，如果此时应用出问题，而通过日志又无法定位时，该怎么办呢？&lt;/p&gt;
+&lt;p&gt;也许有人会按如下步骤来定位问题（假设BUG可复现且客户允许应用服务重启）：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;在本地可能出问题的相关代码中添加许多的日志信息，以将应用运行状态打印出来。&lt;/li&gt;
+&lt;li&gt;打包并部署至客户现场环境&lt;/li&gt;
+&lt;li&gt;复现BUG并查看日志信息并最终解决问题&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;其实JDK中提供的JDB是一个更加理想现场调试工具，其包含的命令列表如下：&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="http://cloudnoter.com/tags/Java/"/>
+    
+      <category term="JDB" scheme="http://cloudnoter.com/tags/JDB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>PhpStorm+Laravel_5.1开发环境搭建</title>
+    <link href="http://cloudnoter.com/2016/01/12/PhpStorm-Laravel-5-1%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
+    <id>http://cloudnoter.com/2016/01/12/PhpStorm-Laravel-5-1开发环境搭建/</id>
+    <published>2016-01-12T00:26:13.000Z</published>
+    <updated>2017-04-28T02:13:38.000Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote>
+<p>参数文档：<a href="https://confluence.jetbrains.com/display/PhpStorm/Laravel+Development+using+PhpStorm" target="_blank" rel="external">Laravel Development using PhpStorm</a></p>
+</blockquote>
+<ol>
+<li>在PhpStorm + Laravel5.1下无法为artisan创建【command line tool support】问题</li>
+</ol>
+<p><strong>现象</strong>：<br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Problem</div><div class="line">Failed <span class="keyword">to</span> parse output <span class="keyword">as</span> xml: Error <span class="keyword">on</span> line <span class="number">4</span>: Content <span class="keyword">is</span> <span class="keyword">not</span> allowed <span class="keyword">in</span> prolog..</div><div class="line">Command</div><div class="line">php.exe C:\Users\Maxim.Kolmakov\PhpstormProjects\Laravel<span class="number">-5</span>\artisan <span class="built_in">list</span> <span class="comment">--xml</span></div><div class="line">Output                                                                               </div><div class="line">  [ErrorException]                                                             </div><div class="line">  The <span class="comment">--xml option was deprecated in version 2.7 and will be removed in versi  </span></div><div class="line">  <span class="keyword">on</span> <span class="number">3.0</span>. Use <span class="keyword">the</span> <span class="comment">--format option instead.</span></div></pre></td></tr></table></figure></p>
+<p><strong>原因</strong>：<br>Laravel 5.1版的Artisan的命令行的xml标志位已经被删除，详见Symfony的<a href="https://github.com/symfony/console/commit/6d6d9031b9148fed0e2aacb98ac23ce6168ba7ac" target="_blank" rel="external">Git提交记录</a>。</p>
+<p><strong>解决办法</strong>：2种</p>
+<ul>
+<li>将Laravel降级为5.0版本</li>
+<li>到目录[项目根目录]/vendor/symfony/console/Command下将如下两个文件还原回去：<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">HelpCommand</span><span class="selector-class">.php</span></div><div class="line"><span class="selector-tag">ListCommand</span><span class="selector-class">.php</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>2.<a href="https://github.com/koomai/phpstorm-laravel-live-templates" target="_blank" rel="external">phpstorm laravel live template</a></p>
+<blockquote>
+<p>转载请注明出处：<a href="http://cloudnoter.com">cloudnoter.com</a></p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;参数文档：&lt;a href=&quot;https://confluence.jetbrains.com/display/PhpStorm/Laravel+Development+using+PhpStorm&quot; target=&quot;_blank&quot; rel=&quot;ext
+    
+    </summary>
+    
+    
+      <category term="php" scheme="http://cloudnoter.com/tags/php/"/>
+    
+      <category term="laravel" scheme="http://cloudnoter.com/tags/laravel/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>嵌套删除SQL引起的死锁问题分析</title>
+    <link href="http://cloudnoter.com/2015/12/20/%E5%B5%8C%E5%A5%97%E5%88%A0%E9%99%A4SQL%E5%BC%95%E8%B5%B7%E7%9A%84%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/"/>
+    <id>http://cloudnoter.com/2015/12/20/嵌套删除SQL引起的死锁问题分析/</id>
+    <published>2015-12-19T18:03:53.000Z</published>
+    <updated>2017-04-28T02:13:38.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h1><p>应用系统后台有两个计划任务</p>
+<ul>
+<li>每天1：00定时删除N天前的计划日志表数据</li>
+<li><p>每隔5分钟统计AP终端在线用户数并更新计划日志表某一条记录的状态</p>
+<a id="more"></a>
+<h1 id="错误日志"><a href="#错误日志" class="headerlink" title="错误日志"></a>错误日志</h1><figure class="highlight n1ql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">------------------------</div><div class="line">LATEST DETECTED DEADLOCK</div><div class="line">------------------------</div><div class="line">150914  3:00:12</div><div class="line">*** (1) TRANSACTION:</div><div class="line">TRANSACTION 209F80FE, ACTIVE 2 sec starting <span class="keyword">index</span> read</div><div class="line">mysql tables <span class="keyword">in</span> <span class="keyword">use</span> <span class="number">1</span>, locked <span class="number">1</span></div><div class="line">LOCK WAIT <span class="number">2</span> lock struct(s), heap size <span class="number">320</span>, <span class="number">1</span> row lock(s)</div><div class="line">MySQL thread id <span class="number">241534</span>, OS thread handle <span class="number">0x2e5c</span>, query id <span class="number">2220277302</span> localhost <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> root Updating</div><div class="line"><span class="keyword">UPDATE</span> T_BATCH_JOB_EXECUTION <span class="keyword">set</span> START_TIME = <span class="string">'2015-09-14 03:00:06'</span>, END_TIME = <span class="string">'2015-09-14 03:00:10'</span>,  STATUS = <span class="string">'COMPLETED'</span>, CONTINUABLE = <span class="string">'N'</span>, EXIT_CODE = <span class="string">'COMPLETED'</span>, EXIT_MESSAGE = <span class="string">''</span>, VERSION = <span class="number">4</span>, CREATE_TIME = <span class="string">'2015-09-14 03:00:06'</span> <span class="keyword">where</span> JOB_EXECUTION_ID = <span class="number">435431</span></div><div class="line">*** (<span class="number">1</span>) WAITING <span class="keyword">FOR</span> THIS LOCK <span class="keyword">TO</span> BE GRANTED:</div><div class="line">RECORD LOCKS space id <span class="number">101740</span> page no <span class="number">388</span> n bits <span class="number">240</span> <span class="keyword">index</span> <span class="symbol">`PRIMARY`</span> of table <span class="symbol">`emp`</span>.<span class="symbol">`t_batch_job_execution`</span> trx id <span class="number">209</span>F80FE lock_mode X locks rec but <span class="keyword">not</span> gap waiting</div><div class="line"></div><div class="line">*** (<span class="number">2</span>) <span class="keyword">TRANSACTION</span>:</div><div class="line"><span class="keyword">TRANSACTION</span> <span class="number">209</span>F7560, ACTIVE <span class="number">7</span> sec fetching rows, thread declared inside InnoDB <span class="number">130</span></div><div class="line">mysql tables <span class="keyword">in</span> <span class="keyword">use</span> <span class="number">2</span>, locked <span class="number">2</span></div><div class="line"><span class="number">1108</span> lock struct(s), heap size <span class="number">77120</span>, <span class="number">52179</span> row lock(s), undo <span class="built_in">log</span> entries <span class="number">7455</span></div><div class="line">MySQL thread id <span class="number">235617</span>, OS thread handle <span class="number">0xf10</span>, query id <span class="number">2220277303</span> localhost <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> root preparing</div><div class="line"><span class="keyword">delete</span> <span class="keyword">from</span> t_batch_job_execution <span class="keyword">where</span> job_instance_id <span class="keyword">in</span> (<span class="keyword">select</span> id <span class="keyword">from</span> t_batch_plan_execution <span class="keyword">where</span> due_time &lt;= <span class="string">'2015-09-07 00:00:00'</span> )</div><div class="line">*** (<span class="number">2</span>) HOLDS THE LOCK(S):</div><div class="line">RECORD LOCKS space id <span class="number">101740</span> page no <span class="number">388</span> n bits <span class="number">240</span> <span class="keyword">index</span> <span class="symbol">`PRIMARY`</span> of table <span class="symbol">`emp`</span>.<span class="symbol">`t_batch_job_execution`</span> trx id <span class="number">209</span>F7560 lock mode S locks rec but <span class="keyword">not</span> gap</div><div class="line"></div><div class="line">*** (<span class="number">2</span>) WAITING <span class="keyword">FOR</span> THIS LOCK <span class="keyword">TO</span> BE GRANTED:</div><div class="line">RECORD LOCKS space id <span class="number">101740</span> page no <span class="number">388</span> n bits <span class="number">240</span> <span class="keyword">index</span> <span class="symbol">`PRIMARY`</span> of table <span class="symbol">`emp`</span>.<span class="symbol">`t_batch_job_execution`</span> trx id <span class="number">209</span>F7560 lock_mode X locks rec but <span class="keyword">not</span> gap waiting</div><div class="line"></div><div class="line"></div><div class="line">*** WE ROLL BACK <span class="keyword">TRANSACTION</span> (<span class="number">1</span>)</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h1><ol>
+<li>mysql在执行【delete from T where … in select … from K …】的SQL时，会对K表的查询结果集添加共享锁【S锁】，以防止SQL执行过程中其它事务对K表进行变更操作，最终影响查询结果。可参考<a href="http://dev.mysql.com/doc/refman/5.7/en/innodb-locks-set.html" target="_blank" rel="external">InnoDB存储引擎SQL语句加锁类型分析</a></li>
+<li>【事务2】为”系统日志删除计划任务”，该事务涉及多个DELETE SQL，其中<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">delete</span> <span class="keyword">from</span> t_batch_step_execution <span class="keyword">where</span> job_execution_id <span class="keyword">in</span> </div><div class="line">(</div><div class="line"><span class="keyword">select</span> job_execution_id <span class="keyword">from</span> t_batch_job_execution <span class="keyword">as</span> job, t_batch_plan_execution <span class="keyword">as</span> exec <span class="keyword">where</span> job.job_instance_id = exec.id <span class="keyword">and</span> exec.due_time &lt;= ? </div><div class="line">)</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>会导致t_batch_job_execution表的某些记录被加上S锁，可从死锁日志中得到验证<br><figure class="highlight n1ql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">*** (2) HOLDS THE LOCK(S):RECORD LOCKS space id 101740 page no 388 n bits 240 <span class="keyword">index</span> <span class="symbol">`PRIMARY`</span> of table <span class="symbol">`emp`</span>.<span class="symbol">`t_batch_job_execution`</span> trx id <span class="number">209</span>F7560 lock mode S locks rec but <span class="keyword">not</span> gap</div></pre></td></tr></table></figure></p>
+<ol>
+<li>【事务1】的”5分钟终端统计任务”的SQL<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">UPDATE</span> T_BATCH_JOB_EXECUTION <span class="keyword">set</span> START_TIME = <span class="string">'2015-09-14 03:00:06'</span>, END_TIME = <span class="string">'2015-09-14 03:00:10'</span>,  <span class="keyword">STATUS</span> = <span class="string">'COMPLETED'</span>, CONTINUABLE = <span class="string">'N'</span>, EXIT_CODE = <span class="string">'COMPLETED'</span>, EXIT_MESSAGE = <span class="string">''</span>, <span class="keyword">VERSION</span> = <span class="number">4</span>, CREATE_TIME = <span class="string">'2015-09-14 03:00:06'</span> <span class="keyword">where</span> JOB_EXECUTION_ID = <span class="number">435431</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>需要对T_BATCH_JOB_EXECUTION表指定行申请加上排它锁【X锁】；在加【X锁】前，INNODB存储引擎会先隐式申请该行的意向排它锁【IX锁】；由于该行已经被【事务2】加上【S锁】，但是【IX锁】与【S锁】是兼容的，因此【事务1】对该行加【IX锁】成功，而【X锁】与【S锁】会冲突，因此【事务1】就处于等待【X锁】状态，可从死锁日志得到验证<br><figure class="highlight n1ql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">*** (1) WAITING FOR THIS LOCK TO BE GRANTED:RECORD LOCKS space id 101740 page no 388 n bits 240 <span class="keyword">index</span> <span class="symbol">`PRIMARY`</span> of table <span class="symbol">`emp`</span>.<span class="symbol">`t_batch_job_execution`</span> trx id <span class="number">209</span>F80FE lock_mode X locks rec but <span class="keyword">not</span> gap waiting</div></pre></td></tr></table></figure></p>
+<ol>
+<li>【事务2】接下来执行SQL<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">delete</span> <span class="keyword">from</span> t_batch_job_execution <span class="keyword">where</span> job_instance_id <span class="keyword">in</span> (<span class="keyword">select</span> <span class="keyword">id</span> <span class="keyword">from</span> t_batch_plan_execution <span class="keyword">where</span> due_time &lt;= ? )</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>需要申请【IX琐】(原理同上)、【X琐】,而由于指定行此时已经被【事务1】加上【IX锁】，由于而【IX锁】与【X锁】会冲突，因此【事务2】就处理申请等待【X锁】的状态，可从死锁日志得到验证<br><figure class="highlight n1ql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">*** (2) WAITING FOR THIS LOCK TO BE GRANTED:RECORD LOCKS space id 101740 page no 388 n bits 240 <span class="keyword">index</span> <span class="symbol">`PRIMARY`</span> of table <span class="symbol">`emp`</span>.<span class="symbol">`t_batch_job_execution`</span> trx id <span class="number">209</span>F7560 lock_mode X locks rec but <span class="keyword">not</span> gap waiting</div></pre></td></tr></table></figure></p>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>对”系统日志删除计划任务”的相关SQL进行拆分，避免出现S锁的现象，即将<br><figure class="highlight n1ql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">delete</span> <span class="keyword">from</span> t_batch_step_execution <span class="keyword">where</span> job_execution_id <span class="keyword">in</span> (<span class="keyword">select</span> job_execution_id <span class="keyword">from</span> t_batch_job_execution <span class="keyword">as</span> job, t_batch_plan_execution <span class="keyword">as</span> exec <span class="keyword">where</span> job.job_instance_id = exec.id <span class="keyword">and</span> exec.due_time &lt;= ? )</div></pre></td></tr></table></figure></p>
+<p>拆分为两个SQL：<br><figure class="highlight n1ql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1. <span class="keyword">select</span> job_execution_id <span class="keyword">from</span> t_batch_job_execution <span class="keyword">as</span> job, t_batch_plan_execution <span class="keyword">as</span> exec <span class="keyword">where</span> job.job_instance_id = exec.id <span class="keyword">and</span> exec.due_time &lt;= ? </div><div class="line"><span class="number">2.</span> <span class="keyword">delete</span> <span class="keyword">from</span> t_batch_step_execution <span class="keyword">where</span> job_execution_id <span class="keyword">in</span> ( ? )</div></pre></td></tr></table></figure></p>
+<p>可以这样拆分的原因为：系统日志删除任务主要是删除N天前的数据，子查询的结果在短时间内是不会变化的。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
+<li><a href="http://hedengcheng.com/?p=771" target="_blank" rel="external">MySQL加锁处理分析</a></li>
+</ol>
+<blockquote>
+<p>转载请注明出处：<a href="http://cloudnoter.com">cloudnoter.com</a></p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;问题背景&quot;&gt;&lt;a href=&quot;#问题背景&quot; class=&quot;headerlink&quot; title=&quot;问题背景&quot;&gt;&lt;/a&gt;问题背景&lt;/h1&gt;&lt;p&gt;应用系统后台有两个计划任务&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;每天1：00定时删除N天前的计划日志表数据&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;每隔5分钟统计AP终端在线用户数并更新计划日志表某一条记录的状态&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="MySQL" scheme="http://cloudnoter.com/tags/MySQL/"/>
+    
+      <category term="DeadLock" scheme="http://cloudnoter.com/tags/DeadLock/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>历史文章</title>
+    <link href="http://cloudnoter.com/2015/12/20/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/"/>
+    <id>http://cloudnoter.com/2015/12/20/历史文章/</id>
+    <published>2015-12-19T18:00:29.000Z</published>
+    <updated>2017-04-28T02:13:38.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>说来惭愧，工作这么5年多，就只在CSDN上写了几个字，这些文章主要是学习笔记：<a href="http://blog.csdn.net/cza55007" target="_blank" rel="external">CSDN上的文章</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;说来惭愧，工作这么5年多，就只在CSDN上写了几个字，这些文章主要是学习笔记：&lt;a href=&quot;http://blog.csdn.net/cza55007&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;CSDN上的文章&lt;/a&gt;&lt;/p&gt;
+
+    
+    </summary>
+    
+    
+  </entry>
+  
+</feed>
