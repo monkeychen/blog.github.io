@@ -204,7 +204,7 @@
     <link href="http://cloudnoter.com/2016/07/02/MAC%E4%B8%8B%E6%90%AD%E5%BB%BAApache+PHP%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/"/>
     <id>http://cloudnoter.com/2016/07/02/MAC下搭建Apache+PHP开发环境/</id>
     <published>2016-07-01T23:18:57.000Z</published>
-    <updated>2017-04-28T02:13:38.000Z</updated>
+    <updated>2017-04-28T03:48:17.000Z</updated>
     
     <content type="html"><![CDATA[<ul>
 <li>apache配置文件为：<code>/etc/apache2/httpd.conf</code></li>
@@ -258,9 +258,9 @@
 <blockquote>
 <p>如果能显示php环境信息，则说明php环境搭建成功  </p>
 </blockquote>
-<p>Step 9. 配置虚拟主机(vhost) </p>
+<p>Step 9. 配置虚拟主机(vhost)</p>
 <ul>
-<li>将/etc/apache2/httpd.conf文件中的如下内容前的’#’删除:</li>
+<li>将/etc/apache2/httpd.conf文件中如下内容的<code>#</code>去掉</li>
 </ul>
 <figure class="highlight autoit"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">Include</span> /private/etc/apache2/extra/httpd-vhosts.conf</span></div></pre></td></tr></table></figure>
 <ul>
