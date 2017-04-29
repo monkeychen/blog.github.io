@@ -96,7 +96,7 @@
 <meta property="og:url" content="http://cloudnoter.com/2016/02/27/JNI引起的堆外内存泄漏问题分析/index.html">
 <meta property="og:site_name" content="Simiam">
 <meta property="og:description" content="背景客户现场的监控系统中有一个网络听诊器功能，其每隔1分钟会对全网设备进行ping操作，以此来尽可能快的发现设备及网络是否出现异常。暂且不说通过该功能来对设备及网络作健康检测是否靠谱。由于JAVA对于网络层以下的协议是无能为力的，而ping操作涉及ICMP与ARP协议，因此监控系统只能借助JNI机制来搞定。 BUG现象监控系统的java.exe进程每隔几个小时就异常退出 问题定位 通过应用系统的日">
-<meta property="og:updated_time" content="2017-04-28T02:13:38.000Z">
+<meta property="og:updated_time" content="2017-04-29T06:07:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JNI引起的堆外内存泄漏问题分析">
 <meta name="twitter:description" content="背景客户现场的监控系统中有一个网络听诊器功能，其每隔1分钟会对全网设备进行ping操作，以此来尽可能快的发现设备及网络是否出现异常。暂且不说通过该功能来对设备及网络作健康检测是否靠谱。由于JAVA对于网络层以下的协议是无能为力的，而ping操作涉及ICMP与ARP协议，因此监控系统只能借助JNI机制来搞定。 BUG现象监控系统的java.exe进程每隔几个小时就异常退出 问题定位 通过应用系统的日">
@@ -373,6 +373,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -576,7 +598,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -587,7 +609,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>

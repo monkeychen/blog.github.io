@@ -89,17 +89,17 @@
 
 
 
-<meta name="description" content="HA专题–Pacemaker集群日常管理命令1. 概述Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。  从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-bas">
+<meta name="description" content="1. 概述Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。  从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-based GUI界面）">
 <meta name="keywords" content="HA,Pacemaker,crmsh,pcs">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HA专题--Pacemaker集群日常管理命令">
 <meta property="og:url" content="http://cloudnoter.com/2017/04/29/HA专题-Pacemaker日常管理命令/index.html">
 <meta property="og:site_name" content="Simiam">
-<meta property="og:description" content="HA专题–Pacemaker集群日常管理命令1. 概述Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。  从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-bas">
-<meta property="og:updated_time" content="2017-04-29T05:59:44.000Z">
+<meta property="og:description" content="1. 概述Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。  从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-based GUI界面）">
+<meta property="og:updated_time" content="2017-04-29T06:05:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HA专题--Pacemaker集群日常管理命令">
-<meta name="twitter:description" content="HA专题–Pacemaker集群日常管理命令1. 概述Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。  从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-bas">
+<meta name="twitter:description" content="1. 概述Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。  从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-based GUI界面）">
 
 
 
@@ -430,59 +430,12 @@
       
 
       
-        <h1 id="HA专题–Pacemaker集群日常管理命令"><a href="#HA专题–Pacemaker集群日常管理命令" class="headerlink" title="HA专题–Pacemaker集群日常管理命令"></a>HA专题–Pacemaker集群日常管理命令</h1><h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h2><p>Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。</p>
+        <h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h2><p>Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。</p>
 <blockquote>
 <p>从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-based GUI界面）</p>
 </blockquote>
 <a id="more"></a>
-<h2 id="2-常用命令（文档来源）"><a href="#2-常用命令（文档来源）" class="headerlink" title="2. 常用命令（文档来源）"></a>2. 常用命令<a href="https://github.com/ClusterLabs/pacemaker/blob/master/doc/pcs-crmsh-quick-ref.md" target="_blank" rel="external">（文档来源）</a></h2><p><strong>目录结构</strong></p>
-<ul>
-<li><a href="#general-operations">General Operations</a><ul>
-<li><a href="#display-the-configuration">Display the configuration</a></li>
-<li><a href="#display-the-current-status">Display the current status</a></li>
-<li><a href="#node-standby">Node standby</a></li>
-<li><a href="#set-cluster-property">Set cluster property</a></li>
-</ul>
-</li>
-<li><a href="#resource-manipulation">Resource manipulation</a><ul>
-<li><a href="#list-resource-agent-ra-classes">List Resource Agent (RA) classes</a></li>
-<li><a href="#list-available-ras">List available RAs</a></li>
-<li><a href="#list-ra-info">List RA info</a></li>
-<li><a href="#create-a-resource">Create a resource</a></li>
-<li><a href="#display-a-resource">Display a resource</a></li>
-<li><a href="#display-fencing-resources">Display fencing resources</a></li>
-<li><a href="#display-stonith-ra-info">Display Stonith RA info</a></li>
-<li><a href="#start-a-resource">Start a resource</a></li>
-<li><a href="#stop-a-resource">Stop a resource</a></li>
-<li><a href="#remove-a-resource">Remove a resource</a></li>
-<li><a href="#modify-a-resource">Modify a resource</a></li>
-<li><a href="#delete-parameters-for-a-given-resource">Delete parameters for a given resource</a></li>
-<li><a href="#list-the-current-resource-defaults">List the current resource defaults</a></li>
-<li><a href="#set-resource-defaults">Set resource defaults</a></li>
-<li><a href="#list-the-current-operation-defaults">List the current operation defaults</a></li>
-<li><a href="#set-operation-defaults">Set operation defaults</a></li>
-<li><a href="#set-colocation">Set Colocation</a></li>
-<li><a href="#set-ordering">Set ordering</a></li>
-<li><a href="#set-preferred-location">Set preferred location</a></li>
-<li><a href="#move-resources">Move resources</a></li>
-<li><a href="#resource-tracing">Resource tracing</a></li>
-<li><a href="#clear-fail-counts">Clear fail counts</a></li>
-<li><a href="#edit-fail-counts">Edit fail counts</a></li>
-<li><a href="#handling-configuration-elements-by-type">Handling configuration elements by type</a></li>
-<li><a href="#create-a-clone">Create a clone</a></li>
-<li><a href="#create-a-masterslave-clone">Create a master/slave clone</a></li>
-</ul>
-</li>
-<li><a href="#other-operations">Other operations</a><ul>
-<li><a href="#batch-changes">Batch changes</a></li>
-<li><a href="#template-creation">Template creation</a></li>
-<li><a href="#log-analysis">Log analysis</a></li>
-<li><a href="#configuration-scripts">Configuration scripts</a></li>
-</ul>
-</li>
-</ul>
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-<h1 id="General-Operations"><a href="#General-Operations" class="headerlink" title="General Operations"></a>General Operations</h1><h2 id="Display-the-configuration"><a href="#Display-the-configuration" class="headerlink" title="Display the configuration"></a>Display the configuration</h2><pre><code>crmsh # crm configure show xml
+<h2 id="2-常用命令（文档来源）"><a href="#2-常用命令（文档来源）" class="headerlink" title="2. 常用命令（文档来源）"></a>2. 常用命令<a href="https://github.com/ClusterLabs/pacemaker/blob/master/doc/pcs-crmsh-quick-ref.md" target="_blank" rel="external">（文档来源）</a></h2><h1 id="General-Operations"><a href="#General-Operations" class="headerlink" title="General Operations"></a>General Operations</h1><h2 id="Display-the-configuration"><a href="#Display-the-configuration" class="headerlink" title="Display the configuration"></a>Display the configuration</h2><pre><code>crmsh # crm configure show xml
 pcs   # pcs cluster cib
 </code></pre><p>To show a simplified (non-xml) syntax</p>
 <pre><code>crmsh # crm configure show
@@ -765,7 +718,7 @@ crmsh # crm script run apache \
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -776,7 +729,7 @@ crmsh # crm script run apache \
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -870,7 +823,7 @@ crmsh # crm script run apache \
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HA专题–Pacemaker集群日常管理命令"><span class="nav-number">1.</span> <span class="nav-text">HA专题–Pacemaker集群日常管理命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-概述"><span class="nav-number">1.1.</span> <span class="nav-text">1. 概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-常用命令（文档来源）"><span class="nav-number">1.2.</span> <span class="nav-text">2. 常用命令（文档来源）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#General-Operations"><span class="nav-number">2.</span> <span class="nav-text">General Operations</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Display-the-configuration"><span class="nav-number">2.1.</span> <span class="nav-text">Display the configuration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Display-the-current-status"><span class="nav-number">2.2.</span> <span class="nav-text">Display the current status</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Node-standby"><span class="nav-number">2.3.</span> <span class="nav-text">Node standby</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-cluster-property"><span class="nav-number">2.4.</span> <span class="nav-text">Set cluster property</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Resource-manipulation"><span class="nav-number">3.</span> <span class="nav-text">Resource manipulation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#List-Resource-Agent-RA-classes"><span class="nav-number">3.1.</span> <span class="nav-text">List Resource Agent (RA) classes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#List-available-RAs"><span class="nav-number">3.2.</span> <span class="nav-text">List available RAs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#List-RA-info"><span class="nav-number">3.3.</span> <span class="nav-text">List RA info</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-a-resource"><span class="nav-number">3.4.</span> <span class="nav-text">Create a resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Display-a-resource"><span class="nav-number">3.5.</span> <span class="nav-text">Display a resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Display-fencing-resources"><span class="nav-number">3.6.</span> <span class="nav-text">Display fencing resources</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Display-Stonith-RA-info"><span class="nav-number">3.7.</span> <span class="nav-text">Display Stonith RA info</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Start-a-resource"><span class="nav-number">3.8.</span> <span class="nav-text">Start a resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Stop-a-resource"><span class="nav-number">3.9.</span> <span class="nav-text">Stop a resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Remove-a-resource"><span class="nav-number">3.10.</span> <span class="nav-text">Remove a resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Modify-a-resource"><span class="nav-number">3.11.</span> <span class="nav-text">Modify a resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Delete-parameters-for-a-given-resource"><span class="nav-number">3.12.</span> <span class="nav-text">Delete parameters for a given resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#List-the-current-resource-defaults"><span class="nav-number">3.13.</span> <span class="nav-text">List the current resource defaults</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-resource-defaults"><span class="nav-number">3.14.</span> <span class="nav-text">Set resource defaults</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#List-the-current-operation-defaults"><span class="nav-number">3.15.</span> <span class="nav-text">List the current operation defaults</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-operation-defaults"><span class="nav-number">3.16.</span> <span class="nav-text">Set operation defaults</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-Colocation"><span class="nav-number">3.17.</span> <span class="nav-text">Set Colocation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-ordering"><span class="nav-number">3.18.</span> <span class="nav-text">Set ordering</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-preferred-location"><span class="nav-number">3.19.</span> <span class="nav-text">Set preferred location</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Move-resources"><span class="nav-number">3.20.</span> <span class="nav-text">Move resources</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Resource-tracing"><span class="nav-number">3.21.</span> <span class="nav-text">Resource tracing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Clear-fail-counts"><span class="nav-number">3.22.</span> <span class="nav-text">Clear fail counts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Edit-fail-counts"><span class="nav-number">3.23.</span> <span class="nav-text">Edit fail counts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Handling-configuration-elements-by-type"><span class="nav-number">3.24.</span> <span class="nav-text">Handling configuration elements by type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-a-clone"><span class="nav-number">3.25.</span> <span class="nav-text">Create a clone</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-a-master-slave-clone"><span class="nav-number">3.26.</span> <span class="nav-text">Create a master/slave clone</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Other-operations"><span class="nav-number">4.</span> <span class="nav-text">Other operations</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Batch-changes"><span class="nav-number">4.1.</span> <span class="nav-text">Batch changes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Template-creation"><span class="nav-number">4.2.</span> <span class="nav-text">Template creation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Log-analysis"><span class="nav-number">4.3.</span> <span class="nav-text">Log analysis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Configuration-scripts"><span class="nav-number">4.4.</span> <span class="nav-text">Configuration scripts</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-概述"><span class="nav-number">1.</span> <span class="nav-text">1. 概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-常用命令（文档来源）"><span class="nav-number">2.</span> <span class="nav-text">2. 常用命令（文档来源）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#General-Operations"><span class="nav-number"></span> <span class="nav-text">General Operations</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Display-the-configuration"><span class="nav-number">1.</span> <span class="nav-text">Display the configuration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Display-the-current-status"><span class="nav-number">2.</span> <span class="nav-text">Display the current status</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Node-standby"><span class="nav-number">3.</span> <span class="nav-text">Node standby</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-cluster-property"><span class="nav-number">4.</span> <span class="nav-text">Set cluster property</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Resource-manipulation"><span class="nav-number"></span> <span class="nav-text">Resource manipulation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#List-Resource-Agent-RA-classes"><span class="nav-number">1.</span> <span class="nav-text">List Resource Agent (RA) classes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#List-available-RAs"><span class="nav-number">2.</span> <span class="nav-text">List available RAs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#List-RA-info"><span class="nav-number">3.</span> <span class="nav-text">List RA info</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-a-resource"><span class="nav-number">4.</span> <span class="nav-text">Create a resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Display-a-resource"><span class="nav-number">5.</span> <span class="nav-text">Display a resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Display-fencing-resources"><span class="nav-number">6.</span> <span class="nav-text">Display fencing resources</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Display-Stonith-RA-info"><span class="nav-number">7.</span> <span class="nav-text">Display Stonith RA info</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Start-a-resource"><span class="nav-number">8.</span> <span class="nav-text">Start a resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Stop-a-resource"><span class="nav-number">9.</span> <span class="nav-text">Stop a resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Remove-a-resource"><span class="nav-number">10.</span> <span class="nav-text">Remove a resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Modify-a-resource"><span class="nav-number">11.</span> <span class="nav-text">Modify a resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Delete-parameters-for-a-given-resource"><span class="nav-number">12.</span> <span class="nav-text">Delete parameters for a given resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#List-the-current-resource-defaults"><span class="nav-number">13.</span> <span class="nav-text">List the current resource defaults</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-resource-defaults"><span class="nav-number">14.</span> <span class="nav-text">Set resource defaults</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#List-the-current-operation-defaults"><span class="nav-number">15.</span> <span class="nav-text">List the current operation defaults</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-operation-defaults"><span class="nav-number">16.</span> <span class="nav-text">Set operation defaults</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-Colocation"><span class="nav-number">17.</span> <span class="nav-text">Set Colocation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-ordering"><span class="nav-number">18.</span> <span class="nav-text">Set ordering</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-preferred-location"><span class="nav-number">19.</span> <span class="nav-text">Set preferred location</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Move-resources"><span class="nav-number">20.</span> <span class="nav-text">Move resources</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Resource-tracing"><span class="nav-number">21.</span> <span class="nav-text">Resource tracing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Clear-fail-counts"><span class="nav-number">22.</span> <span class="nav-text">Clear fail counts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Edit-fail-counts"><span class="nav-number">23.</span> <span class="nav-text">Edit fail counts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Handling-configuration-elements-by-type"><span class="nav-number">24.</span> <span class="nav-text">Handling configuration elements by type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-a-clone"><span class="nav-number">25.</span> <span class="nav-text">Create a clone</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-a-master-slave-clone"><span class="nav-number">26.</span> <span class="nav-text">Create a master/slave clone</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Other-operations"><span class="nav-number"></span> <span class="nav-text">Other operations</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Batch-changes"><span class="nav-number">1.</span> <span class="nav-text">Batch changes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Template-creation"><span class="nav-number">2.</span> <span class="nav-text">Template creation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Log-analysis"><span class="nav-number">3.</span> <span class="nav-text">Log analysis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Configuration-scripts"><span class="nav-number">4.</span> <span class="nav-text">Configuration scripts</span></a></li></ol></div>
             
 
           </div>

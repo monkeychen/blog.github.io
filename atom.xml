@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://cloudnoter.com/"/>
-  <updated>2017-04-29T05:59:44.000Z</updated>
+  <updated>2017-04-29T06:05:51.000Z</updated>
   <id>http://cloudnoter.com/</id>
   
   <author>
@@ -20,61 +20,14 @@
     <link href="http://cloudnoter.com/2017/04/29/HA%E4%B8%93%E9%A2%98-Pacemaker%E6%97%A5%E5%B8%B8%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4/"/>
     <id>http://cloudnoter.com/2017/04/29/HA专题-Pacemaker日常管理命令/</id>
     <published>2017-04-29T13:20:49.000Z</published>
-    <updated>2017-04-29T05:59:44.000Z</updated>
+    <updated>2017-04-29T06:05:51.000Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="HA专题–Pacemaker集群日常管理命令"><a href="#HA专题–Pacemaker集群日常管理命令" class="headerlink" title="HA专题–Pacemaker集群日常管理命令"></a>HA专题–Pacemaker集群日常管理命令</h1><h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h2><p>Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。</p>
+    <content type="html"><![CDATA[<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h2><p>Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。</p>
 <blockquote>
 <p>从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-based GUI界面）</p>
 </blockquote>
 <a id="more"></a>
-<h2 id="2-常用命令（文档来源）"><a href="#2-常用命令（文档来源）" class="headerlink" title="2. 常用命令（文档来源）"></a>2. 常用命令<a href="https://github.com/ClusterLabs/pacemaker/blob/master/doc/pcs-crmsh-quick-ref.md" target="_blank" rel="external">（文档来源）</a></h2><p><strong>目录结构</strong></p>
-<ul>
-<li><a href="#general-operations">General Operations</a><ul>
-<li><a href="#display-the-configuration">Display the configuration</a></li>
-<li><a href="#display-the-current-status">Display the current status</a></li>
-<li><a href="#node-standby">Node standby</a></li>
-<li><a href="#set-cluster-property">Set cluster property</a></li>
-</ul>
-</li>
-<li><a href="#resource-manipulation">Resource manipulation</a><ul>
-<li><a href="#list-resource-agent-ra-classes">List Resource Agent (RA) classes</a></li>
-<li><a href="#list-available-ras">List available RAs</a></li>
-<li><a href="#list-ra-info">List RA info</a></li>
-<li><a href="#create-a-resource">Create a resource</a></li>
-<li><a href="#display-a-resource">Display a resource</a></li>
-<li><a href="#display-fencing-resources">Display fencing resources</a></li>
-<li><a href="#display-stonith-ra-info">Display Stonith RA info</a></li>
-<li><a href="#start-a-resource">Start a resource</a></li>
-<li><a href="#stop-a-resource">Stop a resource</a></li>
-<li><a href="#remove-a-resource">Remove a resource</a></li>
-<li><a href="#modify-a-resource">Modify a resource</a></li>
-<li><a href="#delete-parameters-for-a-given-resource">Delete parameters for a given resource</a></li>
-<li><a href="#list-the-current-resource-defaults">List the current resource defaults</a></li>
-<li><a href="#set-resource-defaults">Set resource defaults</a></li>
-<li><a href="#list-the-current-operation-defaults">List the current operation defaults</a></li>
-<li><a href="#set-operation-defaults">Set operation defaults</a></li>
-<li><a href="#set-colocation">Set Colocation</a></li>
-<li><a href="#set-ordering">Set ordering</a></li>
-<li><a href="#set-preferred-location">Set preferred location</a></li>
-<li><a href="#move-resources">Move resources</a></li>
-<li><a href="#resource-tracing">Resource tracing</a></li>
-<li><a href="#clear-fail-counts">Clear fail counts</a></li>
-<li><a href="#edit-fail-counts">Edit fail counts</a></li>
-<li><a href="#handling-configuration-elements-by-type">Handling configuration elements by type</a></li>
-<li><a href="#create-a-clone">Create a clone</a></li>
-<li><a href="#create-a-masterslave-clone">Create a master/slave clone</a></li>
-</ul>
-</li>
-<li><a href="#other-operations">Other operations</a><ul>
-<li><a href="#batch-changes">Batch changes</a></li>
-<li><a href="#template-creation">Template creation</a></li>
-<li><a href="#log-analysis">Log analysis</a></li>
-<li><a href="#configuration-scripts">Configuration scripts</a></li>
-</ul>
-</li>
-</ul>
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-<h1 id="General-Operations"><a href="#General-Operations" class="headerlink" title="General Operations"></a>General Operations</h1><h2 id="Display-the-configuration"><a href="#Display-the-configuration" class="headerlink" title="Display the configuration"></a>Display the configuration</h2><pre><code>crmsh # crm configure show xml
+<h2 id="2-常用命令（文档来源）"><a href="#2-常用命令（文档来源）" class="headerlink" title="2. 常用命令（文档来源）"></a>2. 常用命令<a href="https://github.com/ClusterLabs/pacemaker/blob/master/doc/pcs-crmsh-quick-ref.md" target="_blank" rel="external">（文档来源）</a></h2><h1 id="General-Operations"><a href="#General-Operations" class="headerlink" title="General Operations"></a>General Operations</h1><h2 id="Display-the-configuration"><a href="#Display-the-configuration" class="headerlink" title="Display the configuration"></a>Display the configuration</h2><pre><code>crmsh # crm configure show xml
 pcs   # pcs cluster cib
 </code></pre><p>To show a simplified (non-xml) syntax</p>
 <pre><code>crmsh # crm configure show
@@ -231,7 +184,7 @@ crmsh # crm script run apache \
     
     <summary type="html">
     
-      &lt;h1 id=&quot;HA专题–Pacemaker集群日常管理命令&quot;&gt;&lt;a href=&quot;#HA专题–Pacemaker集群日常管理命令&quot; class=&quot;headerlink&quot; title=&quot;HA专题–Pacemaker集群日常管理命令&quot;&gt;&lt;/a&gt;HA专题–Pacemaker集群日常管理命令&lt;/h1&gt;&lt;h2 id=&quot;1-概述&quot;&gt;&lt;a href=&quot;#1-概述&quot; class=&quot;headerlink&quot; title=&quot;1. 概述&quot;&gt;&lt;/a&gt;1. 概述&lt;/h2&gt;&lt;p&gt;Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。&lt;/p&gt;
+      &lt;h2 id=&quot;1-概述&quot;&gt;&lt;a href=&quot;#1-概述&quot; class=&quot;headerlink&quot; title=&quot;1. 概述&quot;&gt;&lt;/a&gt;1. 概述&lt;/h2&gt;&lt;p&gt;Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-based GUI界面）&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -256,7 +209,7 @@ crmsh # crm script run apache \
     <link href="http://cloudnoter.com/2016/11/09/Java%E5%B0%8F%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/"/>
     <id>http://cloudnoter.com/2016/11/09/Java小问题汇总/</id>
     <published>2016-11-08T22:09:00.000Z</published>
-    <updated>2017-04-29T05:54:37.000Z</updated>
+    <updated>2017-04-29T06:07:07.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="1-MySQL5-7下的JSON字段中文乱码问题"><a href="#1-MySQL5-7下的JSON字段中文乱码问题" class="headerlink" title="1. MySQL5.7下的JSON字段中文乱码问题"></a>1. MySQL5.7下的JSON字段中文乱码问题</h2><p>中文乱码问题在Java Web开发中经常碰到，大部分原因是后端与前端的编码不一致造成的（如tomcat的默认编码为ISO-8859-1，而前端为GBK），解决办法也简单，只需要加一个<code>CharsetEncodingFilter</code>就行。但本文要讲的不是这一类总是，而是纯粹的后端问题。</p>
 <h3 id="1-1-环境准备"><a href="#1-1-环境准备" class="headerlink" title="1.1 环境准备"></a>1.1 环境准备</h3><blockquote>
@@ -308,6 +261,10 @@ crmsh # crm script run apache \
     
     </summary>
     
+      <category term="Java" scheme="http://cloudnoter.com/categories/Java/"/>
+    
+      <category term="MySQL" scheme="http://cloudnoter.com/categories/Java/MySQL/"/>
+    
     
       <category term="Java" scheme="http://cloudnoter.com/tags/Java/"/>
     
@@ -320,7 +277,7 @@ crmsh # crm script run apache \
     <link href="http://cloudnoter.com/2016/09/01/Composer%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     <id>http://cloudnoter.com/2016/09/01/Composer学习笔记/</id>
     <published>2016-09-01T00:01:12.000Z</published>
-    <updated>2017-04-28T02:13:38.000Z</updated>
+    <updated>2017-04-29T06:08:28.000Z</updated>
     
     <content type="html"><![CDATA[<p>#Composer学习笔记</p>
 <h2 id="一、安装-MacOS"><a href="#一、安装-MacOS" class="headerlink" title="一、安装(MacOS)"></a>一、安装(MacOS)</h2><blockquote>
@@ -416,22 +373,12 @@ crmsh # crm script run apache \
     
     </summary>
     
+      <category term="Composer" scheme="http://cloudnoter.com/categories/Composer/"/>
+    
+      <category term="Php" scheme="http://cloudnoter.com/categories/Composer/Php/"/>
+    
     
       <category term="Composer" scheme="http://cloudnoter.com/tags/Composer/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Understanding how the JVM uses native memory on Windows and Linux</title>
-    <link href="http://cloudnoter.com/2016/07/29/Understanding-how-the-JVM-uses-native-memory-on-Windows-and-Linux/"/>
-    <id>http://cloudnoter.com/2016/07/29/Understanding-how-the-JVM-uses-native-memory-on-Windows-and-Linux/</id>
-    <published>2016-07-29T00:01:07.000Z</published>
-    <updated>2017-04-28T02:13:38.000Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
     
   </entry>
   
@@ -440,7 +387,7 @@ crmsh # crm script run apache \
     <link href="http://cloudnoter.com/2016/07/02/MAC%E4%B8%8B%E6%90%AD%E5%BB%BAApache+PHP%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/"/>
     <id>http://cloudnoter.com/2016/07/02/MAC下搭建Apache+PHP开发环境/</id>
     <published>2016-07-01T23:18:57.000Z</published>
-    <updated>2017-04-28T03:48:17.000Z</updated>
+    <updated>2017-04-29T06:08:34.000Z</updated>
     
     <content type="html"><![CDATA[<ul>
 <li>apache配置文件为：<code>/etc/apache2/httpd.conf</code></li>
@@ -545,6 +492,8 @@ crmsh # crm script run apache \
     
     </summary>
     
+      <category term="Php" scheme="http://cloudnoter.com/categories/Php/"/>
+    
     
       <category term="php" scheme="http://cloudnoter.com/tags/php/"/>
     
@@ -557,7 +506,7 @@ crmsh # crm script run apache \
     <link href="http://cloudnoter.com/2016/02/27/JNI%E5%BC%95%E8%B5%B7%E7%9A%84%E5%A0%86%E5%A4%96%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/"/>
     <id>http://cloudnoter.com/2016/02/27/JNI引起的堆外内存泄漏问题分析/</id>
     <published>2016-02-26T21:18:48.000Z</published>
-    <updated>2017-04-28T02:13:38.000Z</updated>
+    <updated>2017-04-29T06:07:36.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>客户现场的监控系统中有一个网络听诊器功能，其每隔1分钟会对全网设备进行ping操作，以此来尽可能快的发现设备及网络是否出现异常。暂且不说通过该功能来对设备及网络作健康检测是否靠谱。由于JAVA对于网络层以下的协议是无能为力的，而ping操作涉及ICMP与ARP协议，因此监控系统只能借助JNI机制来搞定。</p>
 <h1 id="BUG现象"><a href="#BUG现象" class="headerlink" title="BUG现象"></a>BUG现象</h1><p>监控系统的java.exe进程每隔几个小时就异常退出</p>
@@ -615,6 +564,8 @@ crmsh # crm script run apache \
     
     </summary>
     
+      <category term="Java" scheme="http://cloudnoter.com/categories/Java/"/>
+    
     
       <category term="Java" scheme="http://cloudnoter.com/tags/Java/"/>
     
@@ -627,7 +578,7 @@ crmsh # crm script run apache \
     <link href="http://cloudnoter.com/2016/01/21/Laravel-5-2%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3%EF%BC%9AHTTP%E8%B7%AF%E7%94%B1/"/>
     <id>http://cloudnoter.com/2016/01/21/Laravel-5-2中文文档：HTTP路由/</id>
     <published>2016-01-20T21:31:08.000Z</published>
-    <updated>2017-04-28T02:13:38.000Z</updated>
+    <updated>2017-04-29T06:08:55.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="基本路由"><a href="#基本路由" class="headerlink" title="基本路由"></a>基本路由</h1><p>所有的Laravel路由规则都定义在<code>app/Http/routes.php</code>文件中，Laravel框架在初始化时将自动加载该文件。Laravel中最基本的路由规则如下：</p>
 <pre><code>Route::get(&apos;foo&apos;, function () {
@@ -733,6 +684,8 @@ $url = route(&apos;profile&apos;, [&apos;id&apos; =&gt; 1]);
     
     </summary>
     
+      <category term="Php" scheme="http://cloudnoter.com/categories/Php/"/>
+    
     
       <category term="php" scheme="http://cloudnoter.com/tags/php/"/>
     
@@ -745,7 +698,7 @@ $url = route(&apos;profile&apos;, [&apos;id&apos; =&gt; 1]);
     <link href="http://cloudnoter.com/2016/01/13/Java%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7-JDB/"/>
     <id>http://cloudnoter.com/2016/01/13/Java调试工具-JDB/</id>
     <published>2016-01-12T23:25:28.000Z</published>
-    <updated>2017-04-28T02:13:38.000Z</updated>
+    <updated>2017-04-29T06:07:27.000Z</updated>
     
     <content type="html"><![CDATA[<p>代码调试是大家在日常应用开发定位BUG时会经常使用的技能。然而在客户生产环境下，一没有开发环境，二没有外网连接，如果此时应用出问题，而通过日志又无法定位时，该怎么办呢？</p>
 <p>也许有人会按如下步骤来定位问题（假设BUG可复现且客户允许应用服务重启）：</p>
@@ -787,6 +740,8 @@ $url = route(&apos;profile&apos;, [&apos;id&apos; =&gt; 1]);
     
     </summary>
     
+      <category term="Java" scheme="http://cloudnoter.com/categories/Java/"/>
+    
     
       <category term="Java" scheme="http://cloudnoter.com/tags/Java/"/>
     
@@ -799,7 +754,7 @@ $url = route(&apos;profile&apos;, [&apos;id&apos; =&gt; 1]);
     <link href="http://cloudnoter.com/2016/01/12/PhpStorm-Laravel-5-1%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
     <id>http://cloudnoter.com/2016/01/12/PhpStorm-Laravel-5-1开发环境搭建/</id>
     <published>2016-01-12T00:26:13.000Z</published>
-    <updated>2017-04-29T05:25:25.000Z</updated>
+    <updated>2017-04-29T06:09:01.000Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>参数文档：<a href="https://confluence.jetbrains.com/display/PhpStorm/Laravel+Development+using+PhpStorm" target="_blank" rel="external">Laravel Development using PhpStorm</a></p>
@@ -828,7 +783,7 @@ $url = route(&apos;profile&apos;, [&apos;id&apos; =&gt; 1]);
     
     </summary>
     
-      <category term="php" scheme="http://cloudnoter.com/categories/php/"/>
+      <category term="Php" scheme="http://cloudnoter.com/categories/Php/"/>
     
     
       <category term="php" scheme="http://cloudnoter.com/tags/php/"/>
@@ -842,7 +797,7 @@ $url = route(&apos;profile&apos;, [&apos;id&apos; =&gt; 1]);
     <link href="http://cloudnoter.com/2015/12/20/%E5%B5%8C%E5%A5%97%E5%88%A0%E9%99%A4SQL%E5%BC%95%E8%B5%B7%E7%9A%84%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/"/>
     <id>http://cloudnoter.com/2015/12/20/嵌套删除SQL引起的死锁问题分析/</id>
     <published>2015-12-19T18:03:53.000Z</published>
-    <updated>2017-04-28T02:13:38.000Z</updated>
+    <updated>2017-04-29T06:10:11.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h1><p>应用系统后台有两个计划任务</p>
 <ul>
@@ -888,6 +843,8 @@ $url = route(&apos;profile&apos;, [&apos;id&apos; =&gt; 1]);
     
     </summary>
     
+      <category term="MySQL" scheme="http://cloudnoter.com/categories/MySQL/"/>
+    
     
       <category term="MySQL" scheme="http://cloudnoter.com/tags/MySQL/"/>
     
@@ -900,7 +857,7 @@ $url = route(&apos;profile&apos;, [&apos;id&apos; =&gt; 1]);
     <link href="http://cloudnoter.com/2015/12/20/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/"/>
     <id>http://cloudnoter.com/2015/12/20/历史文章/</id>
     <published>2015-12-19T18:00:29.000Z</published>
-    <updated>2017-04-28T02:13:38.000Z</updated>
+    <updated>2017-04-29T06:09:54.000Z</updated>
     
     <content type="html"><![CDATA[<p>说来惭愧，工作这么5年多，就只在CSDN上写了几个字，这些文章主要是学习笔记：<a href="http://blog.csdn.net/cza55007" target="_blank" rel="external">CSDN上的文章</a></p>
 ]]></content>
@@ -911,6 +868,8 @@ $url = route(&apos;profile&apos;, [&apos;id&apos; =&gt; 1]);
 
     
     </summary>
+    
+      <category term="Others" scheme="http://cloudnoter.com/categories/Others/"/>
     
     
   </entry>
