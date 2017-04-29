@@ -1,0 +1,1185 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="HA,Pacemaker,crmsh,pcs" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Simiam" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/icon.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="HA专题–Pacemaker集群日常管理命令1. 概述Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。  从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-bas">
+<meta name="keywords" content="HA,Pacemaker,crmsh,pcs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HA专题--Pacemaker集群日常管理命令">
+<meta property="og:url" content="http://cloudnoter.com/2017/04/29/HA专题-Pacemaker日常管理命令/index.html">
+<meta property="og:site_name" content="Simiam">
+<meta property="og:description" content="HA专题–Pacemaker集群日常管理命令1. 概述Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。  从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-bas">
+<meta property="og:updated_time" content="2017-04-29T05:59:44.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HA专题--Pacemaker集群日常管理命令">
+<meta name="twitter:description" content="HA专题–Pacemaker集群日常管理命令1. 概述Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。  从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-bas">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://cloudnoter.com/2017/04/29/HA专题-Pacemaker日常管理命令/"/>
+
+
+
+
+
+  <title> HA专题--Pacemaker集群日常管理命令 | Simiam </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d08aa5fb4a0152d38b6afc7b4dbade86";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Simiam</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">求知若渴，虚怀若谷</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2017/04/29/HA专题-Pacemaker日常管理命令/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="simiam">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/simiam.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Simiam">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                HA专题--Pacemaker集群日常管理命令
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-29T21:20:49+08:00">
+                2017-04-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/HA/" itemprop="url" rel="index">
+                    <span itemprop="name">HA</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/04/29/HA专题-Pacemaker日常管理命令/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="HA专题–Pacemaker集群日常管理命令"><a href="#HA专题–Pacemaker集群日常管理命令" class="headerlink" title="HA专题–Pacemaker集群日常管理命令"></a>HA专题–Pacemaker集群日常管理命令</h1><h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h2><p>Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。</p>
+<blockquote>
+<p>从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-based GUI界面）</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="2-常用命令（文档来源）"><a href="#2-常用命令（文档来源）" class="headerlink" title="2. 常用命令（文档来源）"></a>2. 常用命令<a href="https://github.com/ClusterLabs/pacemaker/blob/master/doc/pcs-crmsh-quick-ref.md" target="_blank" rel="external">（文档来源）</a></h2><p><strong>目录结构</strong></p>
+<ul>
+<li><a href="#general-operations">General Operations</a><ul>
+<li><a href="#display-the-configuration">Display the configuration</a></li>
+<li><a href="#display-the-current-status">Display the current status</a></li>
+<li><a href="#node-standby">Node standby</a></li>
+<li><a href="#set-cluster-property">Set cluster property</a></li>
+</ul>
+</li>
+<li><a href="#resource-manipulation">Resource manipulation</a><ul>
+<li><a href="#list-resource-agent-ra-classes">List Resource Agent (RA) classes</a></li>
+<li><a href="#list-available-ras">List available RAs</a></li>
+<li><a href="#list-ra-info">List RA info</a></li>
+<li><a href="#create-a-resource">Create a resource</a></li>
+<li><a href="#display-a-resource">Display a resource</a></li>
+<li><a href="#display-fencing-resources">Display fencing resources</a></li>
+<li><a href="#display-stonith-ra-info">Display Stonith RA info</a></li>
+<li><a href="#start-a-resource">Start a resource</a></li>
+<li><a href="#stop-a-resource">Stop a resource</a></li>
+<li><a href="#remove-a-resource">Remove a resource</a></li>
+<li><a href="#modify-a-resource">Modify a resource</a></li>
+<li><a href="#delete-parameters-for-a-given-resource">Delete parameters for a given resource</a></li>
+<li><a href="#list-the-current-resource-defaults">List the current resource defaults</a></li>
+<li><a href="#set-resource-defaults">Set resource defaults</a></li>
+<li><a href="#list-the-current-operation-defaults">List the current operation defaults</a></li>
+<li><a href="#set-operation-defaults">Set operation defaults</a></li>
+<li><a href="#set-colocation">Set Colocation</a></li>
+<li><a href="#set-ordering">Set ordering</a></li>
+<li><a href="#set-preferred-location">Set preferred location</a></li>
+<li><a href="#move-resources">Move resources</a></li>
+<li><a href="#resource-tracing">Resource tracing</a></li>
+<li><a href="#clear-fail-counts">Clear fail counts</a></li>
+<li><a href="#edit-fail-counts">Edit fail counts</a></li>
+<li><a href="#handling-configuration-elements-by-type">Handling configuration elements by type</a></li>
+<li><a href="#create-a-clone">Create a clone</a></li>
+<li><a href="#create-a-masterslave-clone">Create a master/slave clone</a></li>
+</ul>
+</li>
+<li><a href="#other-operations">Other operations</a><ul>
+<li><a href="#batch-changes">Batch changes</a></li>
+<li><a href="#template-creation">Template creation</a></li>
+<li><a href="#log-analysis">Log analysis</a></li>
+<li><a href="#configuration-scripts">Configuration scripts</a></li>
+</ul>
+</li>
+</ul>
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<h1 id="General-Operations"><a href="#General-Operations" class="headerlink" title="General Operations"></a>General Operations</h1><h2 id="Display-the-configuration"><a href="#Display-the-configuration" class="headerlink" title="Display the configuration"></a>Display the configuration</h2><pre><code>crmsh # crm configure show xml
+pcs   # pcs cluster cib
+</code></pre><p>To show a simplified (non-xml) syntax</p>
+<pre><code>crmsh # crm configure show
+pcs   # pcs config
+</code></pre><h2 id="Display-the-current-status"><a href="#Display-the-current-status" class="headerlink" title="Display the current status"></a>Display the current status</h2><pre><code>crmsh # crm status
+pcs   # pcs status
+</code></pre><p>also</p>
+<pre><code># crm_mon -1
+</code></pre><h2 id="Node-standby"><a href="#Node-standby" class="headerlink" title="Node standby"></a>Node standby</h2><p>Put node in standby</p>
+<pre><code>crmsh # crm node standby pcmk-1
+pcs   # pcs cluster standby pcmk-1
+</code></pre><p>Remove node from standby</p>
+<pre><code>crmsh # crm node online pcmk-1
+pcs   # pcs cluster unstandby pcmk-1
+</code></pre><p>crm has the ability to set the status on reboot or forever.<br>pcs can apply the change to all the nodes.</p>
+<h2 id="Set-cluster-property"><a href="#Set-cluster-property" class="headerlink" title="Set cluster property"></a>Set cluster property</h2><pre><code>crmsh # crm configure property stonith-enabled=false
+pcs   # pcs property set stonith-enabled=false
+</code></pre><h1 id="Resource-manipulation"><a href="#Resource-manipulation" class="headerlink" title="Resource manipulation"></a>Resource manipulation</h1><h2 id="List-Resource-Agent-RA-classes"><a href="#List-Resource-Agent-RA-classes" class="headerlink" title="List Resource Agent (RA) classes"></a>List Resource Agent (RA) classes</h2><pre><code>crmsh # crm ra classes
+pcs   # pcs resource standards
+</code></pre><h2 id="List-available-RAs"><a href="#List-available-RAs" class="headerlink" title="List available RAs"></a>List available RAs</h2><pre><code>crmsh # crm ra list ocf
+crmsh # crm ra list lsb
+crmsh # crm ra list service
+crmsh # crm ra list stonith
+pcs   # pcs resource agents ocf
+pcs   # pcs resource agents lsb
+pcs   # pcs resource agents service
+pcs   # pcs resource agents stonith
+pcs   # pcs resource agents
+</code></pre><p>You can also filter by provider</p>
+<pre><code>crmsh # crm ra list ocf pacemaker
+pcs   # pcs resource agents ocf:pacemaker
+</code></pre><h2 id="List-RA-info"><a href="#List-RA-info" class="headerlink" title="List RA info"></a>List RA info</h2><pre><code>crmsh # crm ra meta IPaddr2
+pcs   # pcs resource describe IPaddr2
+</code></pre><p>Use any RA name (like IPaddr2) from the list displayed with the previous command<br>You can also use the full class:provider:RA format if multiple RAs with the same name are available :</p>
+<pre><code>crmsh # crm ra meta ocf:heartbeat:IPaddr2
+pcs   # pcs resource describe ocf:heartbeat:IPaddr2
+</code></pre><h2 id="Create-a-resource"><a href="#Create-a-resource" class="headerlink" title="Create a resource"></a>Create a resource</h2><pre><code>crmsh # crm configure primitive ClusterIP ocf:heartbeat:IPaddr2 \
+        params ip=192.168.122.120 cidr_netmask=32 \
+        op monitor interval=30s 
+pcs   # pcs resource create ClusterIP IPaddr2 ip=192.168.0.120 cidr_netmask=32
+</code></pre><p>The standard and provider (<code>ocf:heartbeat</code>) are determined automatically since <code>IPaddr2</code> is unique.<br>The monitor operation is automatically created based on the agent’s metadata.</p>
+<h2 id="Display-a-resource"><a href="#Display-a-resource" class="headerlink" title="Display a resource"></a>Display a resource</h2><pre><code>crmsh # crm configure show
+pcs   # pcs resource show
+</code></pre><p>crmsh also displays fencing resources.<br>The result can be filtered by supplying a resource name (IE <code>ClusterIP</code>):</p>
+<pre><code>crmsh # crm configure show ClusterIP
+pcs   # pcs resource show ClusterIP
+</code></pre><p>crmsh also displays fencing resources. </p>
+<h2 id="Display-fencing-resources"><a href="#Display-fencing-resources" class="headerlink" title="Display fencing resources"></a>Display fencing resources</h2><pre><code>crmsh # crm resource show
+pcs   # pcs stonith show
+</code></pre><p>pcs treats STONITH devices separately.</p>
+<h2 id="Display-Stonith-RA-info"><a href="#Display-Stonith-RA-info" class="headerlink" title="Display Stonith RA info"></a>Display Stonith RA info</h2><pre><code>crmsh # crm ra meta stonith:fence_ipmilan
+pcs   # pcs stonith describe fence_ipmilan
+</code></pre><h2 id="Start-a-resource"><a href="#Start-a-resource" class="headerlink" title="Start a resource"></a>Start a resource</h2><pre><code>crmsh # crm resource start ClusterIP
+pcs   # pcs resource enable ClusterIP
+</code></pre><h2 id="Stop-a-resource"><a href="#Stop-a-resource" class="headerlink" title="Stop a resource"></a>Stop a resource</h2><pre><code>crmsh # crm resource stop ClusterIP
+pcs   # pcs resource disable ClusterIP
+</code></pre><h2 id="Remove-a-resource"><a href="#Remove-a-resource" class="headerlink" title="Remove a resource"></a>Remove a resource</h2><pre><code>crmsh # crm configure delete ClusterIP
+pcs   # pcs resource delete ClusterIP
+</code></pre><h2 id="Modify-a-resource"><a href="#Modify-a-resource" class="headerlink" title="Modify a resource"></a>Modify a resource</h2><pre><code>crmsh # crm resource param ClusterIP set clusterip_hash=sourceip
+pcs   # pcs resource update ClusterIP clusterip_hash=sourceip
+</code></pre><p>crmsh also has an <code>edit</code> command which edits the simplified CIB syntax<br>(same commands as the command line) via a configurable text editor.</p>
+<pre><code>crmsh # crm configure edit ClusterIP
+</code></pre><p>Using the interactive shell mode of crmsh, multiple changes can be<br>edited and verified before committing to the live configuration.</p>
+<pre><code>crmsh # crm configure
+crmsh # edit
+crmsh # verify
+crmsh # commit
+</code></pre><h2 id="Delete-parameters-for-a-given-resource"><a href="#Delete-parameters-for-a-given-resource" class="headerlink" title="Delete parameters for a given resource"></a>Delete parameters for a given resource</h2><pre><code>crmsh # crm resource param ClusterIP delete nic
+pcs   # pcs resource update ClusterIP ip=192.168.0.98 nic=  
+</code></pre><h2 id="List-the-current-resource-defaults"><a href="#List-the-current-resource-defaults" class="headerlink" title="List the current resource defaults"></a>List the current resource defaults</h2><pre><code>crmsh # crm configure show type:rsc_defaults
+pcs   # pcs resource rsc defaults
+</code></pre><h2 id="Set-resource-defaults"><a href="#Set-resource-defaults" class="headerlink" title="Set resource defaults"></a>Set resource defaults</h2><pre><code>crmsh # crm configure rsc_defaults resource-stickiness=100
+pcs   # pcs resource rsc defaults resource-stickiness=100
+</code></pre><h2 id="List-the-current-operation-defaults"><a href="#List-the-current-operation-defaults" class="headerlink" title="List the current operation defaults"></a>List the current operation defaults</h2><pre><code>crmsh # crm configure show type:op_defaults
+pcs   # pcs resource op defaults
+</code></pre><h2 id="Set-operation-defaults"><a href="#Set-operation-defaults" class="headerlink" title="Set operation defaults"></a>Set operation defaults</h2><pre><code>crmsh # crm configure op_defaults timeout=240s
+pcs   # pcs resource op defaults timeout=240s
+</code></pre><h2 id="Set-Colocation"><a href="#Set-Colocation" class="headerlink" title="Set Colocation"></a>Set Colocation</h2><pre><code>crmsh # crm configure colocation website-with-ip INFINITY: WebSite ClusterIP
+pcs   # pcs constraint colocation add ClusterIP with WebSite INFINITY
+</code></pre><p>With roles</p>
+<pre><code>crmsh # crm configure colocation another-ip-with-website inf: AnotherIP WebSite:Master
+pcs   # pcs constraint colocation add Started AnotherIP with Master WebSite INFINITY
+</code></pre><h2 id="Set-ordering"><a href="#Set-ordering" class="headerlink" title="Set ordering"></a>Set ordering</h2><pre><code>crmsh # crm configure order apache-after-ip mandatory: ClusterIP WebSite
+pcs   # pcs constraint order ClusterIP then WebSite
+</code></pre><p>With roles:</p>
+<pre><code>crmsh # crm configure order ip-after-website Mandatory: WebSite:Master AnotherIP
+pcs   # pcs constraint order promote WebSite then start AnotherIP
+</code></pre><h2 id="Set-preferred-location"><a href="#Set-preferred-location" class="headerlink" title="Set preferred location"></a>Set preferred location</h2><pre><code>crmsh # crm configure location prefer-pcmk-1 WebSite 50: pcmk-1
+pcs   # pcs constraint location WebSite prefers pcmk-1=50
+</code></pre><p>With roles:</p>
+<pre><code>crmsh # crm configure location prefer-pcmk-1 WebSite rule role=Master 50: \#uname eq pcmk-1
+pcs   # pcs constraint location WebSite rule role=master 50 \#uname eq pcmk-1
+</code></pre><h2 id="Move-resources"><a href="#Move-resources" class="headerlink" title="Move resources"></a>Move resources</h2><pre><code>crmsh # crm resource move WebSite pcmk-1
+pcs   # pcs resource move WebSite pcmk-1
+
+crmsh # crm resource unmove WebSite
+pcs   # pcs resource clear WebSite
+</code></pre><p>A resource can also be moved away from a given node:</p>
+<pre><code>crmsh # crm resource ban Website pcmk-2
+pcs   # pcs resource ban Website pcmk-2
+</code></pre><p>Remember that moving a resource sets a stickyness to -INF to a given node until unmoved    </p>
+<h2 id="Resource-tracing"><a href="#Resource-tracing" class="headerlink" title="Resource tracing"></a>Resource tracing</h2><pre><code>crmsh # crm resource trace Website
+</code></pre><h2 id="Clear-fail-counts"><a href="#Clear-fail-counts" class="headerlink" title="Clear fail counts"></a>Clear fail counts</h2><pre><code>crmsh # crm resource cleanup Website
+pcs   # pcs resource cleanup Website
+</code></pre><h2 id="Edit-fail-counts"><a href="#Edit-fail-counts" class="headerlink" title="Edit fail counts"></a>Edit fail counts</h2><pre><code>crmsh # crm resource failcount Website show pcmk-1
+crmsh # crm resource failcount Website set pcmk-1 100
+</code></pre><h2 id="Handling-configuration-elements-by-type"><a href="#Handling-configuration-elements-by-type" class="headerlink" title="Handling configuration elements by type"></a>Handling configuration elements by type</h2><p>pcs deals with constraints differently. These can be manipulated by the command above as well as the following and others</p>
+<pre><code>pcs   # pcs constraint list --full
+pcs   # pcs constraint remove cli-ban-Website-on-pcmk-1
+</code></pre><p>Removing a constraint in crmsh uses the same command as removing a<br>resource.</p>
+<pre><code>crmsh # crm configure remove cli-ban-Website-on-pcmk-1
+</code></pre><p>The <code>show</code> and <code>edit</code> commands in crmsh can be used to manage<br>resources and constraints by type:</p>
+<pre><code>crmsh # crm configure show type:primitive
+crmsh # crm configure edit type:colocation
+</code></pre><h2 id="Create-a-clone"><a href="#Create-a-clone" class="headerlink" title="Create a clone"></a>Create a clone</h2><pre><code>crmsh # crm configure clone WebIP ClusterIP meta globally-unique=true clone-max=2 clone-node-max=2
+pcs   # pcs resource clone ClusterIP globally-unique=true clone-max=2 clone-node-max=2
+</code></pre><h2 id="Create-a-master-slave-clone"><a href="#Create-a-master-slave-clone" class="headerlink" title="Create a master/slave clone"></a>Create a master/slave clone</h2><pre><code>crmsh # crm configure ms WebDataClone WebData \
+        meta master-max=1 master-node-max=1 \
+        clone-max=2 clone-node-max=1 notify=true
+pcs   # pcs resource master WebDataClone WebData \
+        master-max=1 master-node-max=1 \
+        clone-max=2 clone-node-max=1 notify=true
+</code></pre><h1 id="Other-operations"><a href="#Other-operations" class="headerlink" title="Other operations"></a>Other operations</h1><h2 id="Batch-changes"><a href="#Batch-changes" class="headerlink" title="Batch changes"></a>Batch changes</h2><pre><code>crmsh # crm
+crmsh # cib new drbd_cfg
+crmsh # configure primitive WebData ocf:linbit:drbd params drbd_resource=wwwdata \
+        op monitor interval=60s
+crmsh # configure ms WebDataClone WebData meta master-max=1 master-node-max=1 \
+        clone-max=2 clone-node-max=1 notify=true
+crmsh # cib commit drbd_cfg
+crmsh # quit
+</code></pre><p>.</p>
+<pre><code>pcs   # pcs cluster cib drbd_cfg
+pcs   # pcs -f drbd_cfg resource create WebData ocf:linbit:drbd drbd_resource=wwwdata \
+        op monitor interval=60s
+pcs   # pcs -f drbd_cfg resource master WebDataClone WebData master-max=1 master-node-max=1 \
+        clone-max=2 clone-node-max=1 notify=true
+pcs   # pcs cluster push cib drbd_cfg
+</code></pre><h2 id="Template-creation"><a href="#Template-creation" class="headerlink" title="Template creation"></a>Template creation</h2><p>Create a resource template based on a list of primitives of the same<br>type</p>
+<pre><code>crmsh # crm configure assist template ClusterIP AdminIP
+</code></pre><h2 id="Log-analysis"><a href="#Log-analysis" class="headerlink" title="Log analysis"></a>Log analysis</h2><p>Display information about recent cluster events</p>
+<pre><code>crmsh # crm history
+crmsh # peinputs
+crmsh # transition pe-input-10
+crmsh # transition log pe-input-10
+</code></pre><h2 id="Configuration-scripts"><a href="#Configuration-scripts" class="headerlink" title="Configuration scripts"></a>Configuration scripts</h2><p>Create and apply multiple-step cluster configurations including<br>configuration of cluster resources</p>
+<pre><code>crmsh # crm script show apache
+crmsh # crm script run apache \
+    id=WebSite \
+    install=true \
+    virtual-ip:ip=192.168.0.15 \
+    database:id=WebData \
+    database:install=true
+</code></pre>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/HA/" rel="tag"># HA</a>
+          
+            <a href="/tags/Pacemaker/" rel="tag"># Pacemaker</a>
+          
+            <a href="/tags/crmsh/" rel="tag"># crmsh</a>
+          
+            <a href="/tags/pcs/" rel="tag"># pcs</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/09/Java小问题汇总/" rel="prev" title="Java小问题汇总">
+                Java小问题汇总 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/simiam.jpg"
+               alt="simiam" />
+          <p class="site-author-name" itemprop="name">simiam</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/monkeychen" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/cza55007" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              我的收藏
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://simiam.com" title="Simiam" target="_blank">Simiam</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://ifeve.com" title="并发编程网" target="_blank">并发编程网</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://readhub.me" title="Readhub" target="_blank">Readhub</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HA专题–Pacemaker集群日常管理命令"><span class="nav-number">1.</span> <span class="nav-text">HA专题–Pacemaker集群日常管理命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-概述"><span class="nav-number">1.1.</span> <span class="nav-text">1. 概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-常用命令（文档来源）"><span class="nav-number">1.2.</span> <span class="nav-text">2. 常用命令（文档来源）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#General-Operations"><span class="nav-number">2.</span> <span class="nav-text">General Operations</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Display-the-configuration"><span class="nav-number">2.1.</span> <span class="nav-text">Display the configuration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Display-the-current-status"><span class="nav-number">2.2.</span> <span class="nav-text">Display the current status</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Node-standby"><span class="nav-number">2.3.</span> <span class="nav-text">Node standby</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-cluster-property"><span class="nav-number">2.4.</span> <span class="nav-text">Set cluster property</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Resource-manipulation"><span class="nav-number">3.</span> <span class="nav-text">Resource manipulation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#List-Resource-Agent-RA-classes"><span class="nav-number">3.1.</span> <span class="nav-text">List Resource Agent (RA) classes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#List-available-RAs"><span class="nav-number">3.2.</span> <span class="nav-text">List available RAs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#List-RA-info"><span class="nav-number">3.3.</span> <span class="nav-text">List RA info</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-a-resource"><span class="nav-number">3.4.</span> <span class="nav-text">Create a resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Display-a-resource"><span class="nav-number">3.5.</span> <span class="nav-text">Display a resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Display-fencing-resources"><span class="nav-number">3.6.</span> <span class="nav-text">Display fencing resources</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Display-Stonith-RA-info"><span class="nav-number">3.7.</span> <span class="nav-text">Display Stonith RA info</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Start-a-resource"><span class="nav-number">3.8.</span> <span class="nav-text">Start a resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Stop-a-resource"><span class="nav-number">3.9.</span> <span class="nav-text">Stop a resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Remove-a-resource"><span class="nav-number">3.10.</span> <span class="nav-text">Remove a resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Modify-a-resource"><span class="nav-number">3.11.</span> <span class="nav-text">Modify a resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Delete-parameters-for-a-given-resource"><span class="nav-number">3.12.</span> <span class="nav-text">Delete parameters for a given resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#List-the-current-resource-defaults"><span class="nav-number">3.13.</span> <span class="nav-text">List the current resource defaults</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-resource-defaults"><span class="nav-number">3.14.</span> <span class="nav-text">Set resource defaults</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#List-the-current-operation-defaults"><span class="nav-number">3.15.</span> <span class="nav-text">List the current operation defaults</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-operation-defaults"><span class="nav-number">3.16.</span> <span class="nav-text">Set operation defaults</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-Colocation"><span class="nav-number">3.17.</span> <span class="nav-text">Set Colocation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-ordering"><span class="nav-number">3.18.</span> <span class="nav-text">Set ordering</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-preferred-location"><span class="nav-number">3.19.</span> <span class="nav-text">Set preferred location</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Move-resources"><span class="nav-number">3.20.</span> <span class="nav-text">Move resources</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Resource-tracing"><span class="nav-number">3.21.</span> <span class="nav-text">Resource tracing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Clear-fail-counts"><span class="nav-number">3.22.</span> <span class="nav-text">Clear fail counts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Edit-fail-counts"><span class="nav-number">3.23.</span> <span class="nav-text">Edit fail counts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Handling-configuration-elements-by-type"><span class="nav-number">3.24.</span> <span class="nav-text">Handling configuration elements by type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-a-clone"><span class="nav-number">3.25.</span> <span class="nav-text">Create a clone</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-a-master-slave-clone"><span class="nav-number">3.26.</span> <span class="nav-text">Create a master/slave clone</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Other-operations"><span class="nav-number">4.</span> <span class="nav-text">Other operations</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Batch-changes"><span class="nav-number">4.1.</span> <span class="nav-text">Batch changes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Template-creation"><span class="nav-number">4.2.</span> <span class="nav-text">Template creation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Log-analysis"><span class="nav-number">4.3.</span> <span class="nav-text">Log analysis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Configuration-scripts"><span class="nav-number">4.4.</span> <span class="nav-text">Configuration scripts</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-cloud"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">simiam</span>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "f310f312511948d2b2c4b6e8a5f9c6c7",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

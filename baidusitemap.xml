@@ -4,6 +4,73 @@
 
     
   <url>
+    <loc>http://cloudnoter.com/2017/04/29/HA%E4%B8%93%E9%A2%98-Pacemaker%E6%97%A5%E5%B8%B8%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4/</loc>
+    <lastmod>2017-04-29T05:59:44.000Z</lastmod>
+    <data>
+        <display>
+        <title>HA专题--Pacemaker集群日常管理命令</title>
+        <pubTime>2017-04-29T13:20:49.000Z</pubTime>
+        
+        <tag>HA</tag>
+         
+        <tag>Pacemaker</tag>
+         
+        <tag>crmsh</tag>
+         
+        <tag>pcs</tag>
+         
+         
+           
+             
+              <breadCrumb title="HA" url="http://cloudnoter.com/categories/HA/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://cloudnoter.com/2016/11/09/Java%E5%B0%8F%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/</loc>
+    <lastmod>2017-04-29T05:54:37.000Z</lastmod>
+    <data>
+        <display>
+        <title>Java小问题汇总</title>
+        <pubTime>2016-11-08T22:09:00.000Z</pubTime>
+        
+        <tag>Java</tag>
+         
+        <tag>MySQL</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://cloudnoter.com/2016/01/12/PhpStorm-Laravel-5-1%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</loc>
+    <lastmod>2017-04-29T05:25:25.000Z</lastmod>
+    <data>
+        <display>
+        <title>PhpStorm+Laravel_5.1开发环境搭建</title>
+        <pubTime>2016-01-12T00:26:13.000Z</pubTime>
+        
+        <tag>php</tag>
+         
+        <tag>laravel</tag>
+         
+         
+           
+             
+              <breadCrumb title="php" url="http://cloudnoter.com/categories/php/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://cloudnoter.com/2016/07/02/MAC%E4%B8%8B%E6%90%AD%E5%BB%BAApache+PHP%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</loc>
     <lastmod>2017-04-28T03:48:17.000Z</lastmod>
     <data>
@@ -38,40 +105,6 @@
 
     
   <url>
-    <loc>http://cloudnoter.com/2016/11/09/Java%E5%B0%8F%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/</loc>
-    <lastmod>2017-04-28T02:13:38.000Z</lastmod>
-    <data>
-        <display>
-        <title>Java小问题汇总</title>
-        <pubTime>2016-11-08T22:09:00.000Z</pubTime>
-        
-        <tag>Java</tag>
-         
-        <tag>MySQL</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://cloudnoter.com/2015/12/20/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/</loc>
-    <lastmod>2017-04-28T02:13:38.000Z</lastmod>
-    <data>
-        <display>
-        <title>历史文章</title>
-        <pubTime>2015-12-19T18:00:29.000Z</pubTime>
-        
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://cloudnoter.com/2016/01/21/Laravel-5-2%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3%EF%BC%9AHTTP%E8%B7%AF%E7%94%B1/</loc>
     <lastmod>2017-04-28T02:13:38.000Z</lastmod>
     <data>
@@ -82,42 +115,6 @@
         <tag>php</tag>
          
         <tag>laravel</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://cloudnoter.com/2016/01/13/Java%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7-JDB/</loc>
-    <lastmod>2017-04-28T02:13:38.000Z</lastmod>
-    <data>
-        <display>
-        <title>Java调试工具:JDB</title>
-        <pubTime>2016-01-12T23:25:28.000Z</pubTime>
-        
-        <tag>Java</tag>
-         
-        <tag>JDB</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://cloudnoter.com/2016/09/01/Composer%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2017-04-28T02:13:38.000Z</lastmod>
-    <data>
-        <display>
-        <title>Composer学习笔记</title>
-        <pubTime>2016-09-01T00:01:12.000Z</pubTime>
-        
-        <tag>Composer</tag>
          
          
            
@@ -146,17 +143,49 @@
 
     
   <url>
-    <loc>http://cloudnoter.com/2016/01/12/PhpStorm-Laravel-5-1%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</loc>
+    <loc>http://cloudnoter.com/2016/09/01/Composer%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2017-04-28T02:13:38.000Z</lastmod>
     <data>
         <display>
-        <title>PhpStorm+Laravel_5.1开发环境搭建</title>
-        <pubTime>2016-01-12T00:26:13.000Z</pubTime>
+        <title>Composer学习笔记</title>
+        <pubTime>2016-09-01T00:01:12.000Z</pubTime>
         
-        <tag>php</tag>
+        <tag>Composer</tag>
          
-        <tag>laravel</tag>
          
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://cloudnoter.com/2016/01/13/Java%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7-JDB/</loc>
+    <lastmod>2017-04-28T02:13:38.000Z</lastmod>
+    <data>
+        <display>
+        <title>Java调试工具:JDB</title>
+        <pubTime>2016-01-12T23:25:28.000Z</pubTime>
+        
+        <tag>Java</tag>
+         
+        <tag>JDB</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://cloudnoter.com/2015/12/20/%E5%8E%86%E5%8F%B2%E6%96%87%E7%AB%A0/</loc>
+    <lastmod>2017-04-28T02:13:38.000Z</lastmod>
+    <data>
+        <display>
+        <title>历史文章</title>
+        <pubTime>2015-12-19T18:00:29.000Z</pubTime>
+        
          
            
         </display>
