@@ -96,7 +96,7 @@
 <meta property="og:url" content="http://cloudnoter.com/2017/04/29/HA专题-Pacemaker日常管理命令/index.html">
 <meta property="og:site_name" content="Simiam">
 <meta property="og:description" content="概述Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。  从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-based GUI界面）文档来源于Pacemaker的G">
-<meta property="og:updated_time" content="2017-04-29T06:26:59.000Z">
+<meta property="og:updated_time" content="2017-04-29T07:19:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HA专题--Pacemaker集群日常管理命令">
 <meta name="twitter:description" content="概述Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。  从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-based GUI界面）文档来源于Pacemaker的G">
@@ -435,27 +435,28 @@
 <p>从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-based GUI界面）<br>文档来源于Pacemaker的<a href="https://github.com/ClusterLabs/pacemaker/blob/master/doc/pcs-crmsh-quick-ref.md" target="_blank" rel="external">Github官网</a></p>
 </blockquote>
 <a id="more"></a>
-<h1 id="General-Operations"><a href="#General-Operations" class="headerlink" title="General Operations"></a>General Operations</h1><h2 id="Display-the-configuration"><a href="#Display-the-configuration" class="headerlink" title="Display the configuration"></a>Display the configuration</h2><pre><code>crmsh # crm configure show xml
+<h1 id="通用操作"><a href="#通用操作" class="headerlink" title="通用操作"></a>通用操作</h1><h2 id="显示配置信息"><a href="#显示配置信息" class="headerlink" title="显示配置信息"></a>显示配置信息</h2><p>以XML格式显示</p>
+<pre><code>crmsh # crm configure show xml
 pcs   # pcs cluster cib
-</code></pre><p>To show a simplified (non-xml) syntax</p>
+</code></pre><p>以非XML格式显示[To show a simplified (non-xml) syntax]</p>
 <pre><code>crmsh # crm configure show
 pcs   # pcs config
-</code></pre><h2 id="Display-the-current-status"><a href="#Display-the-current-status" class="headerlink" title="Display the current status"></a>Display the current status</h2><pre><code>crmsh # crm status
+</code></pre><h2 id="显示集群当前状态"><a href="#显示集群当前状态" class="headerlink" title="显示集群当前状态"></a>显示集群当前状态</h2><pre><code>crmsh # crm status
 pcs   # pcs status
-</code></pre><p>also</p>
+</code></pre><p>也可以这样：</p>
 <pre><code># crm_mon -1
-</code></pre><h2 id="Node-standby"><a href="#Node-standby" class="headerlink" title="Node standby"></a>Node standby</h2><p>Put node in standby</p>
+</code></pre><h2 id="挂起节点（Node-standby）"><a href="#挂起节点（Node-standby）" class="headerlink" title="挂起节点（Node standby）"></a>挂起节点（Node standby）</h2><p>使节点进入Standby状态（Put node in standby）</p>
 <pre><code>crmsh # crm node standby pcmk-1
 pcs   # pcs cluster standby pcmk-1
-</code></pre><p>Remove node from standby</p>
+</code></pre><p>使节点从Standby状态恢复（Remove node from standby）</p>
 <pre><code>crmsh # crm node online pcmk-1
 pcs   # pcs cluster unstandby pcmk-1
 </code></pre><p>crm has the ability to set the status on reboot or forever.<br>pcs can apply the change to all the nodes.</p>
-<h2 id="Set-cluster-property"><a href="#Set-cluster-property" class="headerlink" title="Set cluster property"></a>Set cluster property</h2><pre><code>crmsh # crm configure property stonith-enabled=false
+<h2 id="设置集群全局属性"><a href="#设置集群全局属性" class="headerlink" title="设置集群全局属性"></a>设置集群全局属性</h2><pre><code>crmsh # crm configure property stonith-enabled=false
 pcs   # pcs property set stonith-enabled=false
-</code></pre><h1 id="Resource-manipulation"><a href="#Resource-manipulation" class="headerlink" title="Resource manipulation"></a>Resource manipulation</h1><h2 id="List-Resource-Agent-RA-classes"><a href="#List-Resource-Agent-RA-classes" class="headerlink" title="List Resource Agent (RA) classes"></a>List Resource Agent (RA) classes</h2><pre><code>crmsh # crm ra classes
+</code></pre><h1 id="集群资源处理操作"><a href="#集群资源处理操作" class="headerlink" title="集群资源处理操作"></a>集群资源处理操作</h1><h2 id="列出所有RA-Resource-Agent-的类别-classes"><a href="#列出所有RA-Resource-Agent-的类别-classes" class="headerlink" title="列出所有RA(Resource Agent)的类别:classes"></a>列出所有RA(Resource Agent)的类别:<code>classes</code></h2><pre><code>crmsh # crm ra classes
 pcs   # pcs resource standards
-</code></pre><h2 id="List-available-RAs"><a href="#List-available-RAs" class="headerlink" title="List available RAs"></a>List available RAs</h2><pre><code>crmsh # crm ra list ocf
+</code></pre><h2 id="列出所有可用的RA"><a href="#列出所有可用的RA" class="headerlink" title="列出所有可用的RA"></a>列出所有可用的RA</h2><pre><code>crmsh # crm ra list ocf
 crmsh # crm ra list lsb
 crmsh # crm ra list service
 crmsh # crm ra list stonith
@@ -464,37 +465,37 @@ pcs   # pcs resource agents lsb
 pcs   # pcs resource agents service
 pcs   # pcs resource agents stonith
 pcs   # pcs resource agents
-</code></pre><p>You can also filter by provider</p>
+</code></pre><p>您也可以通过<code>provider</code>进一步过滤：</p>
 <pre><code>crmsh # crm ra list ocf pacemaker
 pcs   # pcs resource agents ocf:pacemaker
-</code></pre><h2 id="List-RA-info"><a href="#List-RA-info" class="headerlink" title="List RA info"></a>List RA info</h2><pre><code>crmsh # crm ra meta IPaddr2
+</code></pre><h2 id="查询具体RA的描述信息"><a href="#查询具体RA的描述信息" class="headerlink" title="查询具体RA的描述信息"></a>查询具体RA的描述信息</h2><pre><code>crmsh # crm ra meta IPaddr2
 pcs   # pcs resource describe IPaddr2
 </code></pre><p>Use any RA name (like IPaddr2) from the list displayed with the previous command<br>You can also use the full class:provider:RA format if multiple RAs with the same name are available :</p>
 <pre><code>crmsh # crm ra meta ocf:heartbeat:IPaddr2
 pcs   # pcs resource describe ocf:heartbeat:IPaddr2
-</code></pre><h2 id="Create-a-resource"><a href="#Create-a-resource" class="headerlink" title="Create a resource"></a>Create a resource</h2><pre><code>crmsh # crm configure primitive ClusterIP ocf:heartbeat:IPaddr2 \
+</code></pre><h2 id="创建资源"><a href="#创建资源" class="headerlink" title="创建资源"></a>创建资源</h2><pre><code>crmsh # crm configure primitive ClusterIP ocf:heartbeat:IPaddr2 \
         params ip=192.168.122.120 cidr_netmask=32 \
         op monitor interval=30s 
 pcs   # pcs resource create ClusterIP IPaddr2 ip=192.168.0.120 cidr_netmask=32
 </code></pre><p>The standard and provider (<code>ocf:heartbeat</code>) are determined automatically since <code>IPaddr2</code> is unique.<br>The monitor operation is automatically created based on the agent’s metadata.</p>
-<h2 id="Display-a-resource"><a href="#Display-a-resource" class="headerlink" title="Display a resource"></a>Display a resource</h2><pre><code>crmsh # crm configure show
+<h2 id="显示资源配置信息"><a href="#显示资源配置信息" class="headerlink" title="显示资源配置信息"></a>显示资源配置信息</h2><pre><code>crmsh # crm configure show
 pcs   # pcs resource show
 </code></pre><p>crmsh also displays fencing resources.<br>The result can be filtered by supplying a resource name (IE <code>ClusterIP</code>):</p>
 <pre><code>crmsh # crm configure show ClusterIP
 pcs   # pcs resource show ClusterIP
 </code></pre><p>crmsh also displays fencing resources. </p>
-<h2 id="Display-fencing-resources"><a href="#Display-fencing-resources" class="headerlink" title="Display fencing resources"></a>Display fencing resources</h2><pre><code>crmsh # crm resource show
+<h2 id="显示fencing资源"><a href="#显示fencing资源" class="headerlink" title="显示fencing资源"></a>显示fencing资源</h2><pre><code>crmsh # crm resource show
 pcs   # pcs stonith show
 </code></pre><p>pcs treats STONITH devices separately.</p>
-<h2 id="Display-Stonith-RA-info"><a href="#Display-Stonith-RA-info" class="headerlink" title="Display Stonith RA info"></a>Display Stonith RA info</h2><pre><code>crmsh # crm ra meta stonith:fence_ipmilan
+<h2 id="显示Stonith资源代码-RA-信息"><a href="#显示Stonith资源代码-RA-信息" class="headerlink" title="显示Stonith资源代码(RA)信息"></a>显示Stonith资源代码(RA)信息</h2><pre><code>crmsh # crm ra meta stonith:fence_ipmilan
 pcs   # pcs stonith describe fence_ipmilan
-</code></pre><h2 id="Start-a-resource"><a href="#Start-a-resource" class="headerlink" title="Start a resource"></a>Start a resource</h2><pre><code>crmsh # crm resource start ClusterIP
+</code></pre><h2 id="启动资源"><a href="#启动资源" class="headerlink" title="启动资源"></a>启动资源</h2><pre><code>crmsh # crm resource start ClusterIP
 pcs   # pcs resource enable ClusterIP
-</code></pre><h2 id="Stop-a-resource"><a href="#Stop-a-resource" class="headerlink" title="Stop a resource"></a>Stop a resource</h2><pre><code>crmsh # crm resource stop ClusterIP
+</code></pre><h2 id="停止资源"><a href="#停止资源" class="headerlink" title="停止资源"></a>停止资源</h2><pre><code>crmsh # crm resource stop ClusterIP
 pcs   # pcs resource disable ClusterIP
-</code></pre><h2 id="Remove-a-resource"><a href="#Remove-a-resource" class="headerlink" title="Remove a resource"></a>Remove a resource</h2><pre><code>crmsh # crm configure delete ClusterIP
+</code></pre><h2 id="删除资源"><a href="#删除资源" class="headerlink" title="删除资源"></a>删除资源</h2><pre><code>crmsh # crm configure delete ClusterIP
 pcs   # pcs resource delete ClusterIP
-</code></pre><h2 id="Modify-a-resource"><a href="#Modify-a-resource" class="headerlink" title="Modify a resource"></a>Modify a resource</h2><pre><code>crmsh # crm resource param ClusterIP set clusterip_hash=sourceip
+</code></pre><h2 id="更新资源"><a href="#更新资源" class="headerlink" title="更新资源"></a>更新资源</h2><pre><code>crmsh # crm resource param ClusterIP set clusterip_hash=sourceip
 pcs   # pcs resource update ClusterIP clusterip_hash=sourceip
 </code></pre><p>crmsh also has an <code>edit</code> command which edits the simplified CIB syntax<br>(same commands as the command line) via a configurable text editor.</p>
 <pre><code>crmsh # crm configure edit ClusterIP
@@ -503,32 +504,32 @@ pcs   # pcs resource update ClusterIP clusterip_hash=sourceip
 crmsh # edit
 crmsh # verify
 crmsh # commit
-</code></pre><h2 id="Delete-parameters-for-a-given-resource"><a href="#Delete-parameters-for-a-given-resource" class="headerlink" title="Delete parameters for a given resource"></a>Delete parameters for a given resource</h2><pre><code>crmsh # crm resource param ClusterIP delete nic
+</code></pre><h2 id="删除给定资源上的属性信息"><a href="#删除给定资源上的属性信息" class="headerlink" title="删除给定资源上的属性信息"></a>删除给定资源上的属性信息</h2><pre><code>crmsh # crm resource param ClusterIP delete nic
 pcs   # pcs resource update ClusterIP ip=192.168.0.98 nic=  
-</code></pre><h2 id="List-the-current-resource-defaults"><a href="#List-the-current-resource-defaults" class="headerlink" title="List the current resource defaults"></a>List the current resource defaults</h2><pre><code>crmsh # crm configure show type:rsc_defaults
-pcs   # pcs resource rsc defaults
-</code></pre><h2 id="Set-resource-defaults"><a href="#Set-resource-defaults" class="headerlink" title="Set resource defaults"></a>Set resource defaults</h2><pre><code>crmsh # crm configure rsc_defaults resource-stickiness=100
-pcs   # pcs resource rsc defaults resource-stickiness=100
-</code></pre><h2 id="List-the-current-operation-defaults"><a href="#List-the-current-operation-defaults" class="headerlink" title="List the current operation defaults"></a>List the current operation defaults</h2><pre><code>crmsh # crm configure show type:op_defaults
+</code></pre><h2 id="列出资源的默认属性信息"><a href="#列出资源的默认属性信息" class="headerlink" title="列出资源的默认属性信息"></a>列出资源的默认属性信息</h2><pre><code>crmsh # crm configure show type:rsc_defaults
+pcs   # pcs resource defaults
+</code></pre><h2 id="设置资源的默认属性信息"><a href="#设置资源的默认属性信息" class="headerlink" title="设置资源的默认属性信息"></a>设置资源的默认属性信息</h2><pre><code>crmsh # crm configure rsc_defaults resource-stickiness=100
+pcs   # pcs resource defaults resource-stickiness=100
+</code></pre><h2 id="列出资源操作命令相关属性的默认值"><a href="#列出资源操作命令相关属性的默认值" class="headerlink" title="列出资源操作命令相关属性的默认值"></a>列出资源操作命令相关属性的默认值</h2><pre><code>crmsh # crm configure show type:op_defaults
 pcs   # pcs resource op defaults
-</code></pre><h2 id="Set-operation-defaults"><a href="#Set-operation-defaults" class="headerlink" title="Set operation defaults"></a>Set operation defaults</h2><pre><code>crmsh # crm configure op_defaults timeout=240s
+</code></pre><h2 id="设置资源操作命令相关属性的默认值"><a href="#设置资源操作命令相关属性的默认值" class="headerlink" title="设置资源操作命令相关属性的默认值"></a>设置资源操作命令相关属性的默认值</h2><pre><code>crmsh # crm configure op_defaults timeout=240s
 pcs   # pcs resource op defaults timeout=240s
-</code></pre><h2 id="Set-Colocation"><a href="#Set-Colocation" class="headerlink" title="Set Colocation"></a>Set Colocation</h2><pre><code>crmsh # crm configure colocation website-with-ip INFINITY: WebSite ClusterIP
+</code></pre><h2 id="设置Colocation约束"><a href="#设置Colocation约束" class="headerlink" title="设置Colocation约束"></a>设置Colocation约束</h2><pre><code>crmsh # crm configure colocation website-with-ip INFINITY: WebSite ClusterIP
 pcs   # pcs constraint colocation add ClusterIP with WebSite INFINITY
 </code></pre><p>With roles</p>
 <pre><code>crmsh # crm configure colocation another-ip-with-website inf: AnotherIP WebSite:Master
 pcs   # pcs constraint colocation add Started AnotherIP with Master WebSite INFINITY
-</code></pre><h2 id="Set-ordering"><a href="#Set-ordering" class="headerlink" title="Set ordering"></a>Set ordering</h2><pre><code>crmsh # crm configure order apache-after-ip mandatory: ClusterIP WebSite
+</code></pre><h2 id="设置ordering约束"><a href="#设置ordering约束" class="headerlink" title="设置ordering约束"></a>设置ordering约束</h2><pre><code>crmsh # crm configure order apache-after-ip mandatory: ClusterIP WebSite
 pcs   # pcs constraint order ClusterIP then WebSite
 </code></pre><p>With roles:</p>
 <pre><code>crmsh # crm configure order ip-after-website Mandatory: WebSite:Master AnotherIP
 pcs   # pcs constraint order promote WebSite then start AnotherIP
-</code></pre><h2 id="Set-preferred-location"><a href="#Set-preferred-location" class="headerlink" title="Set preferred location"></a>Set preferred location</h2><pre><code>crmsh # crm configure location prefer-pcmk-1 WebSite 50: pcmk-1
+</code></pre><h2 id="设置preferred-location约束"><a href="#设置preferred-location约束" class="headerlink" title="设置preferred location约束"></a>设置preferred location约束</h2><pre><code>crmsh # crm configure location prefer-pcmk-1 WebSite 50: pcmk-1
 pcs   # pcs constraint location WebSite prefers pcmk-1=50
 </code></pre><p>With roles:</p>
 <pre><code>crmsh # crm configure location prefer-pcmk-1 WebSite rule role=Master 50: \#uname eq pcmk-1
 pcs   # pcs constraint location WebSite rule role=master 50 \#uname eq pcmk-1
-</code></pre><h2 id="Move-resources"><a href="#Move-resources" class="headerlink" title="Move resources"></a>Move resources</h2><pre><code>crmsh # crm resource move WebSite pcmk-1
+</code></pre><h2 id="移动资源至指定节点（Move-resources）"><a href="#移动资源至指定节点（Move-resources）" class="headerlink" title="移动资源至指定节点（Move resources）"></a>移动资源至指定节点（Move resources）</h2><pre><code>crmsh # crm resource move WebSite pcmk-1
 pcs   # pcs resource move WebSite pcmk-1
 
 crmsh # crm resource unmove WebSite
@@ -538,14 +539,18 @@ pcs   # pcs resource clear WebSite
 pcs   # pcs resource ban Website pcmk-2
 </code></pre><p>Remember that moving a resource sets a stickyness to -INF to a given node until unmoved    </p>
 <h2 id="Resource-tracing"><a href="#Resource-tracing" class="headerlink" title="Resource tracing"></a>Resource tracing</h2><pre><code>crmsh # crm resource trace Website
-</code></pre><h2 id="Clear-fail-counts"><a href="#Clear-fail-counts" class="headerlink" title="Clear fail counts"></a>Clear fail counts</h2><pre><code>crmsh # crm resource cleanup Website
+# pcs不支持
+</code></pre><h2 id="清理指定资源的失败计数信息（Clear-fail-counts）"><a href="#清理指定资源的失败计数信息（Clear-fail-counts）" class="headerlink" title="清理指定资源的失败计数信息（Clear fail counts）"></a>清理指定资源的失败计数信息（Clear fail counts）</h2><pre><code>crmsh # crm resource cleanup Website
 pcs   # pcs resource cleanup Website
-</code></pre><h2 id="Edit-fail-counts"><a href="#Edit-fail-counts" class="headerlink" title="Edit fail counts"></a>Edit fail counts</h2><pre><code>crmsh # crm resource failcount Website show pcmk-1
+</code></pre><h2 id="编辑Edit-fail-counts"><a href="#编辑Edit-fail-counts" class="headerlink" title="编辑Edit fail counts"></a>编辑Edit fail counts</h2><pre><code>crmsh # crm resource failcount Website show pcmk-1
 crmsh # crm resource failcount Website set pcmk-1 100
+
+# pcs不支持
 </code></pre><h2 id="Handling-configuration-elements-by-type"><a href="#Handling-configuration-elements-by-type" class="headerlink" title="Handling configuration elements by type"></a>Handling configuration elements by type</h2><p>pcs deals with constraints differently. These can be manipulated by the command above as well as the following and others</p>
-<pre><code>pcs   # pcs constraint list --full
+<pre><code># 下面这行命令的list可以省略，使用full选项是为了显示相关的id
+pcs   # pcs constraint list --full 
 pcs   # pcs constraint remove cli-ban-Website-on-pcmk-1
-</code></pre><p>Removing a constraint in crmsh uses the same command as removing a<br>resource.</p>
+</code></pre><p>使用crmsh命令删除约束的方式与删除资源的命令一样<br>Removing a constraint in crmsh uses the same command as removing a resource.</p>
 <pre><code>crmsh # crm configure remove cli-ban-Website-on-pcmk-1
 </code></pre><p>The <code>show</code> and <code>edit</code> commands in crmsh can be used to manage<br>resources and constraints by type:</p>
 <pre><code>crmsh # crm configure show type:primitive
@@ -558,7 +563,8 @@ pcs   # pcs resource clone ClusterIP globally-unique=true clone-max=2 clone-node
 pcs   # pcs resource master WebDataClone WebData \
         master-max=1 master-node-max=1 \
         clone-max=2 clone-node-max=1 notify=true
-</code></pre><h1 id="Other-operations"><a href="#Other-operations" class="headerlink" title="Other operations"></a>Other operations</h1><h2 id="Batch-changes"><a href="#Batch-changes" class="headerlink" title="Batch changes"></a>Batch changes</h2><pre><code>crmsh # crm
+</code></pre><h1 id="其它操作"><a href="#其它操作" class="headerlink" title="其它操作"></a>其它操作</h1><h2 id="批量修改配置信息"><a href="#批量修改配置信息" class="headerlink" title="批量修改配置信息"></a>批量修改配置信息</h2><pre><code># crmsh通过crm命令进入crmsh上下文模式，直接对CIB文档结构进行操作，最后再一次性commit
+crmsh # crm
 crmsh # cib new drbd_cfg
 crmsh # configure primitive WebData ocf:linbit:drbd params drbd_resource=wwwdata \
         op monitor interval=60s
@@ -566,16 +572,17 @@ crmsh # configure ms WebDataClone WebData meta master-max=1 master-node-max=1 \
         clone-max=2 clone-node-max=1 notify=true
 crmsh # cib commit drbd_cfg
 crmsh # quit
-</code></pre><p>.</p>
-<pre><code>pcs   # pcs cluster cib drbd_cfg
+
+# pcs则先基于本地文件方式批量设置CIB参数，然后再通过push操作使配置生效
+pcs   # pcs cluster cib drbd_cfg
 pcs   # pcs -f drbd_cfg resource create WebData ocf:linbit:drbd drbd_resource=wwwdata \
         op monitor interval=60s
 pcs   # pcs -f drbd_cfg resource master WebDataClone WebData master-max=1 master-node-max=1 \
         clone-max=2 clone-node-max=1 notify=true
 pcs   # pcs cluster push cib drbd_cfg
-</code></pre><h2 id="Template-creation"><a href="#Template-creation" class="headerlink" title="Template creation"></a>Template creation</h2><p>Create a resource template based on a list of primitives of the same<br>type</p>
+</code></pre><h2 id="创建模板（Template-creation）"><a href="#创建模板（Template-creation）" class="headerlink" title="创建模板（Template creation）"></a>创建模板（Template creation）</h2><p>Create a resource template based on a list of primitives of the same<br>type</p>
 <pre><code>crmsh # crm configure assist template ClusterIP AdminIP
-</code></pre><h2 id="Log-analysis"><a href="#Log-analysis" class="headerlink" title="Log analysis"></a>Log analysis</h2><p>Display information about recent cluster events</p>
+</code></pre><h2 id="日志分析"><a href="#日志分析" class="headerlink" title="日志分析"></a>日志分析</h2><p>Display information about recent cluster events</p>
 <pre><code>crmsh # crm history
 crmsh # peinputs
 crmsh # transition pe-input-10
@@ -823,7 +830,7 @@ crmsh # crm script run apache \
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#General-Operations"><span class="nav-number">2.</span> <span class="nav-text">General Operations</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Display-the-configuration"><span class="nav-number">2.1.</span> <span class="nav-text">Display the configuration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Display-the-current-status"><span class="nav-number">2.2.</span> <span class="nav-text">Display the current status</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Node-standby"><span class="nav-number">2.3.</span> <span class="nav-text">Node standby</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-cluster-property"><span class="nav-number">2.4.</span> <span class="nav-text">Set cluster property</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Resource-manipulation"><span class="nav-number">3.</span> <span class="nav-text">Resource manipulation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#List-Resource-Agent-RA-classes"><span class="nav-number">3.1.</span> <span class="nav-text">List Resource Agent (RA) classes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#List-available-RAs"><span class="nav-number">3.2.</span> <span class="nav-text">List available RAs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#List-RA-info"><span class="nav-number">3.3.</span> <span class="nav-text">List RA info</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-a-resource"><span class="nav-number">3.4.</span> <span class="nav-text">Create a resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Display-a-resource"><span class="nav-number">3.5.</span> <span class="nav-text">Display a resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Display-fencing-resources"><span class="nav-number">3.6.</span> <span class="nav-text">Display fencing resources</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Display-Stonith-RA-info"><span class="nav-number">3.7.</span> <span class="nav-text">Display Stonith RA info</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Start-a-resource"><span class="nav-number">3.8.</span> <span class="nav-text">Start a resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Stop-a-resource"><span class="nav-number">3.9.</span> <span class="nav-text">Stop a resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Remove-a-resource"><span class="nav-number">3.10.</span> <span class="nav-text">Remove a resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Modify-a-resource"><span class="nav-number">3.11.</span> <span class="nav-text">Modify a resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Delete-parameters-for-a-given-resource"><span class="nav-number">3.12.</span> <span class="nav-text">Delete parameters for a given resource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#List-the-current-resource-defaults"><span class="nav-number">3.13.</span> <span class="nav-text">List the current resource defaults</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-resource-defaults"><span class="nav-number">3.14.</span> <span class="nav-text">Set resource defaults</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#List-the-current-operation-defaults"><span class="nav-number">3.15.</span> <span class="nav-text">List the current operation defaults</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-operation-defaults"><span class="nav-number">3.16.</span> <span class="nav-text">Set operation defaults</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-Colocation"><span class="nav-number">3.17.</span> <span class="nav-text">Set Colocation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-ordering"><span class="nav-number">3.18.</span> <span class="nav-text">Set ordering</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-preferred-location"><span class="nav-number">3.19.</span> <span class="nav-text">Set preferred location</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Move-resources"><span class="nav-number">3.20.</span> <span class="nav-text">Move resources</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Resource-tracing"><span class="nav-number">3.21.</span> <span class="nav-text">Resource tracing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Clear-fail-counts"><span class="nav-number">3.22.</span> <span class="nav-text">Clear fail counts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Edit-fail-counts"><span class="nav-number">3.23.</span> <span class="nav-text">Edit fail counts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Handling-configuration-elements-by-type"><span class="nav-number">3.24.</span> <span class="nav-text">Handling configuration elements by type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-a-clone"><span class="nav-number">3.25.</span> <span class="nav-text">Create a clone</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-a-master-slave-clone"><span class="nav-number">3.26.</span> <span class="nav-text">Create a master/slave clone</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Other-operations"><span class="nav-number">4.</span> <span class="nav-text">Other operations</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Batch-changes"><span class="nav-number">4.1.</span> <span class="nav-text">Batch changes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Template-creation"><span class="nav-number">4.2.</span> <span class="nav-text">Template creation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Log-analysis"><span class="nav-number">4.3.</span> <span class="nav-text">Log analysis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Configuration-scripts"><span class="nav-number">4.4.</span> <span class="nav-text">Configuration scripts</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#通用操作"><span class="nav-number">2.</span> <span class="nav-text">通用操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#显示配置信息"><span class="nav-number">2.1.</span> <span class="nav-text">显示配置信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#显示集群当前状态"><span class="nav-number">2.2.</span> <span class="nav-text">显示集群当前状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#挂起节点（Node-standby）"><span class="nav-number">2.3.</span> <span class="nav-text">挂起节点（Node standby）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置集群全局属性"><span class="nav-number">2.4.</span> <span class="nav-text">设置集群全局属性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#集群资源处理操作"><span class="nav-number">3.</span> <span class="nav-text">集群资源处理操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#列出所有RA-Resource-Agent-的类别-classes"><span class="nav-number">3.1.</span> <span class="nav-text">列出所有RA(Resource Agent)的类别:classes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#列出所有可用的RA"><span class="nav-number">3.2.</span> <span class="nav-text">列出所有可用的RA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询具体RA的描述信息"><span class="nav-number">3.3.</span> <span class="nav-text">查询具体RA的描述信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建资源"><span class="nav-number">3.4.</span> <span class="nav-text">创建资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#显示资源配置信息"><span class="nav-number">3.5.</span> <span class="nav-text">显示资源配置信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#显示fencing资源"><span class="nav-number">3.6.</span> <span class="nav-text">显示fencing资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#显示Stonith资源代码-RA-信息"><span class="nav-number">3.7.</span> <span class="nav-text">显示Stonith资源代码(RA)信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动资源"><span class="nav-number">3.8.</span> <span class="nav-text">启动资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#停止资源"><span class="nav-number">3.9.</span> <span class="nav-text">停止资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除资源"><span class="nav-number">3.10.</span> <span class="nav-text">删除资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新资源"><span class="nav-number">3.11.</span> <span class="nav-text">更新资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除给定资源上的属性信息"><span class="nav-number">3.12.</span> <span class="nav-text">删除给定资源上的属性信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#列出资源的默认属性信息"><span class="nav-number">3.13.</span> <span class="nav-text">列出资源的默认属性信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置资源的默认属性信息"><span class="nav-number">3.14.</span> <span class="nav-text">设置资源的默认属性信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#列出资源操作命令相关属性的默认值"><span class="nav-number">3.15.</span> <span class="nav-text">列出资源操作命令相关属性的默认值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置资源操作命令相关属性的默认值"><span class="nav-number">3.16.</span> <span class="nav-text">设置资源操作命令相关属性的默认值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置Colocation约束"><span class="nav-number">3.17.</span> <span class="nav-text">设置Colocation约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置ordering约束"><span class="nav-number">3.18.</span> <span class="nav-text">设置ordering约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置preferred-location约束"><span class="nav-number">3.19.</span> <span class="nav-text">设置preferred location约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#移动资源至指定节点（Move-resources）"><span class="nav-number">3.20.</span> <span class="nav-text">移动资源至指定节点（Move resources）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Resource-tracing"><span class="nav-number">3.21.</span> <span class="nav-text">Resource tracing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#清理指定资源的失败计数信息（Clear-fail-counts）"><span class="nav-number">3.22.</span> <span class="nav-text">清理指定资源的失败计数信息（Clear fail counts）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编辑Edit-fail-counts"><span class="nav-number">3.23.</span> <span class="nav-text">编辑Edit fail counts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Handling-configuration-elements-by-type"><span class="nav-number">3.24.</span> <span class="nav-text">Handling configuration elements by type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-a-clone"><span class="nav-number">3.25.</span> <span class="nav-text">Create a clone</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-a-master-slave-clone"><span class="nav-number">3.26.</span> <span class="nav-text">Create a master/slave clone</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其它操作"><span class="nav-number">4.</span> <span class="nav-text">其它操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#批量修改配置信息"><span class="nav-number">4.1.</span> <span class="nav-text">批量修改配置信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建模板（Template-creation）"><span class="nav-number">4.2.</span> <span class="nav-text">创建模板（Template creation）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日志分析"><span class="nav-number">4.3.</span> <span class="nav-text">日志分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Configuration-scripts"><span class="nav-number">4.4.</span> <span class="nav-text">Configuration scripts</span></a></li></ol></li></ol></div>
             
 
           </div>
