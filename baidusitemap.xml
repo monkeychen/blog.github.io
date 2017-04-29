@@ -4,6 +4,48 @@
 
     
   <url>
+    <loc>http://cloudnoter.com/2016/11/09/Java%E5%B0%8F%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/</loc>
+    <lastmod>2017-04-29T06:13:36.000Z</lastmod>
+    <data>
+        <display>
+        <title>Java小问题汇总</title>
+        <pubTime>2016-11-08T22:09:00.000Z</pubTime>
+        
+        <tag>Java</tag>
+         
+        <tag>MySQL</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java" url="http://cloudnoter.com/categories/Java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://cloudnoter.com/2016/09/01/Composer%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
+    <lastmod>2017-04-29T06:13:28.000Z</lastmod>
+    <data>
+        <display>
+        <title>Composer学习笔记</title>
+        <pubTime>2016-09-01T00:01:12.000Z</pubTime>
+        
+        <tag>Composer</tag>
+         
+         
+           
+             
+              <breadCrumb title="Composer" url="http://cloudnoter.com/categories/Composer/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://cloudnoter.com/2015/12/20/%E5%B5%8C%E5%A5%97%E5%88%A0%E9%99%A4SQL%E5%BC%95%E8%B5%B7%E7%9A%84%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/</loc>
     <lastmod>2017-04-29T06:10:11.000Z</lastmod>
     <data>
@@ -110,29 +152,6 @@
 
     
   <url>
-    <loc>http://cloudnoter.com/2016/09/01/Composer%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2017-04-29T06:08:28.000Z</lastmod>
-    <data>
-        <display>
-        <title>Composer学习笔记</title>
-        <pubTime>2016-09-01T00:01:12.000Z</pubTime>
-        
-        <tag>Composer</tag>
-         
-         
-           
-             
-              <breadCrumb title="Composer" url="http://cloudnoter.com/categories/Composer/"/>
-          
-             
-              <breadCrumb title="Php" url="http://cloudnoter.com/categories/Composer/Php/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://cloudnoter.com/2016/02/27/JNI%E5%BC%95%E8%B5%B7%E7%9A%84%E5%A0%86%E5%A4%96%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/</loc>
     <lastmod>2017-04-29T06:07:36.000Z</lastmod>
     <data>
@@ -170,31 +189,6 @@
            
              
               <breadCrumb title="Java" url="http://cloudnoter.com/categories/Java/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://cloudnoter.com/2016/11/09/Java%E5%B0%8F%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/</loc>
-    <lastmod>2017-04-29T06:07:07.000Z</lastmod>
-    <data>
-        <display>
-        <title>Java小问题汇总</title>
-        <pubTime>2016-11-08T22:09:00.000Z</pubTime>
-        
-        <tag>Java</tag>
-         
-        <tag>MySQL</tag>
-         
-         
-           
-             
-              <breadCrumb title="Java" url="http://cloudnoter.com/categories/Java/"/>
-          
-             
-              <breadCrumb title="MySQL" url="http://cloudnoter.com/categories/Java/MySQL/"/>
           
         </display>
     </data>

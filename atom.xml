@@ -209,7 +209,7 @@ crmsh # crm script run apache \
     <link href="http://cloudnoter.com/2016/11/09/Java%E5%B0%8F%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/"/>
     <id>http://cloudnoter.com/2016/11/09/Java小问题汇总/</id>
     <published>2016-11-08T22:09:00.000Z</published>
-    <updated>2017-04-29T06:07:07.000Z</updated>
+    <updated>2017-04-29T06:13:36.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="1-MySQL5-7下的JSON字段中文乱码问题"><a href="#1-MySQL5-7下的JSON字段中文乱码问题" class="headerlink" title="1. MySQL5.7下的JSON字段中文乱码问题"></a>1. MySQL5.7下的JSON字段中文乱码问题</h2><p>中文乱码问题在Java Web开发中经常碰到，大部分原因是后端与前端的编码不一致造成的（如tomcat的默认编码为ISO-8859-1，而前端为GBK），解决办法也简单，只需要加一个<code>CharsetEncodingFilter</code>就行。但本文要讲的不是这一类总是，而是纯粹的后端问题。</p>
 <h3 id="1-1-环境准备"><a href="#1-1-环境准备" class="headerlink" title="1.1 环境准备"></a>1.1 环境准备</h3><blockquote>
@@ -263,8 +263,6 @@ crmsh # crm script run apache \
     
       <category term="Java" scheme="http://cloudnoter.com/categories/Java/"/>
     
-      <category term="MySQL" scheme="http://cloudnoter.com/categories/Java/MySQL/"/>
-    
     
       <category term="Java" scheme="http://cloudnoter.com/tags/Java/"/>
     
@@ -277,7 +275,7 @@ crmsh # crm script run apache \
     <link href="http://cloudnoter.com/2016/09/01/Composer%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     <id>http://cloudnoter.com/2016/09/01/Composer学习笔记/</id>
     <published>2016-09-01T00:01:12.000Z</published>
-    <updated>2017-04-29T06:08:28.000Z</updated>
+    <updated>2017-04-29T06:13:28.000Z</updated>
     
     <content type="html"><![CDATA[<p>#Composer学习笔记</p>
 <h2 id="一、安装-MacOS"><a href="#一、安装-MacOS" class="headerlink" title="一、安装(MacOS)"></a>一、安装(MacOS)</h2><blockquote>
@@ -374,8 +372,6 @@ crmsh # crm script run apache \
     </summary>
     
       <category term="Composer" scheme="http://cloudnoter.com/categories/Composer/"/>
-    
-      <category term="Php" scheme="http://cloudnoter.com/categories/Composer/Php/"/>
     
     
       <category term="Composer" scheme="http://cloudnoter.com/tags/Composer/"/>
