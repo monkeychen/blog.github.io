@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://cloudnoter.com/"/>
-  <updated>2017-04-29T06:05:51.000Z</updated>
+  <updated>2017-04-29T06:26:59.000Z</updated>
   <id>http://cloudnoter.com/</id>
   
   <author>
@@ -20,14 +20,14 @@
     <link href="http://cloudnoter.com/2017/04/29/HA%E4%B8%93%E9%A2%98-Pacemaker%E6%97%A5%E5%B8%B8%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4/"/>
     <id>http://cloudnoter.com/2017/04/29/HA专题-Pacemaker日常管理命令/</id>
     <published>2017-04-29T13:20:49.000Z</published>
-    <updated>2017-04-29T06:05:51.000Z</updated>
+    <updated>2017-04-29T06:26:59.000Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h2><p>Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。</p>
+    <content type="html"><![CDATA[<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。</p>
 <blockquote>
-<p>从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-based GUI界面）</p>
+<p>从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-based GUI界面）<br>文档来源于Pacemaker的<a href="https://github.com/ClusterLabs/pacemaker/blob/master/doc/pcs-crmsh-quick-ref.md" target="_blank" rel="external">Github官网</a></p>
 </blockquote>
 <a id="more"></a>
-<h2 id="2-常用命令（文档来源）"><a href="#2-常用命令（文档来源）" class="headerlink" title="2. 常用命令（文档来源）"></a>2. 常用命令<a href="https://github.com/ClusterLabs/pacemaker/blob/master/doc/pcs-crmsh-quick-ref.md" target="_blank" rel="external">（文档来源）</a></h2><h1 id="General-Operations"><a href="#General-Operations" class="headerlink" title="General Operations"></a>General Operations</h1><h2 id="Display-the-configuration"><a href="#Display-the-configuration" class="headerlink" title="Display the configuration"></a>Display the configuration</h2><pre><code>crmsh # crm configure show xml
+<h1 id="General-Operations"><a href="#General-Operations" class="headerlink" title="General Operations"></a>General Operations</h1><h2 id="Display-the-configuration"><a href="#Display-the-configuration" class="headerlink" title="Display the configuration"></a>Display the configuration</h2><pre><code>crmsh # crm configure show xml
 pcs   # pcs cluster cib
 </code></pre><p>To show a simplified (non-xml) syntax</p>
 <pre><code>crmsh # crm configure show
@@ -184,9 +184,9 @@ crmsh # crm script run apache \
     
     <summary type="html">
     
-      &lt;h2 id=&quot;1-概述&quot;&gt;&lt;a href=&quot;#1-概述&quot; class=&quot;headerlink&quot; title=&quot;1. 概述&quot;&gt;&lt;/a&gt;1. 概述&lt;/h2&gt;&lt;p&gt;Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。&lt;/p&gt;
+      &lt;h1 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h1&gt;&lt;p&gt;Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-based GUI界面）&lt;/p&gt;
+&lt;p&gt;从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-based GUI界面）&lt;br&gt;文档来源于Pacemaker的&lt;a href=&quot;https://github.com/ClusterLabs/pacemaker/blob/master/doc/pcs-crmsh-quick-ref.md&quot;&gt;Github官网&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
     
     </summary>
