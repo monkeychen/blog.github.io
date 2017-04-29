@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://cloudnoter.com/"/>
-  <updated>2017-04-29T07:19:17.000Z</updated>
+  <updated>2017-04-29T07:37:08.000Z</updated>
   <id>http://cloudnoter.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://cloudnoter.com/2017/04/29/HA%E4%B8%93%E9%A2%98-Pacemaker%E6%97%A5%E5%B8%B8%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4/"/>
     <id>http://cloudnoter.com/2017/04/29/HA专题-Pacemaker日常管理命令/</id>
     <published>2017-04-29T13:20:49.000Z</published>
-    <updated>2017-04-29T07:19:17.000Z</updated>
+    <updated>2017-04-29T07:37:08.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。</p>
 <blockquote>
@@ -28,39 +28,23 @@
 </blockquote>
 <a id="more"></a>
 <h1 id="通用操作"><a href="#通用操作" class="headerlink" title="通用操作"></a>通用操作</h1><h2 id="显示配置信息"><a href="#显示配置信息" class="headerlink" title="显示配置信息"></a>显示配置信息</h2><p>以XML格式显示</p>
-<pre><code>crmsh # crm configure show xml
-pcs   # pcs cluster cib
-</code></pre><p>以非XML格式显示[To show a simplified (non-xml) syntax]</p>
-<pre><code>crmsh # crm configure show
-pcs   # pcs config
-</code></pre><h2 id="显示集群当前状态"><a href="#显示集群当前状态" class="headerlink" title="显示集群当前状态"></a>显示集群当前状态</h2><pre><code>crmsh # crm status
-pcs   # pcs status
-</code></pre><p>也可以这样：</p>
-<pre><code># crm_mon -1
-</code></pre><h2 id="挂起节点（Node-standby）"><a href="#挂起节点（Node-standby）" class="headerlink" title="挂起节点（Node standby）"></a>挂起节点（Node standby）</h2><p>使节点进入Standby状态（Put node in standby）</p>
-<pre><code>crmsh # crm node standby pcmk-1
-pcs   # pcs cluster standby pcmk-1
-</code></pre><p>使节点从Standby状态恢复（Remove node from standby）</p>
-<pre><code>crmsh # crm node online pcmk-1
-pcs   # pcs cluster unstandby pcmk-1
-</code></pre><p>crm has the ability to set the status on reboot or forever.<br>pcs can apply the change to all the nodes.</p>
-<h2 id="设置集群全局属性"><a href="#设置集群全局属性" class="headerlink" title="设置集群全局属性"></a>设置集群全局属性</h2><pre><code>crmsh # crm configure property stonith-enabled=false
-pcs   # pcs property set stonith-enabled=false
-</code></pre><h1 id="集群资源处理操作"><a href="#集群资源处理操作" class="headerlink" title="集群资源处理操作"></a>集群资源处理操作</h1><h2 id="列出所有RA-Resource-Agent-的类别-classes"><a href="#列出所有RA-Resource-Agent-的类别-classes" class="headerlink" title="列出所有RA(Resource Agent)的类别:classes"></a>列出所有RA(Resource Agent)的类别:<code>classes</code></h2><pre><code>crmsh # crm ra classes
-pcs   # pcs resource standards
-</code></pre><h2 id="列出所有可用的RA"><a href="#列出所有可用的RA" class="headerlink" title="列出所有可用的RA"></a>列出所有可用的RA</h2><pre><code>crmsh # crm ra list ocf
-crmsh # crm ra list lsb
-crmsh # crm ra list service
-crmsh # crm ra list stonith
-pcs   # pcs resource agents ocf
-pcs   # pcs resource agents lsb
-pcs   # pcs resource agents service
-pcs   # pcs resource agents stonith
-pcs   # pcs resource agents
-</code></pre><p>您也可以通过<code>provider</code>进一步过滤：</p>
-<pre><code>crmsh # crm ra list ocf pacemaker
-pcs   # pcs resource agents ocf:pacemaker
-</code></pre><h2 id="查询具体RA的描述信息"><a href="#查询具体RA的描述信息" class="headerlink" title="查询具体RA的描述信息"></a>查询具体RA的描述信息</h2><pre><code>crmsh # crm ra meta IPaddr2
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># crmsh </span></div><div class="line">crm configure show <span class="keyword">xml</span></div><div class="line"><span class="title"># pcs</span> </div><div class="line">pcs cluster cib</div></pre></td></tr></table></figure>
+<p>以非XML格式显示[To show a simplified (non-xml) syntax]</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># crmsh</span></div><div class="line">crm configure <span class="keyword">show</span></div><div class="line"><span class="comment"># pcs</span></div><div class="line">pcs <span class="built_in">config</span></div></pre></td></tr></table></figure>
+<h2 id="显示集群当前状态"><a href="#显示集群当前状态" class="headerlink" title="显示集群当前状态"></a>显示集群当前状态</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> crmsh</span></div><div class="line">crm status</div><div class="line"><span class="meta">#</span><span class="bash">pcs</span></div><div class="line">pcs status</div></pre></td></tr></table></figure>
+<p>也可以这样：</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">crm_mon <span class="number">-1</span></div></pre></td></tr></table></figure>
+<h2 id="挂起节点（Node-standby）"><a href="#挂起节点（Node-standby）" class="headerlink" title="挂起节点（Node standby）"></a>挂起节点（Node standby）</h2><p>使节点进入Standby状态（Put node in standby）</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># crmsh</span></div><div class="line">crm <span class="keyword">node</span> <span class="title">standby</span> pcmk-<span class="number">1</span></div><div class="line"><span class="comment"># pcs</span></div><div class="line">pcs cluster standby pcmk-<span class="number">1</span></div></pre></td></tr></table></figure>
+<p>使节点从Standby状态恢复（Remove node from standby）</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># crmsh</span></div><div class="line">crm <span class="keyword">node</span> <span class="title">online</span> pcmk-<span class="number">1</span></div><div class="line"><span class="comment"># pcs</span></div><div class="line">pcs cluster unstandby pcmk-<span class="number">1</span></div></pre></td></tr></table></figure>
+<p>crm has the ability to set the status on reboot or forever.<br>pcs can apply the change to all the nodes.</p>
+<h2 id="设置集群全局属性"><a href="#设置集群全局属性" class="headerlink" title="设置集群全局属性"></a>设置集群全局属性</h2><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># crmsh</span></div><div class="line">crm configure <span class="keyword">property</span><span class="title"> </span><span class="attr">stonith-enabled=</span><span class="literal">false</span></div><div class="line"><span class="comment"># pcs</span></div><div class="line">pcs <span class="keyword">property</span><span class="title"> </span>set <span class="attr">stonith-enabled=</span><span class="literal">false</span></div></pre></td></tr></table></figure>
+<h1 id="集群资源处理操作"><a href="#集群资源处理操作" class="headerlink" title="集群资源处理操作"></a>集群资源处理操作</h1><h2 id="列出所有RA-Resource-Agent-的类别-classes"><a href="#列出所有RA-Resource-Agent-的类别-classes" class="headerlink" title="列出所有RA(Resource Agent)的类别:classes"></a>列出所有RA(Resource Agent)的类别:<code>classes</code></h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> crmsh</span></div><div class="line">crm ra classes</div><div class="line"><span class="meta">#</span><span class="bash"> pcs</span></div><div class="line">pcs resource standards</div></pre></td></tr></table></figure>
+<h2 id="列出所有可用的RA"><a href="#列出所有可用的RA" class="headerlink" title="列出所有可用的RA"></a>列出所有可用的RA</h2><figure class="highlight sqf"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># crmsh</span></div><div class="line">crm ra <span class="built_in">list</span> ocf</div><div class="line">crm ra <span class="built_in">list</span> lsb</div><div class="line">crm ra <span class="built_in">list</span> service</div><div class="line">crm ra <span class="built_in">list</span> stonith</div><div class="line"></div><div class="line"><span class="meta"># pcs</span></div><div class="line">pcs resource <span class="built_in">agents</span> ocf</div><div class="line">pcs resource <span class="built_in">agents</span> lsb</div><div class="line">pcs resource <span class="built_in">agents</span> service</div><div class="line">pcs resource <span class="built_in">agents</span> stonith</div><div class="line">pcs resource <span class="built_in">agents</span></div></pre></td></tr></table></figure>
+<p>您也可以通过<code>provider</code>进一步过滤：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> crmsh</span></div><div class="line">crm ra list ocf pacemaker</div><div class="line"><span class="meta">#</span><span class="bash"> pcs</span></div><div class="line">pcs resource agents ocf:pacemaker</div></pre></td></tr></table></figure>
+<h2 id="查询具体RA的描述信息"><a href="#查询具体RA的描述信息" class="headerlink" title="查询具体RA的描述信息"></a>查询具体RA的描述信息</h2><pre><code>crmsh # crm ra meta IPaddr2
 pcs   # pcs resource describe IPaddr2
 </code></pre><p>Use any RA name (like IPaddr2) from the list displayed with the previous command<br>You can also use the full class:provider:RA format if multiple RAs with the same name are available :</p>
 <pre><code>crmsh # crm ra meta ocf:heartbeat:IPaddr2
