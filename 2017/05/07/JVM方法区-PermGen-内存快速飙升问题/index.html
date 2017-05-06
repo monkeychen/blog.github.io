@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Java, Python, Go, Php" />
+  <meta name="keywords" content="JVM,PermGen,OutOfMemory" />
 
 
 
@@ -89,12 +89,17 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Simiam">
-<meta property="og:url" content="http://cloudnoter.com/archives/2016/index.html">
+<meta name="description" content="1. 问题描述自从平台升级到3.0后，应用的JVM变得非常不稳定，主要体现为以下三个问题：  内存泄漏：2G的JVM，2天就崩。 方法区内存持续飙升，最终导致频繁的触发FullGC class load频繁导致CPU有30%的资源浪费  2. 解决方案2.1. 问题1解决思路：问题1相对好解决，先用jmap将堆快照dump出来，用mat分析了下，根据GC-ROOT找到引用路径即可，泄漏原因为：平台">
+<meta name="keywords" content="Java,JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM方法区(PermGen)内存快速飙升问题">
+<meta property="og:url" content="http://cloudnoter.com/2017/05/07/JVM方法区-PermGen-内存快速飙升问题/index.html">
 <meta property="og:site_name" content="Simiam">
+<meta property="og:description" content="1. 问题描述自从平台升级到3.0后，应用的JVM变得非常不稳定，主要体现为以下三个问题：  内存泄漏：2G的JVM，2天就崩。 方法区内存持续飙升，最终导致频繁的触发FullGC class load频繁导致CPU有30%的资源浪费  2. 解决方案2.1. 问题1解决思路：问题1相对好解决，先用jmap将堆快照dump出来，用mat分析了下，根据GC-ROOT找到引用路径即可，泄漏原因为：平台">
+<meta property="og:updated_time" content="2017-05-06T23:13:25.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Simiam">
+<meta name="twitter:title" content="JVM方法区(PermGen)内存快速飙升问题">
+<meta name="twitter:description" content="1. 问题描述自从平台升级到3.0后，应用的JVM变得非常不稳定，主要体现为以下三个问题：  内存泄漏：2G的JVM，2天就崩。 方法区内存持续飙升，最终导致频繁的触发FullGC class load频繁导致CPU有30%的资源浪费  2. 解决方案2.1. 问题1解决思路：问题1相对好解决，先用jmap将堆快照dump出来，用mat分析了下，根据GC-ROOT找到引用路径即可，泄漏原因为：平台">
 
 
 
@@ -122,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://cloudnoter.com/archives/2016/"/>
+  <link rel="canonical" href="http://cloudnoter.com/2017/05/07/JVM方法区-PermGen-内存快速飙升问题/"/>
 
 
 
 
 
-  <title> 归档 | Simiam </title>
+  <title> JVM方法区(PermGen)内存快速飙升问题 | Simiam </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -163,7 +168,7 @@
     
   
 
-  <div class="container sidebar-position-left  page-archive  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -311,288 +316,206 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
-
-    <span class="archive-page-counter">
-      
-      
-      
-        
-      
-      嗯..! 目前共计 11 篇日志。 继续努力。
-    </span>
-
+  <div id="posts" class="posts-expand">
     
-
-      
-      
-      
-
-      
-        
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2016">2016</h2>
-        </div>
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/11/09/Java小问题汇总/" itemprop="url">
-              
-                <span itemprop="name">Java小问题汇总</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-11-08T22:09:00Z"
-              content="2016-11-08" >
-          11-08
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/09/01/Composer学习笔记/" itemprop="url">
-              
-                <span itemprop="name">Composer学习笔记</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-09-01T00:01:12Z"
-              content="2016-09-01" >
-          09-01
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/07/02/MAC下搭建Apache+PHP开发环境/" itemprop="url">
-              
-                <span itemprop="name">MAC下搭建Apache+PHP开发环境</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-07-01T23:18:57Z"
-              content="2016-07-01" >
-          07-01
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/02/27/JNI引起的堆外内存泄漏问题分析/" itemprop="url">
-              
-                <span itemprop="name">JNI引起的堆外内存泄漏问题分析</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-02-26T21:18:48Z"
-              content="2016-02-26" >
-          02-26
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/01/21/Laravel-5-2中文文档：HTTP路由/" itemprop="url">
-              
-                <span itemprop="name">Laravel 5.2中文文档：HTTP路由</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-01-20T21:31:08Z"
-              content="2016-01-20" >
-          01-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/01/13/Java调试工具-JDB/" itemprop="url">
-              
-                <span itemprop="name">Java调试工具:JDB</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-01-12T23:25:28Z"
-              content="2016-01-12" >
-          01-12
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/01/12/PhpStorm-Laravel-5-1开发环境搭建/" itemprop="url">
-              
-                <span itemprop="name">PhpStorm+Laravel_5.1开发环境搭建</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-01-12T00:26:13Z"
-              content="2016-01-12" >
-          01-12
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-  </section>
 
   
 
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2017/05/07/JVM方法区-PermGen-内存快速飙升问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="simiam">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/simiam.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Simiam">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                JVM方法区(PermGen)内存快速飙升问题
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-07T15:01:22+08:00">
+                2017-05-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/05/07/JVM方法区-PermGen-内存快速飙升问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h2><p>自从平台升级到3.0后，应用的JVM变得非常不稳定，主要体现为以下三个问题：</p>
+<ol>
+<li>内存泄漏：2G的JVM，2天就崩。</li>
+<li>方法区内存持续飙升，最终导致频繁的触发FullGC</li>
+<li>class load频繁导致CPU有30%的资源浪费</li>
+</ol>
+<h2 id="2-解决方案"><a href="#2-解决方案" class="headerlink" title="2. 解决方案"></a>2. 解决方案</h2><h3 id="2-1-问题1解决思路："><a href="#2-1-问题1解决思路：" class="headerlink" title="2.1. 问题1解决思路："></a>2.1. <strong>问题1解决思路</strong>：</h3><p>问题1相对好解决，先用jmap将堆快照dump出来，用mat分析了下，根据GC-ROOT找到引用路径即可，泄漏原因为：平台自研JPA组件的SQLQuery在实现lazy load时，由于CGLib使用不当(在向当前线程注册回调方法拦截器时，在使用完之后未及时注销)导致的查询结果缓存被线程池中的线程引用，在线程池容量开得比较大时最终将导致OOM异常。</p>
+<a id="more"></a>
+<h3 id="2-2-问题2-3解决思路："><a href="#2-2-问题2-3解决思路：" class="headerlink" title="2.2. 问题2,3解决思路："></a>2.2. <strong>问题2,3解决思路</strong>：</h3><p>以前从没碰到这种情况，方法区的内存大小在应用启动后应该是处于一个相对稳定的状态（因为大部分类在启动时就已经加载完了，就算使用CGLib动态生成代理类也应该是有一个上限，最多就是全部类的一倍），但问题2明显不属于这种情况，不管开多大的内存给方法区（通过<code>-X:MaxPermSize=xxxM</code>设置大小），应用总能在几分钟内持续升到最高值并触发FullGC，GC结束后，方法区占用内存降至接近0M（此处就发生的<code>class unload</code>），然后又进入新一轮的飙升周期（此处就发生<code>class loader</code>）。</p>
+<p>刚开始以为仍然是JPA组件使用CGLib不当的问题，认为是为了实现<code>lazy load</code>及权限控制时使用了过多的动态代理（每个<code>Action,Model,Service</code>都被创建为动态代理，更不合理的时每个model的get方法都使用<code>ProxyMethodInterceptor</code>，问当事人原因，其答复说为了<code>lazy load</code>，但其实只有关联字段，集合字段才有必要<code>lazy load</code>）。基于此做了修改，但测试结果还是没解决问题：因为JPA中并不是每次都创建一个新的proxy，而是根据class做了缓存的，因此只能另找办法。</p>
+<p>既然是方法区的问题，那是否可以将方法区的内容dump出来呢？于是查看了下<code>jmap</code>参数，其中的有<code>-permstat</code>可以用：<code>jmap -permstat &lt;pid&gt;</code><br>结果如下（截取）</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="number">25007</span> intern Strings occupying <span class="number">2799672</span> bytes.  </div><div class="line">class_loader classesbytes parent_loaderalive? type  </div><div class="line">  </div><div class="line">  </div><div class="line">&lt;bootstrap&gt; <span class="number">262415108248</span>  null  live &lt;internal&gt;  </div><div class="line"><span class="number">0x000000076f045910</span> <span class="number">38758792</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span>  </div><div class="line"><span class="number">0x000000076f942f10</span> <span class="number">38758792</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span>  </div><div class="line"><span class="number">0x00000007d00e9ba0</span> <span class="number">40816816</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span>  </div><div class="line"><span class="number">0x00000007dd170c08</span> <span class="number">40816816</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span>  </div><div class="line"><span class="number">0x000000079e2f0070</span> <span class="number">40816816</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span>  </div><div class="line"><span class="number">0x00000007cd6b1140</span> <span class="number">13112</span>  null  dead sun/reflect/DelegatingClassLoader@<span class="number">0x0000000740067648</span>  </div><div class="line"><span class="number">0x000000076fb5d130</span> <span class="number">38758792</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span>  </div><div class="line"><span class="number">0x000000076fbe47c0</span> <span class="number">38758792</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span></div></pre></td></tr></table></figure>
+<p><code>com/atomikos/util/ClassLoadingHelper$1</code>：是一个匿名内部类（该类是一个加载器），通过这个内部类加载器作为JDK <code>Proxy.newProxyInstance()</code>方法的参数，而后者就会生产大量的以Proxy$为前缀的动态类，并且未做任何缓存。<br>atomikos大家应该都很清楚：JTA的一个实现，但是哪个组件调用了这个工具类呢？通过断点分析，原来是JPA又自己写了个什么数据库连接池，池中的每个连接都是<code>ProxyConnection</code>，而池又好像失效的，频繁的回收，创建…</p>
+<blockquote>
+<p>到目前为止，我一直没搞清楚为何要用代理类型的连接，这代理的作用从代码中也没看出个门道来，也不是为做监控。</p>
+</blockquote>
+<p>原因定位到了，解决办法就很简单了：直接用阿里的druid替换掉。测试结果证明前面的分析是正确的。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/29/HA专题-Pacemaker日常管理命令/" rel="prev" title="HA专题--Pacemaker集群日常管理命令">
+                HA专题--Pacemaker集群日常管理命令 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -600,6 +523,12 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
 
         </div>
         
@@ -619,8 +548,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/simiam.jpg"
@@ -731,6 +669,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-问题描述"><span class="nav-number">1.</span> <span class="nav-text">1. 问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-解决方案"><span class="nav-number">2.</span> <span class="nav-text">2. 解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-问题1解决思路："><span class="nav-number">2.1.</span> <span class="nav-text">2.1. 问题1解决思路：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-问题2-3解决思路："><span class="nav-number">2.2.</span> <span class="nav-text">2.2. 问题2,3解决思路：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -828,11 +782,9 @@
   
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
 
 
   
@@ -1030,26 +982,6 @@
 
 
   
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   
 
 
