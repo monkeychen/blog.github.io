@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://cloudnoter.com/"/>
-  <updated>2017-05-07T13:38:24.000Z</updated>
+  <updated>2017-05-07T13:47:54.000Z</updated>
   <id>http://cloudnoter.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://cloudnoter.com/2017/05/08/ZooKeeper-Administrator-s-Guide%E4%B8%AD%E6%96%87%E7%89%88/"/>
     <id>http://cloudnoter.com/2017/05/08/ZooKeeper-Administrator-s-Guide中文版/</id>
     <published>2017-05-07T19:03:24.000Z</published>
-    <updated>2017-05-07T13:38:24.000Z</updated>
+    <updated>2017-05-07T13:47:54.000Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>本文档主要介绍ZooKeeper部署及日常管理</p>
@@ -155,8 +155,7 @@
 <h3 id="ZooKeeper的优势与局限"><a href="#ZooKeeper的优势与局限" class="headerlink" title="ZooKeeper的优势与局限"></a><span id="2.3"></span>ZooKeeper的优势与局限</h3><p>无</p>
 <h3 id="管理"><a href="#管理" class="headerlink" title="管理"></a><span id="2.4"></span>管理</h3><p>无</p>
 <h3 id="维护"><a href="#维护" class="headerlink" title="维护"></a><span id="2.5"></span>维护</h3><p>ZooKeeper的长期维护需求几乎没有，然而你仍然需要注意如下几件事情：</p>
-<h4 id="持续的数据目录清理"><a href="#持续的数据目录清理" class="headerlink" title="持续的数据目录清理"></a>持续的数据目录清理</h4><hr>
-<p><strong>待续…</strong></p>
+<h4 id="持续的数据目录清理"><a href="#持续的数据目录清理" class="headerlink" title="持续的数据目录清理"></a>持续的数据目录清理</h4><h2 id="gt-转载请注明出处：cloudnoter-com"><a href="#gt-转载请注明出处：cloudnoter-com" class="headerlink" title="&gt; 转载请注明出处：cloudnoter.com"></a>&gt; 转载请注明出处：<a href="http://cloudnoter.com">cloudnoter.com</a></h2><p><strong>待续…</strong></p>
 ]]></content>
     
     <summary type="html">
@@ -241,7 +240,7 @@
     <link href="http://cloudnoter.com/2017/05/07/JVM%E6%96%B9%E6%B3%95%E5%8C%BA-PermGen-%E5%86%85%E5%AD%98%E5%BF%AB%E9%80%9F%E9%A3%99%E5%8D%87%E9%97%AE%E9%A2%98/"/>
     <id>http://cloudnoter.com/2017/05/07/JVM方法区-PermGen-内存快速飙升问题/</id>
     <published>2017-05-07T07:01:22.000Z</published>
-    <updated>2017-05-07T11:29:54.000Z</updated>
+    <updated>2017-05-07T13:48:21.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>自从平台升级到3.0后，应用的JVM变得非常不稳定，主要体现为以下三个问题：</p>
 <ol>
@@ -260,6 +259,9 @@
 <p>到目前为止，我一直没搞清楚为何要用代理类型的连接，这代理的作用从代码中也没看出个门道来，也不是为做监控。</p>
 </blockquote>
 <p>原因定位到了，解决办法就很简单了：直接用阿里的druid替换掉。测试结果证明前面的分析是正确的。</p>
+<blockquote>
+<p>转载请注明出处：<a href="http://cloudnoter.com">cloudnoter.com</a></p>
+</blockquote>
 ]]></content>
     
     <summary type="html">
@@ -288,7 +290,7 @@
     <link href="http://cloudnoter.com/2017/04/29/HA%E4%B8%93%E9%A2%98-Pacemaker%E6%97%A5%E5%B8%B8%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4/"/>
     <id>http://cloudnoter.com/2017/04/29/HA专题-Pacemaker日常管理命令/</id>
     <published>2017-04-29T13:20:49.000Z</published>
-    <updated>2017-05-06T23:13:06.000Z</updated>
+    <updated>2017-05-07T13:48:39.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。</p>
 <blockquote>
@@ -368,6 +370,9 @@
 <figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">crmsh # crm <span class="keyword">history</span></div><div class="line">crmsh # peinputs</div><div class="line">crmsh # transition <span class="keyword">pe</span>-<span class="built_in">input</span>-<span class="number">10</span></div><div class="line">crmsh # transition <span class="built_in">log</span> <span class="keyword">pe</span>-<span class="built_in">input</span>-<span class="number">10</span></div></pre></td></tr></table></figure>
 <h2 id="Configuration-scripts"><a href="#Configuration-scripts" class="headerlink" title="Configuration scripts"></a>Configuration scripts</h2><p>Create and apply multiple-step cluster configurations including<br>configuration of cluster resources</p>
 <figure class="highlight livescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">crmsh <span class="comment"># crm script show apache</span></div><div class="line">crmsh <span class="comment"># crm script run apache \</span></div><div class="line">    id=WebSite <span class="string">\</span></div><div class="line">    install=<span class="literal">true</span> <span class="string">\</span></div><div class="line">    virtual-ip:ip=<span class="number">192.168</span>.<span class="number">0.15</span> <span class="string">\</span></div><div class="line">    database:id=WebData <span class="string">\</span></div><div class="line">    database:install=<span class="literal">true</span></div></pre></td></tr></table></figure>
+<blockquote>
+<p>转载请注明出处：<a href="http://cloudnoter.com">cloudnoter.com</a></p>
+</blockquote>
 ]]></content>
     
     <summary type="html">
@@ -397,7 +402,7 @@
     <link href="http://cloudnoter.com/2016/11/09/Java%E5%B0%8F%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/"/>
     <id>http://cloudnoter.com/2016/11/09/Java小问题汇总/</id>
     <published>2016-11-08T22:09:00.000Z</published>
-    <updated>2017-04-29T06:13:36.000Z</updated>
+    <updated>2017-05-07T13:47:18.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="1-MySQL5-7下的JSON字段中文乱码问题"><a href="#1-MySQL5-7下的JSON字段中文乱码问题" class="headerlink" title="1. MySQL5.7下的JSON字段中文乱码问题"></a>1. MySQL5.7下的JSON字段中文乱码问题</h2><p>中文乱码问题在Java Web开发中经常碰到，大部分原因是后端与前端的编码不一致造成的（如tomcat的默认编码为ISO-8859-1，而前端为GBK），解决办法也简单，只需要加一个<code>CharsetEncodingFilter</code>就行。但本文要讲的不是这一类总是，而是纯粹的后端问题。</p>
 <h3 id="1-1-环境准备"><a href="#1-1-环境准备" class="headerlink" title="1.1 环境准备"></a>1.1 环境准备</h3><blockquote>
@@ -431,7 +436,17 @@
 <p>因为<code>subList</code>方法返回的是<code>ArrayList</code>的内部类<code>SubList</code>，并不是<code>ArrayList</code>，而是<code>ArrayList</code>的一个视图，对于内部类<code>SubList</code>的所有操作最终会反映到原列表上。</p>
 <h3 id="2-3-Arrays-asList-方法返回值的坑"><a href="#2-3-Arrays-asList-方法返回值的坑" class="headerlink" title="2.3. Arrays.asList()方法返回值的坑"></a>2.3. <code>Arrays.asList()</code>方法返回值的坑</h3><p>使用工具类<code>Arrays.asList()</code>把数组转换成集合时，不能使用其修改集合相关的方法，它的 <code>add/remove/clear</code>方法会抛出<code>UnsupportedOperationException</code>异常。因为<code>asList</code>方法的返回对象是一个<code>Arrays</code>内部类，并没有实现集合的修改方法。<code>Arrays.asList</code>体现的是适配器模式，只是转换接口，后台的数据仍是数组。</p>
  <figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">String</span>[] <span class="built_in">str</span> = <span class="keyword">new</span> <span class="keyword">String</span>[] &#123; <span class="string">"a"</span>, <span class="string">"b"</span> &#125;;</div><div class="line">List list = Arrays.asList(<span class="built_in">str</span>);</div><div class="line">list.<span class="built_in">add</span>(<span class="string">"c"</span>); <span class="comment">// 运行时异常。</span></div><div class="line"><span class="built_in">str</span>[<span class="number">0</span>]= <span class="string">"gujin"</span>; <span class="comment">// 则list.get(0)也会随之修改。</span></div></pre></td></tr></table></figure>
-<h2 id="3-待续…"><a href="#3-待续…" class="headerlink" title="3. 待续…"></a>3. 待续…</h2><blockquote>
+<h2 id="3-新版Eclipse-Neon运行Junit报NPE"><a href="#3-新版Eclipse-Neon运行Junit报NPE" class="headerlink" title="3. 新版Eclipse Neon运行Junit报NPE"></a>3. 新版Eclipse Neon运行Junit报NPE</h2><ul>
+<li><strong>问题描述</strong>：在Eclipse中创建单元测试用例（项目依赖的版本为junit-4.4）时，报如下错误</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">java<span class="selector-class">.lang</span><span class="selector-class">.NullPointerException</span></div><div class="line">	at org<span class="selector-class">.eclipse</span><span class="selector-class">.jdt</span><span class="selector-class">.internal</span><span class="selector-class">.junit4</span><span class="selector-class">.runner</span><span class="selector-class">.SubForestFilter</span><span class="selector-class">.shouldRun</span>(SubForestFilter<span class="selector-class">.java</span>:<span class="number">81</span>)</div><div class="line">	at org<span class="selector-class">.junit</span><span class="selector-class">.internal</span><span class="selector-class">.runners</span><span class="selector-class">.JUnit4ClassRunner</span><span class="selector-class">.filter</span>(JUnit4ClassRunner<span class="selector-class">.java</span>:<span class="number">110</span>)</div><div class="line">	at org<span class="selector-class">.junit</span><span class="selector-class">.runner</span><span class="selector-class">.manipulation</span><span class="selector-class">.Filter</span><span class="selector-class">.apply</span>(Filter<span class="selector-class">.java</span>:<span class="number">47</span>)</div><div class="line">	at org<span class="selector-class">.junit</span><span class="selector-class">.internal</span><span class="selector-class">.requests</span><span class="selector-class">.FilterRequest</span><span class="selector-class">.getRunner</span>(FilterRequest<span class="selector-class">.java</span>:<span class="number">34</span>)</div><div class="line">	at org<span class="selector-class">.eclipse</span><span class="selector-class">.jdt</span><span class="selector-class">.internal</span><span class="selector-class">.junit4</span><span class="selector-class">.runner</span><span class="selector-class">.JUnit4TestLoader</span><span class="selector-class">.createFilteredTest</span>(JUnit4TestLoader<span class="selector-class">.java</span>:<span class="number">77</span>)</div><div class="line">	at org<span class="selector-class">.eclipse</span><span class="selector-class">.jdt</span><span class="selector-class">.internal</span><span class="selector-class">.junit4</span><span class="selector-class">.runner</span><span class="selector-class">.JUnit4TestLoader</span><span class="selector-class">.createTest</span>(JUnit4TestLoader<span class="selector-class">.java</span>:<span class="number">68</span>)</div><div class="line">	at org<span class="selector-class">.eclipse</span><span class="selector-class">.jdt</span><span class="selector-class">.internal</span><span class="selector-class">.junit4</span><span class="selector-class">.runner</span><span class="selector-class">.JUnit4TestLoader</span><span class="selector-class">.loadTests</span>(JUnit4TestLoader<span class="selector-class">.java</span>:<span class="number">43</span>)</div><div class="line">	at org<span class="selector-class">.eclipse</span><span class="selector-class">.jdt</span><span class="selector-class">.internal</span><span class="selector-class">.junit</span><span class="selector-class">.runner</span><span class="selector-class">.RemoteTestRunner</span><span class="selector-class">.runTests</span>(RemoteTestRunner<span class="selector-class">.java</span>:<span class="number">444</span>)</div><div class="line">	at org<span class="selector-class">.eclipse</span><span class="selector-class">.jdt</span><span class="selector-class">.internal</span><span class="selector-class">.junit</span><span class="selector-class">.runner</span><span class="selector-class">.RemoteTestRunner</span><span class="selector-class">.runTests</span>(RemoteTestRunner<span class="selector-class">.java</span>:<span class="number">678</span>)</div></pre></td></tr></table></figure>
+<ul>
+<li><p><strong>原因分析</strong>：新版Eclipse在启动单元测试用例时调用的是JUnit新版本的方法，即Eclipse已不支持junit4.9以下的版本。</p>
+</li>
+<li><p><strong>解决办法</strong>：升级JUnit依赖版本即可 </p>
+</li>
+</ul>
+<h2 id="待续…"><a href="#待续…" class="headerlink" title="待续…"></a>待续…</h2><blockquote>
 <p>转载请注明出处：<a href="http://cloudnoter.com">cloudnoter.com</a></p>
 </blockquote>
 ]]></content>

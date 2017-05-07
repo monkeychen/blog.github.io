@@ -96,7 +96,7 @@
 <meta property="og:url" content="http://cloudnoter.com/2017/04/29/HA专题-Pacemaker日常管理命令/index.html">
 <meta property="og:site_name" content="Simiam">
 <meta property="og:description" content="概述Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。  从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-based GUI界面）文档来源于Pacemaker的G">
-<meta property="og:updated_time" content="2017-05-06T23:13:06.000Z">
+<meta property="og:updated_time" content="2017-05-07T13:48:39.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HA专题--Pacemaker集群日常管理命令">
 <meta name="twitter:description" content="概述Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。  从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-based GUI界面）文档来源于Pacemaker的G">
@@ -508,6 +508,9 @@
 <figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">crmsh # crm <span class="keyword">history</span></div><div class="line">crmsh # peinputs</div><div class="line">crmsh # transition <span class="keyword">pe</span>-<span class="built_in">input</span>-<span class="number">10</span></div><div class="line">crmsh # transition <span class="built_in">log</span> <span class="keyword">pe</span>-<span class="built_in">input</span>-<span class="number">10</span></div></pre></td></tr></table></figure>
 <h2 id="Configuration-scripts"><a href="#Configuration-scripts" class="headerlink" title="Configuration scripts"></a>Configuration scripts</h2><p>Create and apply multiple-step cluster configurations including<br>configuration of cluster resources</p>
 <figure class="highlight livescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">crmsh <span class="comment"># crm script show apache</span></div><div class="line">crmsh <span class="comment"># crm script run apache \</span></div><div class="line">    id=WebSite <span class="string">\</span></div><div class="line">    install=<span class="literal">true</span> <span class="string">\</span></div><div class="line">    virtual-ip:ip=<span class="number">192.168</span>.<span class="number">0.15</span> <span class="string">\</span></div><div class="line">    database:id=WebData <span class="string">\</span></div><div class="line">    database:install=<span class="literal">true</span></div></pre></td></tr></table></figure>
+<blockquote>
+<p>转载请注明出处：<a href="http://cloudnoter.com">cloudnoter.com</a></p>
+</blockquote>
 
       
     </div>
