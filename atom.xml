@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://cloudnoter.com/"/>
-  <updated>2017-05-07T11:25:37.000Z</updated>
+  <updated>2017-05-07T11:31:13.000Z</updated>
   <id>http://cloudnoter.com/</id>
   
   <author>
@@ -20,19 +20,19 @@
     <link href="http://cloudnoter.com/2017/05/08/ZooKeeper-Administrator-s-Guide%E4%B8%AD%E6%96%87%E7%89%88/"/>
     <id>http://cloudnoter.com/2017/05/08/ZooKeeper-Administrator-s-Guide中文版/</id>
     <published>2017-05-07T19:03:24.000Z</published>
-    <updated>2017-05-07T11:25:37.000Z</updated>
+    <updated>2017-05-07T11:31:13.000Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>本文档主要介绍ZooKeeper部署及日常管理</p>
 </blockquote>
-<h2 id="1-安装部署"><a href="#1-安装部署" class="headerlink" title="1. 安装部署"></a>1. 安装部署</h2><p>本章节包含与ZooKeeper部署有关的内容，具体来说包含下面三部分内容：</p>
+<h2 id="安装部署"><a href="#安装部署" class="headerlink" title="安装部署"></a>安装部署</h2><p>本章节包含与ZooKeeper部署有关的内容，具体来说包含下面三部分内容：</p>
 <ul>
 <li><a href="#1.1">系统软硬件需求</a></li>
 <li><a href="#1.2">集群部署（安装）</a></li>
 <li><a href="#1.3">单机开发环境部署（安装）</a></li>
 </ul>
 <p>前两部分主要介绍如何在数据中心等生产环境上安装部署ZooKeeper，第三部分则介绍如何在非生产环境上（如为了评估、测试、开发等目的）安装部署ZooKeeper。</p>
-<h3 id="1-1-系统软硬件需求"><a href="#1-1-系统软硬件需求" class="headerlink" title="1.1. 系统软硬件需求"></a>1.1. 系统软硬件需求<span id="1.1"></span></h3><h4 id="1-1-1-支持的OS平台"><a href="#1-1-1-支持的OS平台" class="headerlink" title="1.1.1. 支持的OS平台"></a>1.1.1. 支持的OS平台</h4><p>ZooKeeper框架由多个组件组成，有的组件支持全部平台，而还有一些组件只支持部分平台，详细支持情况如下：</p>
+<h3 id="系统软硬件需求"><a href="#系统软硬件需求" class="headerlink" title="系统软硬件需求"></a>系统软硬件需求<span id="1.1"></span></h3><h4 id="支持的OS平台"><a href="#支持的OS平台" class="headerlink" title="支持的OS平台"></a>支持的OS平台</h4><p>ZooKeeper框架由多个组件组成，有的组件支持全部平台，而还有一些组件只支持部分平台，详细支持情况如下：</p>
 <ul>
 <li><strong>Client：</strong>它是一个<code>Java</code>客户端连接库，上层应用系统通过它连接至ZooKeeper集群。</li>
 <li><strong>Server：</strong>它是运行在ZooKeeper集群节点上的一个<code>Java</code>后台服务程序。</li>
@@ -87,12 +87,13 @@
 </tr>
 </tbody>
 </table>
+<a id="more"></a>
 <blockquote>
 <p><strong>D：支持开发环境， P：支持生成环境， /：不支持任何环境</strong></p>
 </blockquote>
 <p>上表中未显式注明支持的组件在相应平台上可能不能正常运行。虽然ZooKeeper社区会尽量修复在未支持平台上发现的BUG，但并无法保证会修复全部BUG。</p>
-<h4 id="1-1-2-软件要求"><a href="#1-1-2-软件要求" class="headerlink" title="1.1.2. 软件要求"></a>1.1.2. 软件要求</h4><p>ZooKeeper需要运行在JDK6或以上版本中。若ZooKeeper以集群模式部署，则推荐的节点数至少为3，同时建议部署在独立的服务器上。在Yahoo!，ZooKeeper通常部署在运行RHEL系统的服务器上（服务器配置：双核CPU、2G内存、80G容量IDE硬盘）。</p>
-<h3 id="1-2-集群部署（安装）"><a href="#1-2-集群部署（安装）" class="headerlink" title="1.2. 集群部署（安装）"></a>1.2. 集群部署（安装）<span id="1.2"></span></h3><p>为了保证ZooKeeper服务的可靠性，您应该以集群模式部署ZooKeeper服务。只要半数以上的集群节点在线，服务将是可用的。因为ZooKeeper需要半数以上节点同意才能选举出Leader，所以建议ZooKeeper集群的节点数为奇数个。举个例子，对于有四个节点的集群只能应付一个节点宕机的异常，如果有两个节点宕机，则剩下两个节点未达到法定的半数以上选票，ZooKeeper服务将变为不可用。而如果集群有五个节点，则集群就可以应付二个节点宕机的异常。</p>
+<h4 id="软件要求"><a href="#软件要求" class="headerlink" title="软件要求"></a>软件要求</h4><p>ZooKeeper需要运行在JDK6或以上版本中。若ZooKeeper以集群模式部署，则推荐的节点数至少为3，同时建议部署在独立的服务器上。在Yahoo!，ZooKeeper通常部署在运行RHEL系统的服务器上（服务器配置：双核CPU、2G内存、80G容量IDE硬盘）。</p>
+<h3 id="集群部署（安装）"><a href="#集群部署（安装）" class="headerlink" title="集群部署（安装）"></a>集群部署（安装）<span id="1.2"></span></h3><p>为了保证ZooKeeper服务的可靠性，您应该以集群模式部署ZooKeeper服务。只要半数以上的集群节点在线，服务将是可用的。因为ZooKeeper需要半数以上节点同意才能选举出Leader，所以建议ZooKeeper集群的节点数为奇数个。举个例子，对于有四个节点的集群只能应付一个节点宕机的异常，如果有两个节点宕机，则剩下两个节点未达到法定的半数以上选票，ZooKeeper服务将变为不可用。而如果集群有五个节点，则集群就可以应付二个节点宕机的异常。</p>
 <blockquote>
 <p><strong>提示：</strong><br>正如<a href="https://zookeeper.apache.org/doc/r3.4.10/zookeeperStarted.html" target="_blank" rel="external">《ZooKeeper快速入门》</a>文档中所提到的，至少需要三个节点的ZooKeeper集群才具备容灾特性，因此我们强烈建议集群节点数为奇数。<br>通常情况下，生产环境下，集群节点数只需要三个。但如果为了在服务维护场景下也保证最大的可靠性，您也许会部署五个节点的集群。原因很简单，如果集群节点为三个，当你对其中一个节点进行维护操作，将很有可能因维护操作导致集群异常。而如果集群节点为5个，那你可以直接将维护节点下线，此时集群仍然可正常提供服务（就算四个节点中的任意一个突然宕机）。<br>您的冗余措施应该包括生产环境的各个方面。如果你部署三个节点的ZooKeeper集群，但你却将这三个节点都连接至同一个网络交换机，那么当交换机宕掉时，你的集群服务也一样是不可用的。</p>
 </blockquote>
@@ -119,8 +120,8 @@
 <li>7.接下来你就可以连接至ZooKeeper节点来测试部署是否成功。<br>在<code>Java</code>环境下，你可以运行下面的命令连接至已启动的ZooKeeper服务节点并执行一些简单的操作</li>
 </ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> bin/zkCli.sh -server 127.0.0.1:2181</span></div></pre></td></tr></table></figure>
-<h3 id="1-3-单机开发环境部署介绍"><a href="#1-3-单机开发环境部署介绍" class="headerlink" title="1.3. 单机开发环境部署介绍"></a>1.3. 单机开发环境部署介绍<span id="1.3"></span></h3><p>如果你想部署ZooKeeper以便于开发测试，那你可以使用单机部署模式。然后安装Java或C客户端连接库，同时在配置文件中将服务器信息与开发机绑定。<br>具体安装部署步骤也集群部署模式类似，唯一不同的是zoo.cfg配置文件更简单一些。你可以从<a href="https://zookeeper.apache.org/doc/r3.4.10/zookeeperStarted.html" target="_blank" rel="external">《ZooKeeper快速入门》</a>文档中的相关章节获取详细的操作步骤。<br>关于安装客户端连接库的相关信息，你可以从<a href="https://zookeeper.apache.org/doc/r3.4.10/zookeeperProgrammers.html" target="_blank" rel="external">ZooKeeper Programmer’s Guide</a>文件的Bindings章节中获取。</p>
-<h2 id="2-维护管理"><a href="#2-维护管理" class="headerlink" title="2. 维护管理"></a>2. 维护管理</h2><p>这部分包含ZooKeeper运行与维护相关的信息，其包含如下几个主题：</p>
+<h3 id="单机开发环境部署介绍"><a href="#单机开发环境部署介绍" class="headerlink" title="单机开发环境部署介绍"></a>单机开发环境部署介绍<span id="1.3"></span></h3><p>如果你想部署ZooKeeper以便于开发测试，那你可以使用单机部署模式。然后安装Java或C客户端连接库，同时在配置文件中将服务器信息与开发机绑定。<br>具体安装部署步骤也集群部署模式类似，唯一不同的是zoo.cfg配置文件更简单一些。你可以从<a href="https://zookeeper.apache.org/doc/r3.4.10/zookeeperStarted.html" target="_blank" rel="external">《ZooKeeper快速入门》</a>文档中的相关章节获取详细的操作步骤。<br>关于安装客户端连接库的相关信息，你可以从<a href="https://zookeeper.apache.org/doc/r3.4.10/zookeeperProgrammers.html" target="_blank" rel="external">ZooKeeper Programmer’s Guide</a>文件的Bindings章节中获取。</p>
+<h2 id="维护管理"><a href="#维护管理" class="headerlink" title="维护管理"></a>维护管理</h2><p>这部分包含ZooKeeper运行与维护相关的信息，其包含如下几个主题：</p>
 <ul>
 <li><a href="#2.1">ZooKeeper集群部署规划</a></li>
 <li><a href="#2.2">Provisioning</a></li>
@@ -137,11 +138,11 @@
 <li><a href="#2.13">Things to Avoid</a></li>
 <li><a href="#2.14">Best Practices</a></li>
 </ul>
-<h3 id="2-1-ZooKeeper集群部署规划"><a href="#2-1-ZooKeeper集群部署规划" class="headerlink" title="2.1. ZooKeeper集群部署规划"></a>2.1. ZooKeeper集群部署规划<span id="2.1"></span></h3><p>ZooKeeper可靠性依赖于两个基本的假设：</p>
-<ol>
+<h3 id="ZooKeeper集群部署规划"><a href="#ZooKeeper集群部署规划" class="headerlink" title="ZooKeeper集群部署规划"></a>ZooKeeper集群部署规划<span id="2.1"></span></h3><p>ZooKeeper可靠性依赖于两个基本的假设：</p>
+<ul>
 <li>一个集群中只会有少数服务器会出错，这里的出错是指宕机或网络异常而使得服务与集群中的多数服务器失去联系。</li>
 <li>已部署的机器可以正常运行，所谓正常运行是指所有代码可以正确的执行，有适当且一致的工作时钟、存储、网络。</li>
-</ol>
+</ul>
 <p>为了最大可能的保证上述两个前提假设能够成立，这里有几个点需要考虑。一些是关于跨服务器（节点之间）需求的，而另一些是关于集群中每个节点服务器的考虑</p>
 ]]></content>
     
@@ -150,7 +151,68 @@
       &lt;blockquote&gt;
 &lt;p&gt;本文档主要介绍ZooKeeper部署及日常管理&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&quot;1-安装部署&quot;&gt;&lt;a href=&quot;#1-安装部署&quot; class=&quot;headerlink&quot; title=&quot;1. 安装部署&quot;&gt;&lt;/a&gt;1. 安装部署&lt;/
+&lt;h2 id=&quot;安装部署&quot;&gt;&lt;a href=&quot;#安装部署&quot; class=&quot;headerlink&quot; title=&quot;安装部署&quot;&gt;&lt;/a&gt;安装部署&lt;/h2&gt;&lt;p&gt;本章节包含与ZooKeeper部署有关的内容，具体来说包含下面三部分内容：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#1.1&quot;&gt;系统软硬件需求&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#1.2&quot;&gt;集群部署（安装）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#1.3&quot;&gt;单机开发环境部署（安装）&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;前两部分主要介绍如何在数据中心等生产环境上安装部署ZooKeeper，第三部分则介绍如何在非生产环境上（如为了评估、测试、开发等目的）安装部署ZooKeeper。&lt;/p&gt;
+&lt;h3 id=&quot;系统软硬件需求&quot;&gt;&lt;a href=&quot;#系统软硬件需求&quot; class=&quot;headerlink&quot; title=&quot;系统软硬件需求&quot;&gt;&lt;/a&gt;系统软硬件需求&lt;span id=&quot;1.1&quot;&gt;&lt;/span&gt;&lt;/h3&gt;&lt;h4 id=&quot;支持的OS平台&quot;&gt;&lt;a href=&quot;#支持的OS平台&quot; class=&quot;headerlink&quot; title=&quot;支持的OS平台&quot;&gt;&lt;/a&gt;支持的OS平台&lt;/h4&gt;&lt;p&gt;ZooKeeper框架由多个组件组成，有的组件支持全部平台，而还有一些组件只支持部分平台，详细支持情况如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Client：&lt;/strong&gt;它是一个&lt;code&gt;Java&lt;/code&gt;客户端连接库，上层应用系统通过它连接至ZooKeeper集群。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Server：&lt;/strong&gt;它是运行在ZooKeeper集群节点上的一个&lt;code&gt;Java&lt;/code&gt;后台服务程序。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Native Client：&lt;/strong&gt;它是一个用&lt;code&gt;C&lt;/code&gt;语言实现的客户端连接库，其与&lt;code&gt;Java&lt;/code&gt;客户端库一样，上层应用（非&lt;code&gt;Java&lt;/code&gt;实现）通过它连接至ZooKeeper集群。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Contrib：&lt;/strong&gt;它是指多个可选的扩展组件。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&quot;text-align:left&quot;&gt;操作系统&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;Client&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;Server&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;Native Client&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;Contrib&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;GNU/Linux&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;D + P&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;D + P&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;D + P&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;D + P&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;Solaris&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;D + P&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;D + P&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;/&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;/&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;FreeBSD&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;D + P&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;D + P&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;/&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;/&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;Windows&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;D + P&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;D + P&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;/&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;/&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;Mac OS X&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;D&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;D&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;/&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;/&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
     
     </summary>
     
@@ -166,17 +228,17 @@
     <link href="http://cloudnoter.com/2017/05/07/JVM%E6%96%B9%E6%B3%95%E5%8C%BA-PermGen-%E5%86%85%E5%AD%98%E5%BF%AB%E9%80%9F%E9%A3%99%E5%8D%87%E9%97%AE%E9%A2%98/"/>
     <id>http://cloudnoter.com/2017/05/07/JVM方法区-PermGen-内存快速飙升问题/</id>
     <published>2017-05-07T07:01:22.000Z</published>
-    <updated>2017-05-06T23:13:25.000Z</updated>
+    <updated>2017-05-07T11:29:54.000Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h2><p>自从平台升级到3.0后，应用的JVM变得非常不稳定，主要体现为以下三个问题：</p>
+    <content type="html"><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>自从平台升级到3.0后，应用的JVM变得非常不稳定，主要体现为以下三个问题：</p>
 <ol>
 <li>内存泄漏：2G的JVM，2天就崩。</li>
 <li>方法区内存持续飙升，最终导致频繁的触发FullGC</li>
 <li>class load频繁导致CPU有30%的资源浪费</li>
 </ol>
-<h2 id="2-解决方案"><a href="#2-解决方案" class="headerlink" title="2. 解决方案"></a>2. 解决方案</h2><h3 id="2-1-问题1解决思路："><a href="#2-1-问题1解决思路：" class="headerlink" title="2.1. 问题1解决思路："></a>2.1. <strong>问题1解决思路</strong>：</h3><p>问题1相对好解决，先用jmap将堆快照dump出来，用mat分析了下，根据GC-ROOT找到引用路径即可，泄漏原因为：平台自研JPA组件的SQLQuery在实现lazy load时，由于CGLib使用不当(在向当前线程注册回调方法拦截器时，在使用完之后未及时注销)导致的查询结果缓存被线程池中的线程引用，在线程池容量开得比较大时最终将导致OOM异常。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="问题1解决思路："><a href="#问题1解决思路：" class="headerlink" title="问题1解决思路："></a><strong>问题1解决思路</strong>：</h3><p>问题1相对好解决，先用jmap将堆快照dump出来，用mat分析了下，根据GC-ROOT找到引用路径即可，泄漏原因为：平台自研JPA组件的SQLQuery在实现lazy load时，由于CGLib使用不当(在向当前线程注册回调方法拦截器时，在使用完之后未及时注销)导致的查询结果缓存被线程池中的线程引用，在线程池容量开得比较大时最终将导致OOM异常。</p>
 <a id="more"></a>
-<h3 id="2-2-问题2-3解决思路："><a href="#2-2-问题2-3解决思路：" class="headerlink" title="2.2. 问题2,3解决思路："></a>2.2. <strong>问题2,3解决思路</strong>：</h3><p>以前从没碰到这种情况，方法区的内存大小在应用启动后应该是处于一个相对稳定的状态（因为大部分类在启动时就已经加载完了，就算使用CGLib动态生成代理类也应该是有一个上限，最多就是全部类的一倍），但问题2明显不属于这种情况，不管开多大的内存给方法区（通过<code>-X:MaxPermSize=xxxM</code>设置大小），应用总能在几分钟内持续升到最高值并触发FullGC，GC结束后，方法区占用内存降至接近0M（此处就发生的<code>class unload</code>），然后又进入新一轮的飙升周期（此处就发生<code>class loader</code>）。</p>
+<h3 id="问题2-3解决思路："><a href="#问题2-3解决思路：" class="headerlink" title="问题2,3解决思路："></a><strong>问题2,3解决思路</strong>：</h3><p>以前从没碰到这种情况，方法区的内存大小在应用启动后应该是处于一个相对稳定的状态（因为大部分类在启动时就已经加载完了，就算使用CGLib动态生成代理类也应该是有一个上限，最多就是全部类的一倍），但问题2明显不属于这种情况，不管开多大的内存给方法区（通过<code>-X:MaxPermSize=xxxM</code>设置大小），应用总能在几分钟内持续升到最高值并触发FullGC，GC结束后，方法区占用内存降至接近0M（此处就发生的<code>class unload</code>），然后又进入新一轮的飙升周期（此处就发生<code>class loader</code>）。</p>
 <p>刚开始以为仍然是JPA组件使用CGLib不当的问题，认为是为了实现<code>lazy load</code>及权限控制时使用了过多的动态代理（每个<code>Action,Model,Service</code>都被创建为动态代理，更不合理的时每个model的get方法都使用<code>ProxyMethodInterceptor</code>，问当事人原因，其答复说为了<code>lazy load</code>，但其实只有关联字段，集合字段才有必要<code>lazy load</code>）。基于此做了修改，但测试结果还是没解决问题：因为JPA中并不是每次都创建一个新的proxy，而是根据class做了缓存的，因此只能另找办法。</p>
 <p>既然是方法区的问题，那是否可以将方法区的内容dump出来呢？于是查看了下<code>jmap</code>参数，其中的有<code>-permstat</code>可以用：<code>jmap -permstat &lt;pid&gt;</code><br>结果如下（截取）</p>
 <figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="number">25007</span> intern Strings occupying <span class="number">2799672</span> bytes.  </div><div class="line">class_loader classesbytes parent_loaderalive? type  </div><div class="line">  </div><div class="line">  </div><div class="line">&lt;bootstrap&gt; <span class="number">262415108248</span>  null  live &lt;internal&gt;  </div><div class="line"><span class="number">0x000000076f045910</span> <span class="number">38758792</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span>  </div><div class="line"><span class="number">0x000000076f942f10</span> <span class="number">38758792</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span>  </div><div class="line"><span class="number">0x00000007d00e9ba0</span> <span class="number">40816816</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span>  </div><div class="line"><span class="number">0x00000007dd170c08</span> <span class="number">40816816</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span>  </div><div class="line"><span class="number">0x000000079e2f0070</span> <span class="number">40816816</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span>  </div><div class="line"><span class="number">0x00000007cd6b1140</span> <span class="number">13112</span>  null  dead sun/reflect/DelegatingClassLoader@<span class="number">0x0000000740067648</span>  </div><div class="line"><span class="number">0x000000076fb5d130</span> <span class="number">38758792</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span>  </div><div class="line"><span class="number">0x000000076fbe47c0</span> <span class="number">38758792</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span></div></pre></td></tr></table></figure>
@@ -189,13 +251,13 @@
     
     <summary type="html">
     
-      &lt;h2 id=&quot;1-问题描述&quot;&gt;&lt;a href=&quot;#1-问题描述&quot; class=&quot;headerlink&quot; title=&quot;1. 问题描述&quot;&gt;&lt;/a&gt;1. 问题描述&lt;/h2&gt;&lt;p&gt;自从平台升级到3.0后，应用的JVM变得非常不稳定，主要体现为以下三个问题：&lt;/p&gt;
+      &lt;h2 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h2&gt;&lt;p&gt;自从平台升级到3.0后，应用的JVM变得非常不稳定，主要体现为以下三个问题：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;内存泄漏：2G的JVM，2天就崩。&lt;/li&gt;
 &lt;li&gt;方法区内存持续飙升，最终导致频繁的触发FullGC&lt;/li&gt;
 &lt;li&gt;class load频繁导致CPU有30%的资源浪费&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id=&quot;2-解决方案&quot;&gt;&lt;a href=&quot;#2-解决方案&quot; class=&quot;headerlink&quot; title=&quot;2. 解决方案&quot;&gt;&lt;/a&gt;2. 解决方案&lt;/h2&gt;&lt;h3 id=&quot;2-1-问题1解决思路：&quot;&gt;&lt;a href=&quot;#2-1-问题1解决思路：&quot; class=&quot;headerlink&quot; title=&quot;2.1. 问题1解决思路：&quot;&gt;&lt;/a&gt;2.1. &lt;strong&gt;问题1解决思路&lt;/strong&gt;：&lt;/h3&gt;&lt;p&gt;问题1相对好解决，先用jmap将堆快照dump出来，用mat分析了下，根据GC-ROOT找到引用路径即可，泄漏原因为：平台自研JPA组件的SQLQuery在实现lazy load时，由于CGLib使用不当(在向当前线程注册回调方法拦截器时，在使用完之后未及时注销)导致的查询结果缓存被线程池中的线程引用，在线程池容量开得比较大时最终将导致OOM异常。&lt;/p&gt;
+&lt;h2 id=&quot;解决方案&quot;&gt;&lt;a href=&quot;#解决方案&quot; class=&quot;headerlink&quot; title=&quot;解决方案&quot;&gt;&lt;/a&gt;解决方案&lt;/h2&gt;&lt;h3 id=&quot;问题1解决思路：&quot;&gt;&lt;a href=&quot;#问题1解决思路：&quot; class=&quot;headerlink&quot; title=&quot;问题1解决思路：&quot;&gt;&lt;/a&gt;&lt;strong&gt;问题1解决思路&lt;/strong&gt;：&lt;/h3&gt;&lt;p&gt;问题1相对好解决，先用jmap将堆快照dump出来，用mat分析了下，根据GC-ROOT找到引用路径即可，泄漏原因为：平台自研JPA组件的SQLQuery在实现lazy load时，由于CGLib使用不当(在向当前线程注册回调方法拦截器时，在使用完之后未及时注销)导致的查询结果缓存被线程池中的线程引用，在线程池容量开得比较大时最终将导致OOM异常。&lt;/p&gt;
     
     </summary>
     

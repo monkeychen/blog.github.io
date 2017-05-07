@@ -89,17 +89,17 @@
 
 
 
-<meta name="description" content="本文档主要介绍ZooKeeper部署及日常管理  1. 安装部署本章节包含与ZooKeeper部署有关的内容，具体来说包含下面三部分内容：  系统软硬件需求 集群部署（安装） 单机开发环境部署（安装）  前两部分主要介绍如何在数据中心等生产环境上安装部署ZooKeeper，第三部分则介绍如何在非生产环境上（如为了评估、测试、开发等目的）安装部署ZooKeeper。 1.1. 系统软硬件需求1.1">
+<meta name="description" content="本文档主要介绍ZooKeeper部署及日常管理  安装部署本章节包含与ZooKeeper部署有关的内容，具体来说包含下面三部分内容：  系统软硬件需求 集群部署（安装） 单机开发环境部署（安装）  前两部分主要介绍如何在数据中心等生产环境上安装部署ZooKeeper，第三部分则介绍如何在非生产环境上（如为了评估、测试、开发等目的）安装部署ZooKeeper。 系统软硬件需求支持的OS平台ZooK">
 <meta name="keywords" content="ZooKeeper">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ZooKeeper Administrator's Guide中文版">
 <meta property="og:url" content="http://cloudnoter.com/2017/05/08/ZooKeeper-Administrator-s-Guide中文版/index.html">
 <meta property="og:site_name" content="Simiam">
-<meta property="og:description" content="本文档主要介绍ZooKeeper部署及日常管理  1. 安装部署本章节包含与ZooKeeper部署有关的内容，具体来说包含下面三部分内容：  系统软硬件需求 集群部署（安装） 单机开发环境部署（安装）  前两部分主要介绍如何在数据中心等生产环境上安装部署ZooKeeper，第三部分则介绍如何在非生产环境上（如为了评估、测试、开发等目的）安装部署ZooKeeper。 1.1. 系统软硬件需求1.1">
-<meta property="og:updated_time" content="2017-05-07T11:25:37.000Z">
+<meta property="og:description" content="本文档主要介绍ZooKeeper部署及日常管理  安装部署本章节包含与ZooKeeper部署有关的内容，具体来说包含下面三部分内容：  系统软硬件需求 集群部署（安装） 单机开发环境部署（安装）  前两部分主要介绍如何在数据中心等生产环境上安装部署ZooKeeper，第三部分则介绍如何在非生产环境上（如为了评估、测试、开发等目的）安装部署ZooKeeper。 系统软硬件需求支持的OS平台ZooK">
+<meta property="og:updated_time" content="2017-05-07T11:31:13.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ZooKeeper Administrator's Guide中文版">
-<meta name="twitter:description" content="本文档主要介绍ZooKeeper部署及日常管理  1. 安装部署本章节包含与ZooKeeper部署有关的内容，具体来说包含下面三部分内容：  系统软硬件需求 集群部署（安装） 单机开发环境部署（安装）  前两部分主要介绍如何在数据中心等生产环境上安装部署ZooKeeper，第三部分则介绍如何在非生产环境上（如为了评估、测试、开发等目的）安装部署ZooKeeper。 1.1. 系统软硬件需求1.1">
+<meta name="twitter:description" content="本文档主要介绍ZooKeeper部署及日常管理  安装部署本章节包含与ZooKeeper部署有关的内容，具体来说包含下面三部分内容：  系统软硬件需求 集群部署（安装） 单机开发环境部署（安装）  前两部分主要介绍如何在数据中心等生产环境上安装部署ZooKeeper，第三部分则介绍如何在非生产环境上（如为了评估、测试、开发等目的）安装部署ZooKeeper。 系统软硬件需求支持的OS平台ZooK">
 
 
 
@@ -433,14 +433,14 @@
         <blockquote>
 <p>本文档主要介绍ZooKeeper部署及日常管理</p>
 </blockquote>
-<h2 id="1-安装部署"><a href="#1-安装部署" class="headerlink" title="1. 安装部署"></a>1. 安装部署</h2><p>本章节包含与ZooKeeper部署有关的内容，具体来说包含下面三部分内容：</p>
+<h2 id="安装部署"><a href="#安装部署" class="headerlink" title="安装部署"></a>安装部署</h2><p>本章节包含与ZooKeeper部署有关的内容，具体来说包含下面三部分内容：</p>
 <ul>
 <li><a href="#1.1">系统软硬件需求</a></li>
 <li><a href="#1.2">集群部署（安装）</a></li>
 <li><a href="#1.3">单机开发环境部署（安装）</a></li>
 </ul>
 <p>前两部分主要介绍如何在数据中心等生产环境上安装部署ZooKeeper，第三部分则介绍如何在非生产环境上（如为了评估、测试、开发等目的）安装部署ZooKeeper。</p>
-<h3 id="1-1-系统软硬件需求"><a href="#1-1-系统软硬件需求" class="headerlink" title="1.1. 系统软硬件需求"></a>1.1. 系统软硬件需求<span id="1.1"></span></h3><h4 id="1-1-1-支持的OS平台"><a href="#1-1-1-支持的OS平台" class="headerlink" title="1.1.1. 支持的OS平台"></a>1.1.1. 支持的OS平台</h4><p>ZooKeeper框架由多个组件组成，有的组件支持全部平台，而还有一些组件只支持部分平台，详细支持情况如下：</p>
+<h3 id="系统软硬件需求"><a href="#系统软硬件需求" class="headerlink" title="系统软硬件需求"></a>系统软硬件需求<span id="1.1"></span></h3><h4 id="支持的OS平台"><a href="#支持的OS平台" class="headerlink" title="支持的OS平台"></a>支持的OS平台</h4><p>ZooKeeper框架由多个组件组成，有的组件支持全部平台，而还有一些组件只支持部分平台，详细支持情况如下：</p>
 <ul>
 <li><strong>Client：</strong>它是一个<code>Java</code>客户端连接库，上层应用系统通过它连接至ZooKeeper集群。</li>
 <li><strong>Server：</strong>它是运行在ZooKeeper集群节点上的一个<code>Java</code>后台服务程序。</li>
@@ -495,12 +495,13 @@
 </tr>
 </tbody>
 </table>
+<a id="more"></a>
 <blockquote>
 <p><strong>D：支持开发环境， P：支持生成环境， /：不支持任何环境</strong></p>
 </blockquote>
 <p>上表中未显式注明支持的组件在相应平台上可能不能正常运行。虽然ZooKeeper社区会尽量修复在未支持平台上发现的BUG，但并无法保证会修复全部BUG。</p>
-<h4 id="1-1-2-软件要求"><a href="#1-1-2-软件要求" class="headerlink" title="1.1.2. 软件要求"></a>1.1.2. 软件要求</h4><p>ZooKeeper需要运行在JDK6或以上版本中。若ZooKeeper以集群模式部署，则推荐的节点数至少为3，同时建议部署在独立的服务器上。在Yahoo!，ZooKeeper通常部署在运行RHEL系统的服务器上（服务器配置：双核CPU、2G内存、80G容量IDE硬盘）。</p>
-<h3 id="1-2-集群部署（安装）"><a href="#1-2-集群部署（安装）" class="headerlink" title="1.2. 集群部署（安装）"></a>1.2. 集群部署（安装）<span id="1.2"></span></h3><p>为了保证ZooKeeper服务的可靠性，您应该以集群模式部署ZooKeeper服务。只要半数以上的集群节点在线，服务将是可用的。因为ZooKeeper需要半数以上节点同意才能选举出Leader，所以建议ZooKeeper集群的节点数为奇数个。举个例子，对于有四个节点的集群只能应付一个节点宕机的异常，如果有两个节点宕机，则剩下两个节点未达到法定的半数以上选票，ZooKeeper服务将变为不可用。而如果集群有五个节点，则集群就可以应付二个节点宕机的异常。</p>
+<h4 id="软件要求"><a href="#软件要求" class="headerlink" title="软件要求"></a>软件要求</h4><p>ZooKeeper需要运行在JDK6或以上版本中。若ZooKeeper以集群模式部署，则推荐的节点数至少为3，同时建议部署在独立的服务器上。在Yahoo!，ZooKeeper通常部署在运行RHEL系统的服务器上（服务器配置：双核CPU、2G内存、80G容量IDE硬盘）。</p>
+<h3 id="集群部署（安装）"><a href="#集群部署（安装）" class="headerlink" title="集群部署（安装）"></a>集群部署（安装）<span id="1.2"></span></h3><p>为了保证ZooKeeper服务的可靠性，您应该以集群模式部署ZooKeeper服务。只要半数以上的集群节点在线，服务将是可用的。因为ZooKeeper需要半数以上节点同意才能选举出Leader，所以建议ZooKeeper集群的节点数为奇数个。举个例子，对于有四个节点的集群只能应付一个节点宕机的异常，如果有两个节点宕机，则剩下两个节点未达到法定的半数以上选票，ZooKeeper服务将变为不可用。而如果集群有五个节点，则集群就可以应付二个节点宕机的异常。</p>
 <blockquote>
 <p><strong>提示：</strong><br>正如<a href="https://zookeeper.apache.org/doc/r3.4.10/zookeeperStarted.html" target="_blank" rel="external">《ZooKeeper快速入门》</a>文档中所提到的，至少需要三个节点的ZooKeeper集群才具备容灾特性，因此我们强烈建议集群节点数为奇数。<br>通常情况下，生产环境下，集群节点数只需要三个。但如果为了在服务维护场景下也保证最大的可靠性，您也许会部署五个节点的集群。原因很简单，如果集群节点为三个，当你对其中一个节点进行维护操作，将很有可能因维护操作导致集群异常。而如果集群节点为5个，那你可以直接将维护节点下线，此时集群仍然可正常提供服务（就算四个节点中的任意一个突然宕机）。<br>您的冗余措施应该包括生产环境的各个方面。如果你部署三个节点的ZooKeeper集群，但你却将这三个节点都连接至同一个网络交换机，那么当交换机宕掉时，你的集群服务也一样是不可用的。</p>
 </blockquote>
@@ -527,8 +528,8 @@
 <li>7.接下来你就可以连接至ZooKeeper节点来测试部署是否成功。<br>在<code>Java</code>环境下，你可以运行下面的命令连接至已启动的ZooKeeper服务节点并执行一些简单的操作</li>
 </ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> bin/zkCli.sh -server 127.0.0.1:2181</span></div></pre></td></tr></table></figure>
-<h3 id="1-3-单机开发环境部署介绍"><a href="#1-3-单机开发环境部署介绍" class="headerlink" title="1.3. 单机开发环境部署介绍"></a>1.3. 单机开发环境部署介绍<span id="1.3"></span></h3><p>如果你想部署ZooKeeper以便于开发测试，那你可以使用单机部署模式。然后安装Java或C客户端连接库，同时在配置文件中将服务器信息与开发机绑定。<br>具体安装部署步骤也集群部署模式类似，唯一不同的是zoo.cfg配置文件更简单一些。你可以从<a href="https://zookeeper.apache.org/doc/r3.4.10/zookeeperStarted.html" target="_blank" rel="external">《ZooKeeper快速入门》</a>文档中的相关章节获取详细的操作步骤。<br>关于安装客户端连接库的相关信息，你可以从<a href="https://zookeeper.apache.org/doc/r3.4.10/zookeeperProgrammers.html" target="_blank" rel="external">ZooKeeper Programmer’s Guide</a>文件的Bindings章节中获取。</p>
-<h2 id="2-维护管理"><a href="#2-维护管理" class="headerlink" title="2. 维护管理"></a>2. 维护管理</h2><p>这部分包含ZooKeeper运行与维护相关的信息，其包含如下几个主题：</p>
+<h3 id="单机开发环境部署介绍"><a href="#单机开发环境部署介绍" class="headerlink" title="单机开发环境部署介绍"></a>单机开发环境部署介绍<span id="1.3"></span></h3><p>如果你想部署ZooKeeper以便于开发测试，那你可以使用单机部署模式。然后安装Java或C客户端连接库，同时在配置文件中将服务器信息与开发机绑定。<br>具体安装部署步骤也集群部署模式类似，唯一不同的是zoo.cfg配置文件更简单一些。你可以从<a href="https://zookeeper.apache.org/doc/r3.4.10/zookeeperStarted.html" target="_blank" rel="external">《ZooKeeper快速入门》</a>文档中的相关章节获取详细的操作步骤。<br>关于安装客户端连接库的相关信息，你可以从<a href="https://zookeeper.apache.org/doc/r3.4.10/zookeeperProgrammers.html" target="_blank" rel="external">ZooKeeper Programmer’s Guide</a>文件的Bindings章节中获取。</p>
+<h2 id="维护管理"><a href="#维护管理" class="headerlink" title="维护管理"></a>维护管理</h2><p>这部分包含ZooKeeper运行与维护相关的信息，其包含如下几个主题：</p>
 <ul>
 <li><a href="#2.1">ZooKeeper集群部署规划</a></li>
 <li><a href="#2.2">Provisioning</a></li>
@@ -545,11 +546,11 @@
 <li><a href="#2.13">Things to Avoid</a></li>
 <li><a href="#2.14">Best Practices</a></li>
 </ul>
-<h3 id="2-1-ZooKeeper集群部署规划"><a href="#2-1-ZooKeeper集群部署规划" class="headerlink" title="2.1. ZooKeeper集群部署规划"></a>2.1. ZooKeeper集群部署规划<span id="2.1"></span></h3><p>ZooKeeper可靠性依赖于两个基本的假设：</p>
-<ol>
+<h3 id="ZooKeeper集群部署规划"><a href="#ZooKeeper集群部署规划" class="headerlink" title="ZooKeeper集群部署规划"></a>ZooKeeper集群部署规划<span id="2.1"></span></h3><p>ZooKeeper可靠性依赖于两个基本的假设：</p>
+<ul>
 <li>一个集群中只会有少数服务器会出错，这里的出错是指宕机或网络异常而使得服务与集群中的多数服务器失去联系。</li>
 <li>已部署的机器可以正常运行，所谓正常运行是指所有代码可以正确的执行，有适当且一致的工作时钟、存储、网络。</li>
-</ol>
+</ul>
 <p>为了最大可能的保证上述两个前提假设能够成立，这里有几个点需要考虑。一些是关于跨服务器（节点之间）需求的，而另一些是关于集群中每个节点服务器的考虑</p>
 
       
@@ -780,7 +781,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-安装部署"><span class="nav-number">1.</span> <span class="nav-text">1. 安装部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-系统软硬件需求"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. 系统软硬件需求</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-1-支持的OS平台"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1.1. 支持的OS平台</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-2-软件要求"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.1.2. 软件要求</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-集群部署（安装）"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. 集群部署（安装）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-单机开发环境部署介绍"><span class="nav-number">1.3.</span> <span class="nav-text">1.3. 单机开发环境部署介绍</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-维护管理"><span class="nav-number">2.</span> <span class="nav-text">2. 维护管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-ZooKeeper集群部署规划"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. ZooKeeper集群部署规划</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装部署"><span class="nav-number">1.</span> <span class="nav-text">安装部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#系统软硬件需求"><span class="nav-number">1.1.</span> <span class="nav-text">系统软硬件需求</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#支持的OS平台"><span class="nav-number">1.1.1.</span> <span class="nav-text">支持的OS平台</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#软件要求"><span class="nav-number">1.1.2.</span> <span class="nav-text">软件要求</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集群部署（安装）"><span class="nav-number">1.2.</span> <span class="nav-text">集群部署（安装）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单机开发环境部署介绍"><span class="nav-number">1.3.</span> <span class="nav-text">单机开发环境部署介绍</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#维护管理"><span class="nav-number">2.</span> <span class="nav-text">维护管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ZooKeeper集群部署规划"><span class="nav-number">2.1.</span> <span class="nav-text">ZooKeeper集群部署规划</span></a></li></ol></li></ol></div>
             
 
           </div>
