@@ -5,13 +5,35 @@
     
   <url>
     <loc>http://cloudnoter.com/2017/05/08/ZooKeeper-Administrator-s-Guide%E4%B8%AD%E6%96%87%E7%89%88/</loc>
-    <lastmod>2017-05-07T13:33:58.000Z</lastmod>
+    <lastmod>2017-05-07T13:38:24.000Z</lastmod>
     <data>
         <display>
         <title>ZooKeeper Administrator's Guide中文版</title>
         <pubTime>2017-05-07T19:03:24.000Z</pubTime>
         
         <tag>ZooKeeper</tag>
+         
+         
+           
+             
+              <breadCrumb title="Translation" url="http://cloudnoter.com/categories/Translation/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://cloudnoter.com/2016/01/21/Laravel-5-2%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3%EF%BC%9AHTTP%E8%B7%AF%E7%94%B1/</loc>
+    <lastmod>2017-05-07T13:38:03.000Z</lastmod>
+    <data>
+        <display>
+        <title>Laravel 5.2中文文档：HTTP路由</title>
+        <pubTime>2016-01-20T21:31:08.000Z</pubTime>
+        
+        <tag>php</tag>
+         
+        <tag>laravel</tag>
          
          
            
@@ -160,28 +182,6 @@
         <display>
         <title>PhpStorm+Laravel_5.1开发环境搭建</title>
         <pubTime>2016-01-12T00:26:13.000Z</pubTime>
-        
-        <tag>php</tag>
-         
-        <tag>laravel</tag>
-         
-         
-           
-             
-              <breadCrumb title="Php" url="http://cloudnoter.com/categories/Php/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://cloudnoter.com/2016/01/21/Laravel-5-2%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3%EF%BC%9AHTTP%E8%B7%AF%E7%94%B1/</loc>
-    <lastmod>2017-04-29T06:08:55.000Z</lastmod>
-    <data>
-        <display>
-        <title>Laravel 5.2中文文档：HTTP路由</title>
-        <pubTime>2016-01-20T21:31:08.000Z</pubTime>
         
         <tag>php</tag>
          
