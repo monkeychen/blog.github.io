@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://cloudnoter.com/"/>
-  <updated>2017-05-06T23:13:25.000Z</updated>
+  <updated>2017-05-07T11:09:27.000Z</updated>
   <id>http://cloudnoter.com/</id>
   
   <author>
@@ -14,6 +14,149 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ZooKeeper Administrator&#39;s Guide中文版</title>
+    <link href="http://cloudnoter.com/2017/05/08/ZooKeeper-Administrator-s-Guide%E4%B8%AD%E6%96%87%E7%89%88/"/>
+    <id>http://cloudnoter.com/2017/05/08/ZooKeeper-Administrator-s-Guide中文版/</id>
+    <published>2017-05-07T19:03:24.000Z</published>
+    <updated>2017-05-07T11:09:27.000Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote>
+<p>本文档主要介绍ZooKeeper部署及日常管理</p>
+</blockquote>
+<h2 id="1-安装部署"><a href="#1-安装部署" class="headerlink" title="1. 安装部署"></a>1. 安装部署</h2><p>本章节包含与ZooKeeper部署有关的内容，具体来说包含下面三部分内容：</p>
+<ul>
+<li><a href="#1.1">系统软硬件需求</a></li>
+<li><a href="#1.2">集群部署（安装）</a></li>
+<li><a href="#1.3">单机开发环境部署（安装）</a></li>
+</ul>
+<p>前两部分主要介绍如何在数据中心等生产环境上安装部署ZooKeeper，第三部分则介绍如何在非生产环境上（如为了评估、测试、开发等目的）安装部署ZooKeeper。</p>
+<p></p><h3 id="1.1">1.1. 系统软硬件需求</h3><p></p>
+<h4 id="1-1-1-支持的OS平台"><a href="#1-1-1-支持的OS平台" class="headerlink" title="1.1.1. 支持的OS平台"></a>1.1.1. 支持的OS平台</h4><p>ZooKeeper框架由多个组件组成，有的组件支持全部平台，而还有一些组件只支持部分平台，详细支持情况如下：</p>
+<ul>
+<li><strong>Client：</strong>它是一个<code>Java</code>客户端连接库，上层应用系统通过它连接至ZooKeeper集群。</li>
+<li><strong>Server：</strong>它是运行在ZooKeeper集群节点上的一个<code>Java</code>后台服务程序。</li>
+<li><strong>Native Client：</strong>它是一个用<code>C</code>语言实现的客户端连接库，其与<code>Java</code>客户端库一样，上层应用（非<code>Java</code>实现）通过它连接至ZooKeeper集群。</li>
+<li><strong>Contrib：</strong>它是指多个可选的扩展组件。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">操作系统</th>
+<th style="text-align:center">Client</th>
+<th style="text-align:center">Server</th>
+<th style="text-align:center">Native Client</th>
+<th style="text-align:center">Contrib</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">GNU/Linux</td>
+<td style="text-align:center">D + P</td>
+<td style="text-align:center">D + P</td>
+<td style="text-align:center">D + P</td>
+<td style="text-align:center">D + P</td>
+</tr>
+<tr>
+<td style="text-align:left">Solaris</td>
+<td style="text-align:center">D + P</td>
+<td style="text-align:center">D + P</td>
+<td style="text-align:center">/</td>
+<td style="text-align:center">/</td>
+</tr>
+<tr>
+<td style="text-align:left">FreeBSD</td>
+<td style="text-align:center">D + P</td>
+<td style="text-align:center">D + P</td>
+<td style="text-align:center">/</td>
+<td style="text-align:center">/</td>
+</tr>
+<tr>
+<td style="text-align:left">Windows</td>
+<td style="text-align:center">D + P</td>
+<td style="text-align:center">D + P</td>
+<td style="text-align:center">/</td>
+<td style="text-align:center">/</td>
+</tr>
+<tr>
+<td style="text-align:left">Mac OS X</td>
+<td style="text-align:center">D</td>
+<td style="text-align:center">D</td>
+<td style="text-align:center">/</td>
+<td style="text-align:center">/</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>D：支持开发环境， P：支持生成环境， /：不支持任何环境</strong></p>
+</blockquote>
+<p>上表中未显式注明支持的组件在相应平台上可能不能正常运行。虽然ZooKeeper社区会尽量修复在未支持平台上发现的BUG，但并无法保证会修复全部BUG。</p>
+<h3 id="1-1-2-软件要求"><a href="#1-1-2-软件要求" class="headerlink" title="1.1.2. 软件要求"></a>1.1.2. 软件要求</h3><p>ZooKeeper需要运行在JDK6或以上版本中。若ZooKeeper以集群模式部署，则推荐的节点数至少为3，同时建议部署在独立的服务器上。在Yahoo!，ZooKeeper通常部署在运行RHEL系统的服务器上（服务器配置：双核CPU、2G内存、80G容量IDE硬盘）。</p>
+<p></p><h3 id="1.2">1.2. 集群部署（安装）</h3><br>为了保证ZooKeeper服务的可靠性，您应该以集群模式部署ZooKeeper服务。只要半数以上的集群节点在线，服务将是可用的。因为ZooKeeper需要半数以上节点同意才能选举出Leader，所以建议ZooKeeper集群的节点数为奇数个。举个例子，对于有四个节点的集群只能应付一个节点宕机的异常，如果有两个节点宕机，则剩下两个节点未达到法定的半数以上选票，ZooKeeper服务将变为不可用。而如果集群有五个节点，则集群就可以应付二个节点宕机的异常。<p></p>
+<blockquote>
+<p><strong>提示：</strong><br>正如[《ZooKeeper快速入门》][1]文档中所提到的，至少需要三个节点的ZooKeeper集群才具备容灾特性，因此我们强烈建议集群节点数为奇数。<br>通常情况下，生产环境下，集群节点数只需要三个。但如果为了在服务维护场景下也保证最大的可靠性，您也许会部署五个节点的集群。原因很简单，如果集群节点为三个，当你对其中一个节点进行维护操作，将很有可能因维护操作导致集群异常。而如果集群节点为5个，那你可以直接将维护节点下线，此时集群仍然可正常提供服务（就算四个节点中的任意一个突然宕机）。<br>您的冗余措施应该包括生产环境的各个方面。如果你部署三个节点的ZooKeeper集群，但你却将这三个节点都连接至同一个网络交换机，那么当交换机宕掉时，你的集群服务也一样是不可用的。</p>
+</blockquote>
+<p>关于如何配置服务器使其成为集群中的一个成员节点的详细步骤如下（每个节点的操作类似）：</p>
+<ol>
+<li>安装JDK，你可以使用本地包管理系统安装，也可以从JDK官网[下载][2]</li>
+<li>设置Java堆相关参数，这对于避免内存swap来说非常重要。因为频繁的swap将严重降低ZooKeeper集群的性能。您可以通过使用压力负载测试来决定一个合适的值，确保该值刚好低于触发swap的阈值。保守的做法是：当节点拥有4G的内存，则设置-xmx=3G。</li>
+<li>安装ZooKeeper，您可以从[官网][3]下载：<a href="http://zookeeper.apache.org/releases.html" target="_blank" rel="external">http://zookeeper.apache.org/releases.html</a></li>
+<li>创建一个配置文件，这个文件可以随便命名，您可以先使用如下设置参数：</li>
+</ol>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">tickTime=2000</div><div class="line">dataDir=/var/lib/zookeeper/</div><div class="line">clientPort=2181</div><div class="line">initLimit=5</div><div class="line">syncLimit=2</div><div class="line"><span class="section">server.1=zoo1:2888:3888</span></div><div class="line"><span class="section">server.2=zoo2:2888:3888</span></div><div class="line"><span class="section">server.3=zoo3:2888:3888</span></div></pre></td></tr></table></figure>
+<p>您可以在<a href="#2.10">配置参数</a>章节中找到上面这些参数及其他参数的解释说明。这里简要说一下：集群中的每个节点都需要知道集群中其它节点成员的连接信息。通过上述配置文件中格式为<code>server.id=host:port:port</code>的若干行配置信息您就可以实现这个目标。<code>host</code>与<code>port</code>意思很简单明了，不多作说明。而<code>server.${id}</code>代表节点ID，你需要为每个节点创建一个名为<code>myid</code>的文件，该文件存放于参数<code>dataDir</code>所指向的目录下。</p>
+<ol>
+<li><code>myid</code>文件的内容只有一行，其值为配置参数<code>server.${id}</code>中<code>${id}</code>的实际值。即服务器1对应的<code>myid</code>文件的内容为1，这个值在集群中必须保证其唯一性，同时必须处于[1, 255]之间。</li>
+<li>如果你已经创建好配置文件（如zoo.cfg），你就可以启动ZooKeeper服务：</li>
+</ol>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ java -cp zookeeper.<span class="symbol">jar:</span><span class="class"><span class="keyword">lib</span>/<span class="title">slf4j</span>-<span class="title">api</span>-1.6.1.<span class="title">jar</span>:<span class="title">lib</span>/</span></div><div class="line">slf4j-log4j12-<span class="number">1.6</span>.<span class="number">1</span>.<span class="symbol">jar:</span><span class="class"><span class="keyword">lib</span>/<span class="title">log4j</span>-1.2.15.<span class="title">jar</span>:<span class="title">conf</span> \</span></div><div class="line">org.apache.zookeeper.server.quorum.QuorumPeerMain zoo.cfg</div></pre></td></tr></table></figure>
+<p>QuorumPeerMain启动一个ZooKeeper服务，JMX管理bean也同时被注册，通过这些JMX管理bean，你就可以在JMX管理控制台上对ZooKeeper服务进行监控管理。ZooKeeper的[JMX文档][4]有更详细的介绍信息。同时，你也可以在<code>$ZOOKEEPER_HOME/bin</code>目录下找到ZooKeeper的启动脚本<code>zkServer.sh</code>。</p>
+<ol>
+<li>接下来你就可以连接至ZooKeeper节点来测试部署是否成功。<br>在<code>Java</code>环境下，你可以运行下面的命令连接至已启动的ZooKeeper服务节点并执行一些简单的操作</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> bin/zkCli.sh -server 127.0.0.1:2181</span></div></pre></td></tr></table></figure>
+<p></p><h3 id="1.3">1.3. 单机开发环境部署介绍</h3><br>如果你想部署ZooKeeper以便于开发测试，那你可以使用单机部署模式。然后安装Java或C客户端连接库，同时在配置文件中将服务器信息与开发机绑定。<br>具体安装部署步骤也集群部署模式类似，唯一不同的是zoo.cfg配置文件更简单一些。你可以从[《ZooKeeper快速入门》][1]文档中的相关章节获取详细的操作步骤。<br>关于安装客户端连接库的相关信息，你可以从[ZooKeeper Programmer’s Guide][5]文件的Bindings章节中获取。<p></p>
+<h2 id="2-维护管理"><a href="#2-维护管理" class="headerlink" title="2. 维护管理"></a>2. 维护管理</h2><p>这部分包含ZooKeeper运行与维护相关的信息，其包含如下几个主题：</p>
+<ul>
+<li><a href="#2.1">ZooKeeper集群部署规划</a></li>
+<li><a href="#2.2">Provisioning</a></li>
+<li><a href="#2.3">Things to Consider: ZooKeeper Strengths and Limitations</a></li>
+<li><a href="#2.4">Administering</a></li>
+<li><a href="#2.5">Maintenance</a></li>
+<li><a href="#2.6">Supervision</a></li>
+<li><a href="#2.7">Monitoring</a></li>
+<li><a href="#2.8">Logging</a></li>
+<li><a href="#2.9">Troubleshooting</a></li>
+<li><a href="#2.10">Configuration Parameters</a></li>
+<li><a href="#2.11">ZooKeeper Commands: The Four Letter Words</a></li>
+<li><a href="#2.12">Data File Management</a></li>
+<li><a href="#2.13">Things to Avoid</a></li>
+<li><a href="#2.14">Best Practices</a></li>
+</ul>
+<p></p><h3 id="2.1">2.1. ZooKeeper集群部署规划</h3><br>ZooKeeper可靠性依赖于两个基本的假设：<p></p>
+<ol>
+<li>一个集群中只会有少数服务器会出错，这里的出错是指宕机或网络异常而使得服务与集群中的多数服务器失去联系。</li>
+<li>已部署的机器可以正常运行，所谓正常运行是指所有代码可以正确的执行，有适当且一致的工作时钟、存储、网络。</li>
+</ol>
+<p>为了最大可能的保证上述两个前提假设能够成立，这里有几个点需要考虑。一些是关于跨服务器（节点之间）需求的，而另一些是关于集群中每个节点服务器的考虑</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;本文档主要介绍ZooKeeper部署及日常管理&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;1-安装部署&quot;&gt;&lt;a href=&quot;#1-安装部署&quot; class=&quot;headerlink&quot; title=&quot;1. 安装部署&quot;&gt;&lt;/a&gt;1. 安装部署&lt;/
+    
+    </summary>
+    
+      <category term="Java" scheme="http://cloudnoter.com/categories/Java/"/>
+    
+    
+      <category term="ZooKeeper" scheme="http://cloudnoter.com/tags/ZooKeeper/"/>
+    
+  </entry>
   
   <entry>
     <title>JVM方法区(PermGen)内存快速飙升问题</title>
