@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://cloudnoter.com/"/>
-  <updated>2017-05-15T13:56:29.000Z</updated>
+  <updated>2017-05-15T14:27:30.000Z</updated>
   <id>http://cloudnoter.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://cloudnoter.com/2017/05/16/%E3%80%8A%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E8%B7%B5%E3%80%8B%E7%AC%94%E8%AE%B0-%E5%A5%BD%E7%9A%84%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/"/>
     <id>http://cloudnoter.com/2017/05/16/《推荐系统实践》笔记-好的推荐系统/</id>
     <published>2017-05-15T21:50:34.000Z</published>
-    <updated>2017-05-15T13:56:29.000Z</updated>
+    <updated>2017-05-15T14:27:30.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="1-好的推荐系统"><a href="#1-好的推荐系统" class="headerlink" title="1. 好的推荐系统"></a>1. 好的推荐系统</h2><h3 id="1-1-什么是推荐系统"><a href="#1-1-什么是推荐系统" class="headerlink" title="1.1. 什么是推荐系统"></a>1.1. 什么是推荐系统</h3><p>建立用户与物品之间的联系：在用户没有明确目的的情况下帮助他们发现感兴趣的物品；为物品找到可能对它们感兴趣的用户。</p>
 <h3 id="1-2-个性化推荐系统的应用"><a href="#1-2-个性化推荐系统的应用" class="headerlink" title="1.2. 个性化推荐系统的应用"></a>1.2. 个性化推荐系统的应用</h3><p>个性化推荐的成功应用需要两个条件：</p>
@@ -88,13 +88,13 @@
 <li>用户满意度</li>
 <li><p>预测准确度：最重要的离线评测指标，根据离线推荐算法的不同研究方向，有相应更具体的预测准确度指标。</p>
 <ul>
-<li>评分预测：预测用户对物品评分的行为称为评分预测。评分预测的预测准确率一般通过均方根误差（RMSE）、平均绝对误差（MAE）计算。<br>$$RMSE=\sqrt{\frac{\sum<em>{u,i \in T}(r</em>{ui} - \hat{r}<em>{ui})^2}{|T|}}$$<br>$$MAE=\frac{\sum</em>{u,i \in T}|r<em>{ui} - \hat{r}</em>{ui}|}{|T|}$$</li>
-<li>TopN推荐：网站在提供推荐服务时，一般是给用户一个个性化的推荐列表，这种推荐称为TopN推荐。TopN推荐的预测准确率一般通过<code>准确率(precision)/召回率(recall)</code>度量。<br>$$Recall=\frac{\sum<em>{u \in U}|R(u) \cap T(u)|}{\sum</em>{u \in U}|T(u)|}$$<br>$$Precision=\frac{\sum<em>{u \in U}|R(u) \cap T(u)|}{\sum</em>{u \in U}|R(u)|}$$</li>
+<li>评分预测：预测用户对物品评分的行为称为评分预测。评分预测的预测准确率一般通过均方根误差（RMSE）、平均绝对误差（MAE）计算。<br>$$RMSE=\sqrt{\frac{\sum_{u,i \in T}(r_{ui} - \hat{r}_{ui})^2}{|T|}}$$<br>$$MAE=\frac{\sum_{u,i \in T}|r_{ui} - \hat{r}_{ui}|}{|T|}$$</li>
+<li>TopN推荐：网站在提供推荐服务时，一般是给用户一个个性化的推荐列表，这种推荐称为TopN推荐。TopN推荐的预测准确率一般通过<code>准确率(precision)/召回率(recall)</code>度量。<br>$$Recall=\frac{\sum_{u \in U}|R(u) \cap T(u)|}{\sum_{u \in U}|T(u)|}$$<br>$$Precision=\frac{\sum_{u \in U}|R(u) \cap T(u)|}{\sum_{u \in U}|R(u)|}$$</li>
 </ul>
 </li>
-<li><p>覆盖率：描述一个推荐系统对物品长尾的发掘能力。覆盖率有不同的定义，最简单的定义为推荐系统能够推荐出来的物品占总物品集合的比例。<br>$$Coverage=\frac{|\bigcup<em>{u \in U}R(u)|}{|I|}$$<br>上面的定义过于粗略，在信息论与经济学中有两个著名的指标可以用来定义覆盖率，第一个是信息熵：<br>$$H=-\sum</em>{i=1}^{n}p(i)\log<em>{2}p(i)$$这里的p(i)是物品i的流行度除以所有商品流行度之和。第二个指标是基尼系数(Gini Index)：<br>$$G=\frac{1}{n - 1} \sum</em>{j=1}^{n}(2j - n - 1)p(i_j)$$这里$i_j$是按照物品流行度p()从小到大排序的物品列表中第j个物品。</p>
+<li><p>覆盖率：描述一个推荐系统对物品长尾的发掘能力。覆盖率有不同的定义，最简单的定义为推荐系统能够推荐出来的物品占总物品集合的比例。<br>$$Coverage=\frac{|\bigcup_{u \in U}R(u)|}{|I|}$$<br>上面的定义过于粗略，在信息论与经济学中有两个著名的指标可以用来定义覆盖率，第一个是信息熵：<br>$$H=-\sum_{i=1}^{n}p(i)\log_{2}p(i)$$这里的p(i)是物品i的流行度除以所有商品流行度之和。第二个指标是基尼系数(Gini Index)：<br>$$G=\frac{1}{n - 1} \sum_{j=1}^{n}(2j - n - 1)p(i_j)$$这里$i_j$是按照物品流行度p()从小到大排序的物品列表中第j个物品。</p>
 </li>
-<li><p>多样性：<br>用户u的推荐列表的多样性的计算公式：<br>$$Diversity(R(u))=1 - \frac{\sum<em>{i,j \in R(u), i \neq j}s(i,j)}{\frac{1}{2}|R(u)|(|R(u)| - 1)}$$<br>推荐系统的整体多样性的计算公式：<br>$$Diversity=\frac{1}{|U|}\sum</em>{u \in U}Diversity(R(u))$$</p>
+<li><p>多样性：<br>用户u的推荐列表的多样性的计算公式：<br>$$Diversity(R(u))=1 - \frac{\sum_{i,j \in R(u), i \neq j}s(i,j)}{\frac{1}{2}|R(u)|(|R(u)| - 1)}$$<br>推荐系统的整体多样性的计算公式：<br>$$Diversity=\frac{1}{|U|}\sum_{u \in U}Diversity(R(u))$$</p>
 </li>
 <li><p>新颖性</p>
 </li>
@@ -104,7 +104,55 @@
 <li>健壮性</li>
 <li>商业目标</li>
 </ol>
-<p>获取各种评测指标的途径如下表：<br>|-|离线实验|问卷调查|在线实验|<br>|:-:|:-:|:-:|:-:|<br>|用户满意度|N|Y|O|<br>|预测准确度|Y|Y|N|<br>|覆盖率|Y|Y|Y|<br>|多样性|O|Y|O|<br>|新颖性|O|Y|O|<br>|惊喜度|N|Y|N|</p>
+<p>获取各种评测指标的途径如下表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">-</th>
+<th style="text-align:center">离线实验</th>
+<th style="text-align:center">问卷调查</th>
+<th style="text-align:center">在线实验</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">用户满意度</td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">O</td>
+</tr>
+<tr>
+<td style="text-align:center">预测准确度</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">N</td>
+</tr>
+<tr>
+<td style="text-align:center">覆盖率</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">Y</td>
+</tr>
+<tr>
+<td style="text-align:center">多样性</td>
+<td style="text-align:center">O</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">O</td>
+</tr>
+<tr>
+<td style="text-align:center">新颖性</td>
+<td style="text-align:center">O</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">O</td>
+</tr>
+<tr>
+<td style="text-align:center">惊喜度</td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">N</td>
+</tr>
+</tbody>
+</table>
 <h4 id="1-3-3-评测维度"><a href="#1-3-3-评测维度" class="headerlink" title="1.3.3. 评测维度"></a>1.3.3. 评测维度</h4><p>比如一个推荐算法虽然整体上性能不好，但可能在某种特定场景下性能比较好，而增加评测维度的目的就是为了知道一个算法在什么情况下性能最好。这样可以为融合不同推荐算法取得最好的整体性能带来参考。</p>
 <ul>
 <li>用户维度：主要包括用户的人口统计学信息、活跃度以及是不是新用户等。</li>
