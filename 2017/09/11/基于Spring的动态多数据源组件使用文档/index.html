@@ -89,17 +89,17 @@
 
 
 
-<meta name="description" content="设计目标 无须定义繁琐的配置信息，使用方只需要提供基本的JDBC连接参数即可 与spring框架无缝集成 默认使用Druid数据库连接池，但支持自定义扩展（可以使用其他数据库连接池）  技术原理本组件是在spring框架提供的各种特性的基础上进行开发的，具体如下：  抽象的数据源路由类：AbstractRoutingDataSource 基于AOP及注解实现数据源动态切换  关键类图参数资料:Sp">
+<meta name="description" content="项目源码https://github.com/monkeychen/xspring  xspring是个组件集，后续会不断增加新的通用组件，本文所介绍的动态多数据源组件位于xspring项目的xspring-data模块中，其maven坐标如下(尚未上传至maven中央库)：  12345&amp;lt;dependency&amp;gt;    &amp;lt;groupId&amp;gt;org.xspring&amp;lt;/gr">
 <meta name="keywords" content="Spring,SpringBoot">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基于Spring的动态多数据源组件使用文档">
 <meta property="og:url" content="http://cloudnoter.com/2017/09/11/基于Spring的动态多数据源组件使用文档/index.html">
 <meta property="og:site_name" content="Simiam">
-<meta property="og:description" content="设计目标 无须定义繁琐的配置信息，使用方只需要提供基本的JDBC连接参数即可 与spring框架无缝集成 默认使用Druid数据库连接池，但支持自定义扩展（可以使用其他数据库连接池）  技术原理本组件是在spring框架提供的各种特性的基础上进行开发的，具体如下：  抽象的数据源路由类：AbstractRoutingDataSource 基于AOP及注解实现数据源动态切换  关键类图参数资料:Sp">
-<meta property="og:updated_time" content="2017-10-10T15:31:19.000Z">
+<meta property="og:description" content="项目源码https://github.com/monkeychen/xspring  xspring是个组件集，后续会不断增加新的通用组件，本文所介绍的动态多数据源组件位于xspring项目的xspring-data模块中，其maven坐标如下(尚未上传至maven中央库)：  12345&amp;lt;dependency&amp;gt;    &amp;lt;groupId&amp;gt;org.xspring&amp;lt;/gr">
+<meta property="og:updated_time" content="2017-10-10T15:49:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于Spring的动态多数据源组件使用文档">
-<meta name="twitter:description" content="设计目标 无须定义繁琐的配置信息，使用方只需要提供基本的JDBC连接参数即可 与spring框架无缝集成 默认使用Druid数据库连接池，但支持自定义扩展（可以使用其他数据库连接池）  技术原理本组件是在spring框架提供的各种特性的基础上进行开发的，具体如下：  抽象的数据源路由类：AbstractRoutingDataSource 基于AOP及注解实现数据源动态切换  关键类图参数资料:Sp">
+<meta name="twitter:description" content="项目源码https://github.com/monkeychen/xspring  xspring是个组件集，后续会不断增加新的通用组件，本文所介绍的动态多数据源组件位于xspring项目的xspring-data模块中，其maven坐标如下(尚未上传至maven中央库)：  12345&amp;lt;dependency&amp;gt;    &amp;lt;groupId&amp;gt;org.xspring&amp;lt;/gr">
 
 
 
@@ -430,7 +430,12 @@
       
 
       
-        <h2 id="设计目标"><a href="#设计目标" class="headerlink" title="设计目标"></a>设计目标</h2><ul>
+        <h2 id="项目源码"><a href="#项目源码" class="headerlink" title="项目源码"></a>项目源码</h2><p><a href="https://github.com/monkeychen/xspring" target="_blank" rel="external">https://github.com/monkeychen/xspring</a></p>
+<blockquote>
+<p>xspring是个组件集，后续会不断增加新的通用组件，本文所介绍的动态多数据源组件位于xspring项目的xspring-data模块中，其maven坐标如下(尚未上传至maven中央库)：</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.xspring<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>xspring-data<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
+<h2 id="设计目标"><a href="#设计目标" class="headerlink" title="设计目标"></a>设计目标</h2><ul>
 <li>无须定义繁琐的配置信息，使用方只需要提供基本的JDBC连接参数即可</li>
 <li>与spring框架无缝集成</li>
 <li>默认使用Druid数据库连接池，但支持自定义扩展（可以使用其他数据库连接池）</li>
@@ -678,7 +683,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#设计目标"><span class="nav-number">1.</span> <span class="nav-text">设计目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技术原理"><span class="nav-number">2.</span> <span class="nav-text">技术原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关键类图"><span class="nav-number">3.</span> <span class="nav-text">关键类图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数资料-SpringBoot配置文件加载顺序及属性优先级"><span class="nav-number">4.</span> <span class="nav-text">参数资料:SpringBoot配置文件加载顺序及属性优先级</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#项目源码"><span class="nav-number">1.</span> <span class="nav-text">项目源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设计目标"><span class="nav-number">2.</span> <span class="nav-text">设计目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技术原理"><span class="nav-number">3.</span> <span class="nav-text">技术原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关键类图"><span class="nav-number">4.</span> <span class="nav-text">关键类图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数资料-SpringBoot配置文件加载顺序及属性优先级"><span class="nav-number">5.</span> <span class="nav-text">参数资料:SpringBoot配置文件加载顺序及属性优先级</span></a></li></ol></div>
             
 
           </div>

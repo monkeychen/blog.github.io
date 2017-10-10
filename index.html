@@ -422,7 +422,12 @@
       
         
           
-            <h2 id="设计目标"><a href="#设计目标" class="headerlink" title="设计目标"></a>设计目标</h2><ul>
+            <h2 id="项目源码"><a href="#项目源码" class="headerlink" title="项目源码"></a>项目源码</h2><p><a href="https://github.com/monkeychen/xspring" target="_blank" rel="external">https://github.com/monkeychen/xspring</a></p>
+<blockquote>
+<p>xspring是个组件集，后续会不断增加新的通用组件，本文所介绍的动态多数据源组件位于xspring项目的xspring-data模块中，其maven坐标如下(尚未上传至maven中央库)：</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.xspring<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>xspring-data<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
+<h2 id="设计目标"><a href="#设计目标" class="headerlink" title="设计目标"></a>设计目标</h2><ul>
 <li>无须定义繁琐的配置信息，使用方只需要提供基本的JDBC连接参数即可</li>
 <li>与spring框架无缝集成</li>
 <li>默认使用Druid数据库连接池，但支持自定义扩展（可以使用其他数据库连接池）</li>

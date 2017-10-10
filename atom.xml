@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://cloudnoter.com/"/>
-  <updated>2017-10-10T15:31:19.000Z</updated>
+  <updated>2017-10-10T15:49:52.000Z</updated>
   <id>http://cloudnoter.com/</id>
   
   <author>
@@ -20,9 +20,14 @@
     <link href="http://cloudnoter.com/2017/09/11/%E5%9F%BA%E4%BA%8ESpring%E7%9A%84%E5%8A%A8%E6%80%81%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90%E7%BB%84%E4%BB%B6%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3/"/>
     <id>http://cloudnoter.com/2017/09/11/基于Spring的动态多数据源组件使用文档/</id>
     <published>2017-09-10T23:35:26.000Z</published>
-    <updated>2017-10-10T15:31:19.000Z</updated>
+    <updated>2017-10-10T15:49:52.000Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="设计目标"><a href="#设计目标" class="headerlink" title="设计目标"></a>设计目标</h2><ul>
+    <content type="html"><![CDATA[<h2 id="项目源码"><a href="#项目源码" class="headerlink" title="项目源码"></a>项目源码</h2><p><a href="https://github.com/monkeychen/xspring" target="_blank" rel="external">https://github.com/monkeychen/xspring</a></p>
+<blockquote>
+<p>xspring是个组件集，后续会不断增加新的通用组件，本文所介绍的动态多数据源组件位于xspring项目的xspring-data模块中，其maven坐标如下(尚未上传至maven中央库)：</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.xspring<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>xspring-data<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
+<h2 id="设计目标"><a href="#设计目标" class="headerlink" title="设计目标"></a>设计目标</h2><ul>
 <li>无须定义繁琐的配置信息，使用方只需要提供基本的JDBC连接参数即可</li>
 <li>与spring框架无缝集成</li>
 <li>默认使用Druid数据库连接池，但支持自定义扩展（可以使用其他数据库连接池）</li>
@@ -43,9 +48,7 @@
     
     <summary type="html">
     
-      &lt;h2 id=&quot;设计目标&quot;&gt;&lt;a href=&quot;#设计目标&quot; class=&quot;headerlink&quot; title=&quot;设计目标&quot;&gt;&lt;/a&gt;设计目标&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;无须定义繁琐的配置信息，使用方只需要提供基本的JDBC连接参数即可&lt;/li&gt;
-&lt;li&gt;与spring框架无缝集成
+      &lt;h2 id=&quot;项目源码&quot;&gt;&lt;a href=&quot;#项目源码&quot; class=&quot;headerlink&quot; title=&quot;项目源码&quot;&gt;&lt;/a&gt;项目源码&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/monkeychen/xspring&quot; target=&quot;_blank
     
     </summary>
     
