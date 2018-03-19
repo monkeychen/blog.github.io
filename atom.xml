@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://cloudnoter.com/"/>
-  <updated>2018-03-19T17:50:41.243Z</updated>
+  <updated>2018-03-19T17:54:42.050Z</updated>
   <id>http://cloudnoter.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://cloudnoter.com/2018/02/28/%E3%80%8A%E4%BB%A3%E7%A0%81%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     <id>http://cloudnoter.com/2018/02/28/《代码整洁之道》学习笔记/</id>
     <published>2018-02-27T22:56:45.000Z</published>
-    <updated>2018-03-19T17:50:41.243Z</updated>
+    <updated>2018-03-19T17:54:42.050Z</updated>
     
     <content type="html"><![CDATA[<h2 id="1-What"><a href="#1-What" class="headerlink" title="1. What?"></a>1. What?</h2><p>正如Jack Reecves所发表的《源码就是设计》：源码就是最好软件设计文档，而其他非代码性的文档只是源码的辅助。本文并非为了讨论编程与软件设计的关系，只想借以说明源码的重要性。</p>
 <p>简单讲，整洁代码行云流水如同阅读精美好文，代码能够尽可能的自解释；具体讲，整洁代码具备如下特性：</p>
@@ -32,6 +32,7 @@
 <li>有效的日志信息</li>
 <li>遵循面向对象设计原则</li>
 </ul>
+<a id="more"></a>
 <h2 id="2-How"><a href="#2-How" class="headerlink" title="2. How?"></a>2. How?</h2><p>我们写文章都是先构思再下笔，但一般不可能一气呵成。都是先出初稿再调整、使用精美词句慢慢打磨。写代码同写文章一样，也是一个不断调整修饰的过程（修改名称、分解函数、消除重复等操作不断重复）。只要你有一颗写出整洁代码的初心。</p>
 <h3 id="2-1-有意义的命名"><a href="#2-1-有意义的命名" class="headerlink" title="2.1. 有意义的命名"></a>2.1. 有意义的命名</h3><ul>
 <li>名副其实，必免误导：在给变量、函数等取个合适名字其实是很花时间的事，对于已有的变量等，如果想到更合适的名字则请记得马上换掉，必免误导其他开发人员。</li>
@@ -84,11 +85,23 @@
 <h3 id="2-8-类与系统的设计"><a href="#2-8-类与系统的设计" class="headerlink" title="2.8. 类与系统的设计"></a>2.8. 类与系统的设计</h3><ul>
 <li>遵循面向对象设计原则</li>
 </ul>
+<blockquote>
+<p>转载请注明出处：<a href="http://cloudnoter.com">cloudnoter.com</a></p>
+</blockquote>
 ]]></content>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;1-What&quot;&gt;&lt;a href=&quot;#1-What&quot; class=&quot;headerlink&quot; title=&quot;1. What?&quot;&gt;&lt;/a&gt;1. What?&lt;/h2&gt;&lt;p&gt;正如Jack Reecves所发表的《源码就是设计》：源码就是最好软件设计文档，而其他非代码性的文档
+      &lt;h2 id=&quot;1-What&quot;&gt;&lt;a href=&quot;#1-What&quot; class=&quot;headerlink&quot; title=&quot;1. What?&quot;&gt;&lt;/a&gt;1. What?&lt;/h2&gt;&lt;p&gt;正如Jack Reecves所发表的《源码就是设计》：源码就是最好软件设计文档，而其他非代码性的文档只是源码的辅助。本文并非为了讨论编程与软件设计的关系，只想借以说明源码的重要性。&lt;/p&gt;
+&lt;p&gt;简单讲，整洁代码行云流水如同阅读精美好文，代码能够尽可能的自解释；具体讲，整洁代码具备如下特性：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;变量、函数、类、包、模块命名合理有意义&lt;/li&gt;
+&lt;li&gt;代码结构（格式）清晰&lt;/li&gt;
+&lt;li&gt;必要的合理的注释信息：代码能自解释只是理想，该注释的地方还是免不了&lt;/li&gt;
+&lt;li&gt;合理的异常处理机制&lt;/li&gt;
+&lt;li&gt;有效的日志信息&lt;/li&gt;
+&lt;li&gt;遵循面向对象设计原则&lt;/li&gt;
+&lt;/ul&gt;
     
     </summary>
     
