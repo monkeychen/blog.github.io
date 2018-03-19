@@ -323,6 +323,221 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2018/02/28/《代码整洁之道》学习笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="simiam">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/simiam.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Simiam">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/02/28/《代码整洁之道》学习笔记/" itemprop="url">
+                  《代码整洁之道》学习笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-27T22:56:45Z">
+                2018-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/读书/" itemprop="url" rel="index">
+                    <span itemprop="name">读书</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/28/《代码整洁之道》学习笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/02/28/《代码整洁之道》学习笔记/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1-What"><a href="#1-What" class="headerlink" title="1. What?"></a>1. What?</h2><p>正如Jack Reecves所发表的《源码就是设计》：源码就是最好软件设计文档，而其他非代码性的文档只是源码的辅助。本文并非为了讨论编程与软件设计的关系，只想借以说明源码的重要性。</p>
+<p>简单讲，整洁代码行云流水如同阅读精美好文，代码能够尽可能的自解释；具体讲，整洁代码具备如下特性：</p>
+<ul>
+<li>变量、函数、类、包、模块命名合理有意义</li>
+<li>代码结构（格式）清晰</li>
+<li>必要的合理的注释信息：代码能自解释只是理想，该注释的地方还是免不了</li>
+<li>合理的异常处理机制</li>
+<li>有效的日志信息</li>
+<li>遵循面向对象设计原则</li>
+</ul>
+<h2 id="2-How"><a href="#2-How" class="headerlink" title="2. How?"></a>2. How?</h2><p>我们写文章都是先构思再下笔，但一般不可能一气呵成。都是先出初稿再调整、使用精美词句慢慢打磨。写代码同写文章一样，也是一个不断调整修饰的过程（修改名称、分解函数、消除重复等操作不断重复）。只要你有一颗写出整洁代码的初心。</p>
+<h3 id="2-1-有意义的命名"><a href="#2-1-有意义的命名" class="headerlink" title="2.1. 有意义的命名"></a>2.1. 有意义的命名</h3><ul>
+<li>名副其实，必免误导：在给变量、函数等取个合适名字其实是很花时间的事，对于已有的变量等，如果想到更合适的名字则请记得马上换掉，必免误导其他开发人员。</li>
+<li>遵守编码规范中的命名相关部分。</li>
+</ul>
+<h3 id="2-2-清晰的代码结构"><a href="#2-2-清晰的代码结构" class="headerlink" title="2.2. 清晰的代码结构"></a>2.2. 清晰的代码结构</h3><ul>
+<li>问题分解、模块职责划分</li>
+<li>编码前需要有最基本的设计思路，不管是何种设计粒度（系统、模块、类），其核心骨架、流程都必须成竹于胸。</li>
+<li>函数尽量精简，精简的函数不代表行数就一定是很少；只要保证一个函数只做一件事，这里的“一件事“比较抽象，不同人有不同的解读；我的区分原则为：有利于函数复用与阅读。</li>
+<li>函数参数越少越好，这样能省很多测试用例；参数尽量只用于输入，通过返回值进行函数结果输出，参数尽量不同时承载输入与输出信息（多线程开发时除外）</li>
+<li>函数要么做查询操作，要么做设置操作，不要同时都做。</li>
+</ul>
+<h3 id="2-3-注释"><a href="#2-3-注释" class="headerlink" title="2.3. 注释"></a>2.3. 注释</h3><h4 id="2-3-1-合理的注释"><a href="#2-3-1-合理的注释" class="headerlink" title="2.3.1. 合理的注释"></a>2.3.1. 合理的注释</h4><ul>
+<li>注释是为了弥补代码无力表达程序意图时的一个有效补充。</li>
+<li>代码能自我表达固然是撸码的最高境界，但现实总是残酷的，当有段代码你发现需要写注释时，你需要先反省下是否代码写得太差以致于无法自解释。注释并不能美化糟糕的代码。</li>
+<li>需要明白注释是有维护成本的，如果不及时更新就容易引起混乱</li>
+<li>外部服务接口/API都需要提供必要的注释信息，有一定的维护成本，但一定不能省。</li>
+<li>潜在的坑也需要注释以警告其他开发人员，最常见的是FIXME、为了解决出现线程不安全问题的代码逻辑（不写清楚无经验的同事可能会乱改而引入BUG，如SimpleDateFormat）</li>
+</ul>
+<h4 id="2-3-2-不好的注释"><a href="#2-3-2-不好的注释" class="headerlink" title="2.3.2. 不好的注释"></a>2.3.2. 不好的注释</h4><ul>
+<li>个人觉得JavaBean的Getter/Setter方法是不需要注释的</li>
+<li>对代码的修改不需要写一些日志式的注释、不写废话式注释</li>
+<li>能用函数名或变量名自解释的，尽量不写注释</li>
+<li>不需要在控制语句的花括号结尾加代表语句结束的注释，类似<code>} // while</code></li>
+<li>也不需要写一大段的注释，如果出现这种情况，肯定是功能函数拆解不合理导致。</li>
+</ul>
+<h3 id="2-4-格式"><a href="#2-4-格式" class="headerlink" title="2.4. 格式"></a>2.4. 格式</h3><ul>
+<li>遵行编码规范中的格式部分</li>
+<li>合理使用空行</li>
+<li>联系紧密的代码尽量靠在一起</li>
+<li>一个团队使用同一套格式规则</li>
+</ul>
+<h3 id="2-5-对象与数据结构"><a href="#2-5-对象与数据结构" class="headerlink" title="2.5. 对象与数据结构"></a>2.5. 对象与数据结构</h3><ul>
+<li>认真对待抽象，不是简单的写个接口，加几个方法就算是抽象</li>
+<li>对像隐藏数据，暴露操作；数据结构暴露数据，不提供操作函数</li>
+<li>DTO，DDD中的充血模型，类JavaBean的失血模型，个人项目中我更倾向于使用充血模型，所以书中所谓的混杂我是不太同意的。</li>
+</ul>
+<h3 id="2-6-错误处理"><a href="#2-6-错误处理" class="headerlink" title="2.6. 错误处理"></a>2.6. 错误处理</h3><ul>
+<li>面向对象设计中，严格实行快速抛异常原则，而不是返回错误代码，而不应该吃掉异常。</li>
+<li>对于尽量不抛出Checked类型的异常这一说法，个人持保留态度</li>
+<li>对于外部复杂的异常层次结构可做必要的封装以减少重复代码</li>
+<li>尽量不使用null作为返回值、参数等，因为null可能引起歧义</li>
+</ul>
+<h3 id="2-7-对第三方库的处理方式"><a href="#2-7-对第三方库的处理方式" class="headerlink" title="2.7. 对第三方库的处理方式"></a>2.7. 对第三方库的处理方式</h3><ul>
+<li>建议对第三方接口进行包装，便于后续适配多个提供方</li>
+<li>团队协作中，如果依赖的其他子系统的接口未定义，但我们已明确我方的需求，我们可以先定义接口并提供一个Mock类，这样可以保证我们的模块稳定性及可测试性</li>
+<li>如果依赖的第三方接口在本系统中使用得比较多，也建议统一再包装一层以适应外部接口变化</li>
+<li>包装的目的是屏蔽外部不确定性、增加鲁棒性</li>
+</ul>
+<h3 id="2-8-类与系统的设计"><a href="#2-8-类与系统的设计" class="headerlink" title="2.8. 类与系统的设计"></a>2.8. 类与系统的设计</h3><ul>
+<li>遵循面向对象设计原则</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2017/09/11/基于Spring的动态多数据源组件使用文档/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1101,167 +1316,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2017/04/29/HA专题-Pacemaker日常管理命令/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="simiam">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/simiam.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Simiam">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/04/29/HA专题-Pacemaker日常管理命令/" itemprop="url">
-                  HA专题--Pacemaker集群日常管理命令
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-29T13:20:49Z">
-                2017-04-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/HA/" itemprop="url" rel="index">
-                    <span itemprop="name">HA</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/04/29/HA专题-Pacemaker日常管理命令/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/04/29/HA专题-Pacemaker日常管理命令/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。</p>
-<blockquote>
-<p>从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-based GUI界面）<br>文档来源于Pacemaker的<a href="https://github.com/ClusterLabs/pacemaker/blob/master/doc/pcs-crmsh-quick-ref.md">Github官网</a></p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/04/29/HA专题-Pacemaker日常管理命令/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1311,7 +1365,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1333,7 +1387,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1423,7 +1477,7 @@
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-cloud"></i>
   </span>
