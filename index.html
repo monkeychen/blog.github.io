@@ -323,6 +323,330 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2018/07/10/ovirt-engine开发环境搭建指南/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="simiam">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/simiam.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Simiam">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/07/10/ovirt-engine开发环境搭建指南/" itemprop="url">
+                  ovirt-engine开发环境搭建指南
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-10T15:04:48Z">
+                2018-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/分布式/" itemprop="url" rel="index">
+                    <span itemprop="name">分布式</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/分布式/虚拟化/" itemprop="url" rel="index">
+                    <span itemprop="name">虚拟化</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/10/ovirt-engine开发环境搭建指南/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/07/10/ovirt-engine开发环境搭建指南/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="ovirt-engine开发环境搭建指南"><a href="#ovirt-engine开发环境搭建指南" class="headerlink" title="ovirt-engine开发环境搭建指南"></a>ovirt-engine开发环境搭建指南</h1><h4 id="云管理平台组-陈志安"><a href="#云管理平台组-陈志安" class="headerlink" title="云管理平台组-陈志安"></a>云管理平台组-陈志安</h4><hr>
+<h1 id="中文"><a href="#中文" class="headerlink" title="中文"></a>中文</h1><hr>
+<blockquote>
+<p>提示：为了能比较顺畅的阅读本文档，您需要具体基本的docker基础知识及常用命令的使用。如果您尚未听说过docker，则请先通过<a href="https://docs.docker.com/" target="_blank" rel="external">docker官方文档</a>学习必要的知识。</p>
+</blockquote>
+<h2 id="重要说明：在windwos下存在以下需要注意的细节"><a href="#重要说明：在windwos下存在以下需要注意的细节" class="headerlink" title="重要说明：在windwos下存在以下需要注意的细节"></a>重要说明：在windwos下存在以下需要注意的细节</h2><ul>
+<li>在docker中创建的一些特殊文件，在外部主机上无法马上删除，需要重启外部主机，详见<a href="https://forums.docker.com/t/how-to-delete-files-on-host-created-by-container/20830/3" target="_blank" rel="external">这里</a></li>
+<li>如果将docker中的目录通过<code>volumn</code>参数映射至windows本地目录时，docker中的链接文件在windows的文件系统下是无法生效的，详见<a href="https://github.com/docker/for-win/issues/109" target="_blank" rel="external">这里</a></li>
+</ul>
+<h1 id="1-快速入门"><a href="#1-快速入门" class="headerlink" title="1. 快速入门"></a>1. 快速入门</h1><p>制作本镜像的主要目的：快速创建并启动一个近似于本地的ovirt-engine容器，它可以为有需要的开发人员（特别是基于windows平台）提供近似于本地的开发、测试、调试环境。</p>
+<h2 id="1-1-先决条件"><a href="#1-1-先决条件" class="headerlink" title="1.1. 先决条件"></a>1.1. 先决条件</h2><ul>
+<li>安装Docker运行环境，docker分企业版与社区版，我们只需要社区版即可，具体可参考<a href="https://docs.docker.com/install/linux/docker-ce/centos/" target="_blank" rel="external">Docker官网文档</a>。</li>
+</ul>
+<blockquote>
+<p>由于Windwos系统的特殊性，建议在Windows-10专业版或企业版（64位）系统上安装<a href="https://docs.docker.com/docker-for-windows/install/" target="_blank" rel="external">Docker for windows</a>（直接基于Windows Hyper-V）;<br>而之前的Windows版本则需要使用<a href="https://docs.docker.com/toolbox/toolbox_install_windows/" target="_blank" rel="external">Docker Toolbox on Windows</a>（需要借助Oracle Virtual Box）。</p>
+</blockquote>
+<p><strong>在Windwos上激活Hyper-V意味着无法同时运行Virtual Box与VMWare workstation等其他虚拟化平台</strong></p>
+<h2 id="1-2-构建ovirt-engine镜像"><a href="#1-2-构建ovirt-engine镜像" class="headerlink" title="1.2. 构建ovirt-engine镜像"></a>1.2. 构建ovirt-engine镜像</h2><blockquote>
+<p>如果您想自己定制一个新镜像，您才需要使用本节介绍的内容。正常情况下，您可以忽略本节内容。</p>
+</blockquote>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 假设工作目录为：~/workspace/Dockerfiles，要创建的镜像名为：simiam/ovirt-engine-dev</span></div><div class="line"><span class="keyword">cd</span> ~<span class="string">/workspace/Dockerfiles/ovirt-engine</span></div><div class="line">docker build -t simiam/ovirt-engine-dev <span class="string">./latest</span></div></pre></td></tr></table></figure>
+<h2 id="1-3-创建ovirt-engine-dev容器"><a href="#1-3-创建ovirt-engine-dev容器" class="headerlink" title="1.3. 创建ovirt-engine-dev容器"></a>1.3. 创建ovirt-engine-dev容器</h2><blockquote>
+<p>想快速搭建一个ovirt-engine开发调试环境的话，从这一节开始看起。</p>
+</blockquote>
+<p>基于<code>simiam/ovirt-engine-dev</code>镜像创建一个名为<code>ovirt-engine-dev</code>的容器，容器的主机名为<code>ovirt-engine-dev</code>。</p>
+<ul>
+<li>删除容器：如果之前有创建过同名的容器，则需要先停止并删除容器</li>
+</ul>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># Stop <span class="keyword">and</span> <span class="built_in">remove</span> <span class="string">'ovirt-engine-dev'</span> docker container IF necessary.</div><div class="line">docker <span class="built_in">stop</span> ovirt-engine-dev &amp;&amp; docker rm ovirt-engine-dev</div></pre></td></tr></table></figure>
+<ul>
+<li>创建容器：当前提供的母镜像要求容器的主机名必需为：<code>ovirt-engine-dev</code>，后续会提供可配置的环境变量</li>
+</ul>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 1. 以下命令的'\'符号只在linux或macos环境下生效，windows下需要遵循相应bat脚本语法，如果不懂建议写成一行</span></div><div class="line"><span class="comment"># 2. 与路径有关的参数值不能包含空格</span></div><div class="line">docker run -d -i -t --name ovirt-engine-dev -h ovirt-engine-dev --privileged \</div><div class="line">-v <span class="regexp">/env/</span>.m2<span class="regexp">/:/</span>env<span class="regexp">/.m2 -v ~/</span>env<span class="regexp">/ovirt-engine:/</span>env<span class="regexp">/workspace -v /</span>env<span class="regexp">/ovirt-engine-deploy:/</span>env<span class="regexp">/deploy \</span></div><div class="line">-p 10022:22 -p 5432:5432 -p 8080:8080 -p 8787:8787 -p 8443:8443 /</div><div class="line">simiam<span class="regexp">/ovirt-engine-dev /u</span>sr<span class="regexp">/sbin/i</span>nit</div></pre></td></tr></table></figure>
+<p>再次强调一下：</p>
+<blockquote>
+<p>在windows环境下，不能将/env/deploy目录映射至windows本地，即不需要<code>-v /env/ovirt-engine-deploy:/env/deploy</code>这一部分。</p>
+</blockquote>
+<p>参数详细说明如下：</p>
+<figure class="highlight haml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">docker run -d -i -t        # 通用参数，参考官网</div><div class="line">-<span class="ruby">-name ovirt-engine-dev    <span class="comment"># 容器名</span></span></div><div class="line">-<span class="ruby">h ovirt-engine-dev        <span class="comment"># 容器中OS系统的hostname，如果使用默认的部署环境，则主机名必须为:ovirt-engine-dev</span></span></div><div class="line">-<span class="ruby">-privileged               <span class="comment"># 配合/usr/sbin/init参数，以开启特权模式（使systemctl可用）</span></span></div><div class="line">-<span class="ruby">v /env/.m2/<span class="symbol">:/env/</span>.m2      <span class="comment"># maven本地仓库映射关系</span></span></div><div class="line">-<span class="ruby">v ~<span class="regexp">/env/ovirt</span>-<span class="symbol">engine:</span>/env/workspace       <span class="comment"># 源码工程根目录映射关系，前者代表宿主机目录，即本地目录（下同）</span></span></div><div class="line">-<span class="ruby">v /env/ovirt-engine-<span class="symbol">deploy:</span>/env/deploy    <span class="comment"># 打包部署根目录映射关系 --------》》》》在windows环境下，不能将/env/deploy目录映射至windows本地</span></span></div><div class="line">-<span class="ruby">p <span class="number">10022</span><span class="symbol">:</span><span class="number">22</span>                <span class="comment"># SSH端口映射关系，10022为宿主机端口</span></span></div><div class="line">-<span class="ruby">p <span class="number">5432</span><span class="symbol">:</span><span class="number">5432</span>               <span class="comment"># Postgres数据库端口映射关系 </span></span></div><div class="line">-<span class="ruby">p <span class="number">8080</span><span class="symbol">:</span><span class="number">8080</span>               <span class="comment"># ovirt-engine webadmin HTTP服务端口映射关系</span></span></div><div class="line">-<span class="ruby">p <span class="number">8787</span><span class="symbol">:</span><span class="number">8787</span>               <span class="comment"># 远程调试端口映射关系 </span></span></div><div class="line">-<span class="ruby">p <span class="number">8443</span><span class="symbol">:</span><span class="number">8443</span>               <span class="comment"># ovirt-engine webadmin HTTPS服务端口映射关系（目录不可用）</span></span></div><div class="line">simiam/ovirt-engine-dev    # 镜像名</div><div class="line"><span class="comment">/usr/sbin/init             # 容器启动时需要执行命令，与privileged配合使用</span></div></pre></td></tr></table></figure>
+<ul>
+<li>端口映射相关信息</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>服务名</th>
+<th>容器内部端口</th>
+<th>宿主机端口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SSH</td>
+<td>22</td>
+<td>10022</td>
+</tr>
+<tr>
+<td>Postgresql</td>
+<td>5432</td>
+<td>5432</td>
+</tr>
+<tr>
+<td>HTTP</td>
+<td>8080</td>
+<td>8080</td>
+</tr>
+<tr>
+<td>HTTPS</td>
+<td>8443</td>
+<td>8443</td>
+</tr>
+<tr>
+<td>远程调试</td>
+<td>8787</td>
+<td>8787</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>容器内部端口目前是固定的，不支持根据环境变量来动态配置；宿主机端口则可根据个人喜好来配置。</p>
+</blockquote>
+<h2 id="1-4-ovirt-engine-dev容器生命周期管理"><a href="#1-4-ovirt-engine-dev容器生命周期管理" class="headerlink" title="1.4. ovirt-engine-dev容器生命周期管理"></a>1.4. ovirt-engine-dev容器生命周期管理</h2><ul>
+<li>停止容器：<code>docker stop ovirt-engine-dev</code></li>
+<li>启动容器：<code>docker start ovirt-engine-dev</code></li>
+<li>重启容器：<code>docker restart ovirt-engine-dev</code></li>
+</ul>
+<h2 id="1-5-启动容器中的ovirt-engine服务"><a href="#1-5-启动容器中的ovirt-engine服务" class="headerlink" title="1.5. 启动容器中的ovirt-engine服务"></a>1.5. 启动容器中的ovirt-engine服务</h2><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker exec -<span class="keyword">it</span> -u ssh_ovirt ovirt-engine-dev /env/<span class="built_in">start</span>-engine-service.sh</div></pre></td></tr></table></figure>
+<h2 id="1-6-使用ovirt-engine"><a href="#1-6-使用ovirt-engine" class="headerlink" title="1.6. 使用ovirt-engine"></a>1.6. 使用ovirt-engine</h2><h5 id="容器操作系统用户与密码："><a href="#容器操作系统用户与密码：" class="headerlink" title="容器操作系统用户与密码："></a>容器操作系统用户与密码：</h5><ul>
+<li>root:engine</li>
+<li>ssh_ovirt:ssh_ovirt</li>
+</ul>
+<h5 id="Postgresql数据库相关信息"><a href="#Postgresql数据库相关信息" class="headerlink" title="Postgresql数据库相关信息"></a>Postgresql数据库相关信息</h5><ul>
+<li>数据库名：engine</li>
+<li>数据库端口：5432</li>
+<li>engine用户的密码：engine</li>
+<li>postgres用户的密码：postgres</li>
+</ul>
+<h5 id="访问地址虚拟化管理平台系统：http-localhost-8080，用户名密码：admin-engine"><a href="#访问地址虚拟化管理平台系统：http-localhost-8080，用户名密码：admin-engine" class="headerlink" title="访问地址虚拟化管理平台系统：http://localhost:8080，用户名密码：admin/engine"></a>访问地址虚拟化管理平台系统：<a href="http://localhost:8080，用户名密码：admin/engine" target="_blank" rel="external">http://localhost:8080，用户名密码：admin/engine</a></h5><h5 id="登录ovirt-engine所在的OS，有2种方式"><a href="#登录ovirt-engine所在的OS，有2种方式" class="headerlink" title="登录ovirt-engine所在的OS，有2种方式"></a>登录ovirt-engine所在的OS，有2种方式</h5><ul>
+<li>使用SSH：<code>ssh -p &lt;映射端口号&gt; ssh_ovirt@localhost</code>，其中映射端口号为1.3节创建容器实例命令<code>docker run ...</code>中与容器内<code>22</code>号端口映射的<code>宿主机</code>端口号，如示例中的<code>10022</code>；SSH用户<code>ssh_ovirt</code>的密码：<code>ssh_ovirt</code>，<code>root</code>用户的密码：<code>engine</code>。 – <strong>推荐</strong></li>
+<li>使用docker命令：<code>docker exec -it &lt;容器名&gt; /bin/bash</code></li>
+</ul>
+<h2 id="1-7-ovirt-engine部署目录介绍"><a href="#1-7-ovirt-engine部署目录介绍" class="headerlink" title="1.7. ovirt-engine部署目录介绍"></a>1.7. ovirt-engine部署目录介绍</h2><p>ovirt-engine平台部署在wildfly(jboss)服务器上，但其并不是采用wildfly官方所描述的标准部署方式及部署结构，其使用一套自己的部署目录结构，如下：</p>
+<p><img src="http://oaivivmzx.bkt.clouddn.com/engine-deploy-dir-tree.png" alt="Dir-Tree"></p>
+<p>这些目录与<code>wildfly</code>环境的关联关系</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">-Djboss.home.dir=<span class="regexp">/usr/share</span><span class="regexp">/ovirt-engine-wildfly </span></div><div class="line">-Djboss.server.base.dir=/env<span class="regexp">/ovirt-engine-deploy/share</span><span class="regexp">/ovirt-engine </span></div><div class="line">-Djboss.server.data.dir=/env<span class="regexp">/ovirt-engine-deploy/var</span><span class="regexp">/lib/ovirt</span>-engine </div><div class="line">-Djboss.server.log.dir=<span class="regexp">/env/ovirt</span>-engine-deploy/var/log/ovirt-engine </div><div class="line">-Djboss.server.config.dir=<span class="regexp">/env/ovirt</span>-engine-deploy/var/<span class="class"><span class="keyword">lib</span>/<span class="title">ovirt</span>-<span class="title">engine</span>/<span class="title">jboss_runtime</span>/<span class="title">config</span> </span></div><div class="line">-Djboss.server.temp.dir=<span class="regexp">/env/ovirt</span>-engine-deploy/var/<span class="class"><span class="keyword">lib</span>/<span class="title">ovirt</span>-<span class="title">engine</span>/<span class="title">jboss_runtime</span>/<span class="title">tmp</span> </span></div><div class="line">-Djboss.controller.temp.dir=<span class="regexp">/env/ovirt</span>-engine-deploy/var/<span class="class"><span class="keyword">lib</span>/<span class="title">ovirt</span>-<span class="title">engine</span>/<span class="title">jboss_runtime</span>/<span class="title">tmp</span></span></div></pre></td></tr></table></figure>
+<h1 id="2-ovirt-engine本地开发调试环境搭建"><a href="#2-ovirt-engine本地开发调试环境搭建" class="headerlink" title="2. ovirt-engine本地开发调试环境搭建"></a>2. ovirt-engine本地开发调试环境搭建</h1><blockquote>
+<p>工作目录统一用<code>$WORK_DIR</code>表示</p>
+</blockquote>
+<p>经过第1章节的介绍，相信您已经可以在本地使用ovirt-engine平台。本章节将介绍如何基于ovirt-engine容器进行本地开发与调试。</p>
+<p>从零开始搭建ovirt-engine环境到部署成功（可以访问web）共包括4个步骤：编译 -&gt; 打包(部署) -&gt; 初始化 -&gt; 启动，各个步骤使用的命令如下：</p>
+<ul>
+<li>编译 + 打包(部署)：在源码根目录下执行<code>make clean install-dev PREFIX=/env/deploy BUILD_UT=0 DEV_EXTRA_BUILD_FLAGS=&quot;-Dgwt.compiler.localWorkers=1 -Djava.net.preferIPv4Stack=true&quot;</code>，就可以生成类似1.7节介绍的部署目录结构及相关内容。</li>
+<li>初始化：<code>/env/deploy/bin/engine-setup</code>，初始化内容主要是配置ovirt-engine系统主要参数，执行数据库创建脚本等</li>
+<li>启动：<code>/env/deploy/share/ovirt-engine/services/ovirt-engine/ovirt-engine.py start</code>，该命令是用来启动<code>wildfly(jboss)</code>服务器，从而启动ovirt-engine管理平台。</li>
+</ul>
+<p><strong>注意：以上三个命令都需要在docker容器内执行。</strong><br>其中，编译webadmin阶段会消耗大量内存，建议宿主机内存至少为8G（推荐12G）。</p>
+<h2 id="2-1-准备源码及开发环境"><a href="#2-1-准备源码及开发环境" class="headerlink" title="2.1. 准备源码及开发环境"></a>2.1. 准备源码及开发环境</h2><ul>
+<li>从ovirt-engine的github源码仓库获取一份源码至本地工作目录：<code>git clone https://github.com/ovirt/ovirt-engine.git</code></li>
+<li>使用您熟悉的IDE将ovirt-engine项目导入您的IDE中</li>
+</ul>
+<h2 id="2-2-ovirt-engine源码构建"><a href="#2-2-ovirt-engine源码构建" class="headerlink" title="2.2. ovirt-engine源码构建"></a>2.2. ovirt-engine源码构建</h2><ul>
+<li>ovirt-engine项目核心源码使用maven作为构建工具，因此可以使用<code>mvn clean install</code>构建出相应的war，ear等部署文件。</li>
+</ul>
+<blockquote>
+<p>这一步是我们日常开发过程中经常使用到的：<br>一般情况下我们需要将生成的相关部署文件通过jboss-cli或jboss-web重新部署，或直接将变更文件覆盖部署目录下的相应文件并重启服务。</p>
+</blockquote>
+<h2 id="2-3-ovirt-engine打包-部署"><a href="#2-3-ovirt-engine打包-部署" class="headerlink" title="2.3. ovirt-engine打包(部署)"></a>2.3. ovirt-engine打包(部署)</h2><p>在2.2节中使用的<code>mvn clean install</code>只能在工程的<code>target</code>目录下产生相关的jar，war,ear等文件，并不会生成目录结构及其下的相关内容。</p>
+<p>为了完成部署需要在docker环境下使用<code>make install-dev ...</code>命令进行一次完整的构建、部署。</p>
+<p>因为这一步耗时比较长，因为基于<code>simiam/ovirt-engine-dev</code>镜像创建的容器已经事先替您执行了一次打包部署，所以一般情况下您不需要执行这一步操作，除非发生了以下几种情况：</p>
+<ul>
+<li>打包、部署、安装相关的代码变更</li>
+<li>您想定制ovirt-engine：修改部署根目录、修改默认的环境变更等</li>
+</ul>
+<p>如果没有出现诸如文件结构变更或数据库表结构等元数据变更的情况，就没有必要重新部署。只需要重新执行<code>make install-dev &lt;args&gt;</code>命令进行文件刷新（覆盖）即可。<br>如果数据库表结构等发生的变更，则需要重新执行<code>engine-setup</code>命令以更新数据库表结构。</p>
+<p>为了避免一些莫名其妙的问题，在进行重新部署时（代码有重大变更）需要删除<code>${PREFIX}</code>所代表的目录，然后再构建、安装部署。</p>
+<p><code>${PREFIX}/bin/engine-cleanup</code>也是一个不错的环境清理工具。当部署目录的内容变更量比较少的时候，可以使用这个工具进行环境清理。</p>
+<blockquote>
+<p>切记：以上操作均需要停止服务，再操作，最后重启engine服务</p>
+</blockquote>
+<h2 id="2-4-ovirt-engine初始化"><a href="#2-4-ovirt-engine初始化" class="headerlink" title="2.4. ovirt-engine初始化"></a>2.4. ovirt-engine初始化</h2><p>初始化内容主要是配置ovirt-engine系统主要参数，执行数据库创建脚本等。因此如果你想重新构建数据库、修改配置参数等，则可以执行初始化命令。</p>
+<h1 id="3-其它"><a href="#3-其它" class="headerlink" title="3. 其它"></a>3. 其它</h1><h2 id="3-1-ovirt-engine容器创建参数介绍"><a href="#3-1-ovirt-engine容器创建参数介绍" class="headerlink" title="3.1. ovirt-engine容器创建参数介绍"></a>3.1. ovirt-engine容器创建参数介绍</h2><p>本节将详细介绍创建一个ovirt-engine容器实例所指定的各参数。</p>
+<figure class="highlight haml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">docker run -d -i -t        # 通用参数，参考官网</div><div class="line">-<span class="ruby">-name ovirt-engine-dev    <span class="comment"># 容器名</span></span></div><div class="line">-<span class="ruby">h ovirt-engine-dev        <span class="comment"># 容器中OS系统的hostname，如果使用默认的部署环境，则主机名必须为:ovirt-engine-dev</span></span></div><div class="line">-<span class="ruby">-privileged               <span class="comment"># 配合/usr/sbin/init参数，以开启特权模式（使systemctl可用）</span></span></div><div class="line">-<span class="ruby">v /env/.m2/<span class="symbol">:/env/</span>.m2      <span class="comment"># maven本地仓库映射关系</span></span></div><div class="line">-<span class="ruby">v ~<span class="regexp">/env/ovirt</span>-<span class="symbol">engine:</span>/env/workspace       <span class="comment"># 源码工程根目录映射关系，前者代表宿主机目录，即本地目录（下同）</span></span></div><div class="line">-<span class="ruby">v /env/ovirt-engine-<span class="symbol">deploy:</span>/env/deploy    <span class="comment"># 打包部署根目录映射关系</span></span></div><div class="line">-<span class="ruby">p <span class="number">10022</span><span class="symbol">:</span><span class="number">22</span>                <span class="comment"># SSH端口映射关系，10022为宿主机端口</span></span></div><div class="line">-<span class="ruby">p <span class="number">5432</span><span class="symbol">:</span><span class="number">5432</span>               <span class="comment"># Postgres数据库端口映射关系 </span></span></div><div class="line">-<span class="ruby">p <span class="number">8080</span><span class="symbol">:</span><span class="number">8080</span>               <span class="comment"># ovirt-engine webadmin HTTP服务端口映射关系</span></span></div><div class="line">-<span class="ruby">p <span class="number">8787</span><span class="symbol">:</span><span class="number">8787</span>               <span class="comment"># 远程调试端口映射关系 </span></span></div><div class="line">-<span class="ruby">p <span class="number">8443</span><span class="symbol">:</span><span class="number">8443</span>               <span class="comment"># ovirt-engine webadmin HTTPS服务端口映射关系（目录不可用）</span></span></div><div class="line">simiam/ovirt-engine-dev    # 镜像名</div><div class="line"><span class="comment">/usr/sbin/init             # 容器启动时需要执行命令，与privileged配合使用</span></div></pre></td></tr></table></figure>
+<h2 id="3-2-可用的快捷脚本模板"><a href="#3-2-可用的快捷脚本模板" class="headerlink" title="3.2. 可用的快捷脚本模板"></a>3.2. 可用的快捷脚本模板</h2><ul>
+<li>init-engine-environment.sh  –&gt; 使用默认的部署版本创建名为ovirt-engine-dev容器</li>
+<li>start-engine-service.sh  –&gt; 启动ovirt-engine服务</li>
+</ul>
+<h2 id="3-3-远程调试"><a href="#3-3-远程调试" class="headerlink" title="3.3. 远程调试"></a>3.3. 远程调试</h2><p>如果您使用默认提供的部署环境，则可以容器已开放了<code>8787</code>远程调试端口，您通过宿主机的映射端口便可进行远程调试。</p>
+<hr>
+<h1 id="English"><a href="#English" class="headerlink" title="English"></a>English</h1><hr>
+<h2 id="Prerequisites"><a href="#Prerequisites" class="headerlink" title="Prerequisites"></a>Prerequisites</h2><p>Just install the Docker CE that fit for your OS.</p>
+<blockquote>
+<p>In order install <a href="https://docs.docker.com/docker-for-windows/install/" target="_blank" rel="external">Docker for windows</a>（Based Windows Hyper-V）, it requires Microsoft Windows 10 Professional or Enterprise 64-bit.<br>For previous versions get <a href="https://docs.docker.com/toolbox/toolbox_install_windows/" target="_blank" rel="external">Docker Toolbox on Windows</a>（Based Oracle Virtual Box）.</p>
+</blockquote>
+<h2 id="Build-docker-ovirt-engine"><a href="#Build-docker-ovirt-engine" class="headerlink" title="Build docker-ovirt-engine"></a>Build docker-ovirt-engine</h2><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">cd</span> &lt;repository_root_dir&gt;</div><div class="line">docker build -t simiam/ovirt-engine-dev <span class="string">./latest</span></div></pre></td></tr></table></figure>
+<h2 id="Create-ovirt-engine-dev-docker-container"><a href="#Create-ovirt-engine-dev-docker-container" class="headerlink" title="Create ovirt-engine-dev docker container"></a>Create ovirt-engine-dev docker container</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Stop and remove 'ovirt-engine-dev' docker container IF necessary.</span></div><div class="line">docker stop ovirt-engine-dev &amp;&amp; docker rm ovirt-engine-dev</div><div class="line"></div><div class="line"><span class="comment"># The container's hostname MUST BE 'ovirt-engine-dev'</span></div><div class="line">docker run -d -i -t --name ovirt-engine-dev -h ovirt-engine-dev --privileged \</div><div class="line">-v <span class="regexp">/env/</span>.m2<span class="regexp">/:/</span>env<span class="regexp">/.m2 -v ~/</span>workspace<span class="regexp">/cloudos/</span>ovirt<span class="regexp">/ovirt-engine:/</span>env<span class="regexp">/workspace -v /</span>env<span class="regexp">/ovirt-engine-deploy:/</span>env<span class="regexp">/deploy \</span></div><div class="line">-p 10022:22 -p 5432:5432 -p 8080:8080 -p 8787:8787 -p 8443:8443 /</div><div class="line">simiam<span class="regexp">/ovirt-engine-dev /u</span>sr<span class="regexp">/sbin/i</span>nit</div></pre></td></tr></table></figure>
+<h2 id="Startup-exist-‘ovirt-engine-dev’-docker-container-and-ovirt-engine-service"><a href="#Startup-exist-‘ovirt-engine-dev’-docker-container-and-ovirt-engine-service" class="headerlink" title="Startup exist ‘ovirt-engine-dev’ docker container and ovirt-engine service"></a>Startup exist ‘ovirt-engine-dev’ docker container and ovirt-engine service</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">docker <span class="keyword">start</span> ovirt-<span class="keyword">engine</span>-dev</div><div class="line"></div><div class="line">docker exec -it -u ssh_ovirt ovirt-<span class="keyword">engine</span>-dev /env/<span class="keyword">start</span>-<span class="keyword">engine</span>-service.sh</div></pre></td></tr></table></figure>
+<h2 id="Default-user-informations"><a href="#Default-user-informations" class="headerlink" title="Default user informations"></a>Default user informations</h2><ul>
+<li>ovirt-engine-webadmin: admin/engine</li>
+<li>local-postgresql-db-port-user-password: engine-5432-engine-engine</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2018/06/04/ovirt-engine水平扩展可行性分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1055,228 +1379,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2017/05/08/ZooKeeper-Administrator-s-Guide中文版/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="simiam">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/simiam.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Simiam">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/05/08/ZooKeeper-Administrator-s-Guide中文版/" itemprop="url">
-                  ZooKeeper Administrator's Guide中文版
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-07T19:03:24Z">
-                2017-05-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Translation/" itemprop="url" rel="index">
-                    <span itemprop="name">Translation</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/05/08/ZooKeeper-Administrator-s-Guide中文版/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/05/08/ZooKeeper-Administrator-s-Guide中文版/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <blockquote>
-<p>本文档主要介绍ZooKeeper部署及日常管理</p>
-</blockquote>
-<h2 id="安装部署"><a href="#安装部署" class="headerlink" title="安装部署"></a>安装部署</h2><p>本章节包含与ZooKeeper部署有关的内容，具体来说包含下面三部分内容：</p>
-<ul>
-<li><a href="#1.1">系统软硬件需求</a></li>
-<li><a href="#1.2">集群部署（安装）</a></li>
-<li><a href="#1.3">单机开发环境部署（安装）</a></li>
-</ul>
-<p>前两部分主要介绍如何在数据中心等生产环境上安装部署ZooKeeper，第三部分则介绍如何在非生产环境上（如为了评估、测试、开发等目的）安装部署ZooKeeper。</p>
-<h3 id="系统软硬件需求"><a href="#系统软硬件需求" class="headerlink" title="系统软硬件需求"></a>系统软硬件需求<span id="1.1"></span></h3><h4 id="支持的OS平台"><a href="#支持的OS平台" class="headerlink" title="支持的OS平台"></a>支持的OS平台</h4><p>ZooKeeper框架由多个组件组成，有的组件支持全部平台，而还有一些组件只支持部分平台，详细支持情况如下：</p>
-<ul>
-<li><strong>Client：</strong>它是一个<code>Java</code>客户端连接库，上层应用系统通过它连接至ZooKeeper集群。</li>
-<li><strong>Server：</strong>它是运行在ZooKeeper集群节点上的一个<code>Java</code>后台服务程序。</li>
-<li><strong>Native Client：</strong>它是一个用<code>C</code>语言实现的客户端连接库，其与<code>Java</code>客户端库一样，上层应用（非<code>Java</code>实现）通过它连接至ZooKeeper集群。</li>
-<li><strong>Contrib：</strong>它是指多个可选的扩展组件。</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">操作系统</th>
-<th style="text-align:center">Client</th>
-<th style="text-align:center">Server</th>
-<th style="text-align:center">Native Client</th>
-<th style="text-align:center">Contrib</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">GNU/Linux</td>
-<td style="text-align:center">D + P</td>
-<td style="text-align:center">D + P</td>
-<td style="text-align:center">D + P</td>
-<td style="text-align:center">D + P</td>
-</tr>
-<tr>
-<td style="text-align:left">Solaris</td>
-<td style="text-align:center">D + P</td>
-<td style="text-align:center">D + P</td>
-<td style="text-align:center">/</td>
-<td style="text-align:center">/</td>
-</tr>
-<tr>
-<td style="text-align:left">FreeBSD</td>
-<td style="text-align:center">D + P</td>
-<td style="text-align:center">D + P</td>
-<td style="text-align:center">/</td>
-<td style="text-align:center">/</td>
-</tr>
-<tr>
-<td style="text-align:left">Windows</td>
-<td style="text-align:center">D + P</td>
-<td style="text-align:center">D + P</td>
-<td style="text-align:center">/</td>
-<td style="text-align:center">/</td>
-</tr>
-<tr>
-<td style="text-align:left">Mac OS X</td>
-<td style="text-align:center">D</td>
-<td style="text-align:center">D</td>
-<td style="text-align:center">/</td>
-<td style="text-align:center">/</td>
-</tr>
-</tbody>
-</table>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/05/08/ZooKeeper-Administrator-s-Guide中文版/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1326,7 +1428,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-count">17</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
