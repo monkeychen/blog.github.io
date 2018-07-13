@@ -4,6 +4,45 @@
 
     
   <url>
+    <loc>http://cloudnoter.com/2018/07/13/CI-CD%E6%96%B9%E6%A1%88%E5%88%86%E6%9E%90/</loc>
+    <lastmod>2018-07-13T02:02:29.285Z</lastmod>
+    <data>
+        <display>
+        <title>CI/CD方案分析</title>
+        <pubTime>2018-07-13T09:56:59.000Z</pubTime>
+        
+        <tag>devops</tag>
+         
+        <tag>CI</tag>
+         
+        <tag>CD</tag>
+         
+        <tag>持续集成</tag>
+         
+        <tag>持续交付</tag>
+         
+        <tag>持续部署</tag>
+         
+         
+           
+             
+              <breadCrumb title="devops" url="http://cloudnoter.com/categories/devops/"/>
+          
+             
+              <breadCrumb title="CI" url="http://cloudnoter.com/categories/devops/CI/"/>
+          
+             
+              <breadCrumb title="CD" url="http://cloudnoter.com/categories/devops/CI/CD/"/>
+          
+             
+             
+             
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://cloudnoter.com/2018/07/11/oVirt%E8%99%9A%E6%8B%9F%E5%8C%96%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E3%80%81%E7%BB%84%E4%BB%B6%E4%B8%8E%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86/</loc>
     <lastmod>2018-07-10T08:42:27.603Z</lastmod>
     <data>
