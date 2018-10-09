@@ -96,6 +96,7 @@
 <meta property="og:url" content="http://cloudnoter.com/2018/07/11/oVirt虚拟化关键概念、组件与技术原理/index.html">
 <meta property="og:site_name" content="Simiam">
 <meta property="og:description" content="oVirt虚拟化关键概念、组件与技术原理云管理平台组-陈志安 1. 介绍1.1. ovirt-engineovirt-engine为虚拟化环境提供了一个集中管理的平台，用户可以根据具体的需求选择使用不同的方式来访问ovirt-engine。 ovirt-engine架构图如下：   应用服务器（ovirt-Wildfly）  Wildfly是一个JavaEE应用服务器，但是需要注意的是部署ovir">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://oaivivmzx.bkt.clouddn.com/ovirt-engine-infra.png">
 <meta property="og:image" content="http://oaivivmzx.bkt.clouddn.com/ovirt-node-infra.png">
 <meta property="og:image" content="http://oaivivmzx.bkt.clouddn.com/ovirt-engine-network.png">
@@ -488,7 +489,7 @@
 <li>用户权限管理</li>
 </ul>
 </blockquote>
-<p>详细的使用文档请查阅<a href="https://www.ovirt.org/documentation/admin-guide/administration-guide/" target="_blank" rel="external">官方文档</a>。</p>
+<p>详细的使用文档请查阅<a href="https://www.ovirt.org/documentation/admin-guide/administration-guide/" target="_blank" rel="noopener">官方文档</a>。</p>
 <a id="more"></a>
 <ul>
 <li>目录服务（Directory Service）</li>
@@ -522,7 +523,7 @@
 <li>在Redhat Enterprise Linux，Centos等操作系统上根据官方文档提示安装ovirt-node相关的组件包。</li>
 </ul>
 <blockquote>
-<p>具体安装配置文件请参考<a href="https://www.ovirt.org/documentation/quickstart/quickstart-guide/#install-hosts" target="_blank" rel="external">官方文档</a></p>
+<p>具体安装配置文件请参考<a href="https://www.ovirt.org/documentation/quickstart/quickstart-guide/#install-hosts" target="_blank" rel="noopener">官方文档</a></p>
 </blockquote>
 <p>ovirt-node的主机核心架构图如下：</p>
 <p><img src="http://oaivivmzx.bkt.clouddn.com/ovirt-node-infra.png" alt="ovirt-node架构图"></p>
@@ -574,7 +575,7 @@
 <p>如果不急着访问，也可以在本地做文件系统，之后以NFS/CIFS协议挂载，映射到本地目录，直接以文件形式访问，这就成了NAS访问的模式，<strong>在网络间传送的是文件</strong>。</p>
 <p>如果不走NAS，在本地文件系统上面部署OSD服务端，把整个设备做成一个OSD，这样的节点多来几个，再加上必要的MDS节点，互联网另一端的应用程序再通过HTTP协议直接进行访问，这就变成了对象存储的访问模式。当然对象存储通常不需要专业的存储设备，前面那些LV/VG/PV层也可以统统不要，直接在硬盘上做本地文件系统，之后再做成OSD，这种才是对象存储的标准模式，对象存储的硬件设备通常就用大盘位的服务器。</p>
 <blockquote>
-<p>物理卷（PV）、卷组（VG）、逻辑卷（LV）及LVM相关的介绍请查阅<a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html-single/logical_volume_manager_administration/index" target="_blank" rel="external">LVM文档</a>。</p>
+<p>物理卷（PV）、卷组（VG）、逻辑卷（LV）及LVM相关的介绍请查阅<a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html-single/logical_volume_manager_administration/index" target="_blank" rel="noopener">LVM文档</a>。</p>
 </blockquote>
 <h3 id="2-1-什么是存储域"><a href="#2-1-什么是存储域" class="headerlink" title="2.1. 什么是存储域"></a>2.1. 什么是存储域</h3><p>存储域就是一系列具有公共存储接口的镜像的集合，存储域中包括了虚拟机模板、快照、数据镜像、ISO文件以及存储域本身的元数据。一个存储域可以由块设备（块存储）组成，也可以由文件系统（文件存储）组成。</p>
 <ul>
@@ -640,7 +641,7 @@
 <p>虚拟机和模板的基本镜像数据不再是只读的了。这使实时快照、实时存储迁移和快照克隆成为可能，支持unicode元数据，这样它就可支持非英文的卷名。</p>
 <p>V3元数据适用于NFS、GlusterFS、POSIX、iSCSI和FC存储域。</p>
 <h4 id="2-4-2-元数据存储目录结构"><a href="#2-4-2-元数据存储目录结构" class="headerlink" title="2.4.2. 元数据存储目录结构"></a>2.4.2. 元数据存储目录结构</h4><p>ovirt-engine在启动时会将每个数据中心中的存储域配置信息下发给各个主机上的VDSM实例，VDSM分根据接收到的存储域配置信息将相关存储域挂载至主机。挂载成功后，你将可以在每个主机的如下目录查看到存储域的相关信息（包括元数据）：</p>
-<figure class="highlight dts"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># 元数据存储目录</span></div><div class="line"><span class="meta-keyword">/rhev/</span>data-center/<span class="params">&lt;storage_pool_uuid&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 元数据存储目录</span></span><br><span class="line"><span class="meta-keyword">/rhev/</span>data-center/<span class="params">&lt;storage_pool_uuid&gt;</span></span><br></pre></td></tr></table></figure>
 <p>下图是V3版元数据存储目录结构示意图：</p>
 <p><img src="http://oaivivmzx.bkt.clouddn.com/storage-metadata-tree-descr.png" alt="V3版元数据存储目录结构示意图"></p>
 <p><strong>注意：</strong> 文件存储类型的存储域与块设备类型的存储域的元数据存储位置是不同的，块设备类型存储域的元数据是存放在主存储域（马上到！）对应的卷组（VG）的标签（Tag）中，而不是dom_md目录下的metadata文件中。dom_md/metadata存放的是该存储域下虚拟机磁盘镜像（LV）的元数据集，每个虚拟机磁盘镜像（LV）的元数据存放在metadata块设备存储空间的某一个索引位置上，该索引位置信息则保存在虚拟机磁盘镜像所在的逻辑卷（LV）的标签（Tag）上。</p>
@@ -688,7 +689,7 @@
 <p><strong>Step 5：</strong> 当SPM角色和storage-centric租約都空闲时，ovirt-engine会把它们分配给数据中心中的一个SPM权重高的主机，如果所有候选主机的SPM权重都一样，则会随机选取一个主机。分配成功后ovirt-engine会将该该主机标记为SPM并退出选举过程；否则进行下一步。</p>
 <p><strong>Step 6：</strong> 如果为一个新主机分配SPM角色的操作失败，ovirt-engine会把这个主机加入到一个列表（该列表包括了所有分配SPM角色失败的主机，这个列表中的主机被标记为本轮选举无法成为SPM。这个列表中的内容会在开始下一次进行SPM选举的过程前被清除，从而使这个列表中的主机又有机会成为SPM）。ovirt-engine会一直尝试把SPM角色和storage-centric租約分配给一个主机，直到有一个主机被成功选举为SPM。</p>
 <h3 id="2-7-排他性资源与Sanlock"><a href="#2-7-排他性资源与Sanlock" class="headerlink" title="2.7. 排他性资源与Sanlock"></a>2.7. 排他性资源与Sanlock</h3><p>ovirt虚拟化环境中的一些资源具有排它性，每个排它性资源同时只能被一个线程访问。比如SPM就是一个具有排它性的资源。在一个数据中心中，同时只能有一个主机具有SPM角色，如果数据中心中存在多个具有SPM角色的主机，就会出现同一份数据同时被不同的主机修改的情况，从而造成数据被破坏（脏数据）。</p>
-<p>在ovirt-v3.1之前，SPM的排它性是通过VDSM中的一个名为safelease的功能来实现的。这个租約被写到数据中心中的所有存储域中的一个特殊区域中，而数据中心中的所有主机都可以通过它来检查SPM的状态。VDSM的“safelease”的唯一功能就是来维持SPM的排它性。在3.1版本之后ovirt引入了<a href="https://www.ibm.com/developerworks/cn/linux/1404_zhouzs_sanlock/index.html" target="_blank" rel="external">Sanlock</a>来实现资源互斥访问功能，它除了可以锁定SPM外，还可以“锁定”其它资源。因此，Sanlock具有更高的灵活性。</p>
+<p>在ovirt-v3.1之前，SPM的排它性是通过VDSM中的一个名为safelease的功能来实现的。这个租約被写到数据中心中的所有存储域中的一个特殊区域中，而数据中心中的所有主机都可以通过它来检查SPM的状态。VDSM的“safelease”的唯一功能就是来维持SPM的排它性。在3.1版本之后ovirt引入了<a href="https://www.ibm.com/developerworks/cn/linux/1404_zhouzs_sanlock/index.html" target="_blank" rel="noopener">Sanlock</a>来实现资源互斥访问功能，它除了可以锁定SPM外，还可以“锁定”其它资源。因此，Sanlock具有更高的灵活性。</p>
 <p>需要进行资源锁定的应用程序可以在Sanlock中进行注册，已经注册的应用程序可以请求Sanlock锁定某个资源，从而使其它程序无法访问被锁定的资源。例如，VDSM可以请求Sanlock锁定SPM资源，而不需要自己锁定它。</p>
 <p>每个存储域都有一个lockspace区，锁定状态被记录在lockspace的磁盘中。因为SPM资源只能分配给一个“活跃的”主机，因此Sanlock就需要检查SPM主机是否是“活跃的”。当SPM主机连接到存储域时，它会更新从ovirt-engine获得的hostid，并且会定期在lockspace 中写一个时间戳(timestamp)。ids逻辑卷会记录每个hostid，并在每个主机更新它的hostid时进行相应的更新。Sanlock会根据主机的hostid和时间戳来决定它是否处于“活跃”状态。</p>
 <p>资源的使用情况被记录在leases逻辑卷的磁盘中。当磁盘中代表某个资源的数据被更新为带有某个进程的id时，系统就认为该资源被这个进程所占用。具体到SPM角色资源，当它被占用时，它的数据会被更新为SPM主机的hostid。</p>
@@ -698,7 +699,7 @@
 <p>如果SPM主机上的VDSM无法接受释放资源的请求，主机上的Sanlock就会使用<code>kill</code>命令来终止VDSM进程。如果<code>kill</code>命令运行失败，Sanlock会使用<code>sigkill</code>命令来终止VDSM进程。如果<code>sigkill</code>命令仍然无法终止进程，Sanlock将会通过<code>watchdog</code>守护进程来重启Sanlock所在的主机。</p>
 <p>每次当主机的VDSM更新它的hostid并更新lockspace中的时间戳时，<code>watchdog</code>守护进程都会收到一个<code>pet</code>。 当VDSM不能进行这些操作时，<code>watchdog</code>守护进程将无法收到pet。如果<code>watchdog</code>守护进程在一定时间内仍然没有收到<code>pet</code>，它将会重启主机。这将保证SPM资源可以被释放，从而可以被其它主机使用。</p>
 <blockquote>
-<p>有关Sanlock的详细原理请参考<a href="https://www.ibm.com/developerworks/cn/linux/1404_zhouzs_sanlock/index.html" target="_blank" rel="external">这里</a>。</p>
+<p>有关Sanlock的详细原理请参考<a href="https://www.ibm.com/developerworks/cn/linux/1404_zhouzs_sanlock/index.html" target="_blank" rel="noopener">这里</a>。</p>
 </blockquote>
 <h2 id="3-网络"><a href="#3-网络" class="headerlink" title="3. 网络"></a>3. 网络</h2><p>ovirt虚拟化平台的网络可以从3个方面介绍：基本网络、集群网络和主机网络配置。</p>
 <ul>
@@ -726,7 +727,7 @@
 <p>网桥和以太网连接都可以设置自定义属性。VDSM会把网络定义和自定义属性传给设置网络的hook脚本。</p>
 <h4 id="3-1-3-Bond"><a href="#3-1-3-Bond" class="headerlink" title="3.1.3. Bond"></a>3.1.3. Bond</h4><p>绑定（bond）是由多个网卡组合成的一个单一的、由软件定义的网络设备。因为一个绑定（bond）是由多个网卡组成的，因此它可以提供比单一网卡更高的网络传输速度，并提供了更好的网络容错功能（绑定只有在所有的网卡 都出现问题时才会停止工作）。绑定设备有一个限制：绑定必须由相同型号的网卡组成，同时有些绑定。</p>
 <p>绑定设备的数据包传输算法是由绑定的模式所决定的，绑定模式共有7种(mode-0 ~ mode-6)，其中mode-1 ~ mode-4支持虚拟机网络(使用网桥)和非虚拟机网络(无网桥)；mode-0、mode-5、mode-6只支持非虚拟机网络(无网桥)。</p>
-<p>ovirt虚拟化平台默认使用的是mode-4。绑定模式详细介绍请看<a href="https://access.redhat.com/documentation/en-us/red_hat_virtualization/4.2/html-single/technical_reference/#chap-Network" target="_blank" rel="external">这里</a>。</p>
+<p>ovirt虚拟化平台默认使用的是mode-4。绑定模式详细介绍请看<a href="https://access.redhat.com/documentation/en-us/red_hat_virtualization/4.2/html-single/technical_reference/#chap-Network" target="_blank" rel="noopener">这里</a>。</p>
 <h4 id="3-1-4-虚拟网卡"><a href="#3-1-4-虚拟网卡" class="headerlink" title="3.1.4. 虚拟网卡"></a>3.1.4. 虚拟网卡</h4><p>虚拟网卡是基于主机的物理网卡的虚拟网络接口。每一个主机可以有多个物理网卡，而每个物理网卡可以有多个虚拟网卡。</p>
 <p>当我们为虚拟机添加一个虚拟网卡时，ovirt-engine会在虚拟机、虚拟网卡本身和虚拟网卡所基于的主机的物理网卡间创建一定的关联。当虚拟机第一次启动时，libvirt会为虚拟网卡分配一个PCI地址。这样，虚拟机就可以使用MAC地址和PCI地址(如eth0)指定虚拟网卡。</p>
 <p>如果虚拟机是通过模板或快照创建的，分配MAC地址以及把这些MAC地址和PCI地址相关联的过程会有所不同。</p>
@@ -960,7 +961,7 @@
 <h3 id="6-2-虚拟机模板"><a href="#6-2-虚拟机模板" class="headerlink" title="6.2. 虚拟机模板"></a>6.2. 虚拟机模板</h3><p>ovirt虚拟化环境为管理员提供了两种便捷的虚拟机创建工具：模板 (template)和虚拟机池(pool)。管理员可以通过使用模板来快速创建虚拟机。这个新虚拟机会基于一个已经存在的、并己经被配置好的虚拟机来创建，从而省去了手工安装操作系统和配置系统的步骤。模板功能对于需要创建多个相似虚拟机的环境非常有用。例如，我们需要使用多个虚拟机作为web服务器。我们可以首先在一台虚拟机上安装操作系统、安装web服务器软件并配置系统。然后，基于这个已经配置好的虚拟机创建一个模板。当您需要创建更多虚拟机来作为web服务器时，就可以使用这个模板来创建它们。</p>
 <p>要创建一个模板，管理员需要先创建一个虚拟机，在新虚拟机上安装所需的软件包并进行相关的配置。对于即将作为模板的虚拟机来讲，其上面安装与配置的软件、应用、服务是比较通用的，以它作为模板创建的虚拟机基本不需要做太多的配置变更。另外，管理员可以执行一个可选的(但推荐使用)的动作：泛化(generalization)。泛化是指删除那些只与特定系统相关的、在不同的系统上会使用不同值的信息，如系统的用户名、密钥、时区。泛化对定制的配置不会有影响。 Red Hat Enterprise Linux虚拟机使用<code>sys-unconfig</code>进行泛化；Windows虚拟机使用<code>Sysprep</code>进行泛化。</p>
 <blockquote>
-<p>sys-unconfig：请参考<a href="https://linux.die.net/man/8/sys-unconfig" target="_blank" rel="external">https://linux.die.net/man/8/sys-unconfig</a><br>sys-prep：请参考<a href="https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/sysprep--generalize--a-windows-installation" target="_blank" rel="external">Sysprep</a></p>
+<p>sys-unconfig：请参考<a href="https://linux.die.net/man/8/sys-unconfig" target="_blank" rel="noopener">https://linux.die.net/man/8/sys-unconfig</a><br>sys-prep：请参考<a href="https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/sysprep--generalize--a-windows-installation" target="_blank" rel="noopener">Sysprep</a></p>
 </blockquote>
 <p>当一个准备被用来作为模板的虚拟机配置完成后(如果需要，进行了泛化操作)，并被停止运行后，管理员就可以基于这个虚拟机创建一个模板。在模板创建的过程中，模板所用的虚拟磁盘镜像会被复制生成一个只读的镜像。这个只读的镜像就会作为所有基于这个模板所创建的虚拟机的母镜像。换个角度来说，模 板就是一个带有相关虚拟机硬件配置的、自定义的磁盘镜像。通过模板所创建的虚拟机的硬件配置可以再次修改。例如，基于配置了1GB内存的模板所创建的虚拟机的内存可以被配置为2GB。但是，母镜像本身不能被修改，这是因为对模板所做的修改将被影响到所有基于它所创建的全部虚拟机。</p>
 <p>当一个模板被创建后，我们就可以使用它来创建多个虚拟机了。使用模板创建虚拟机有两种方式：精简(thin)模式和克隆(Clone)模式，ovirt-engine直接调用VDSM提供的两个不同的接口来实现。</p>
@@ -1024,8 +1025,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/13/CI-CD方案分析/" rel="next" title="CI/CD方案分析">
-                <i class="fa fa-chevron-left"></i> CI/CD方案分析
+              <a href="/2018/07/11/oVirt持续集成方案分析/" rel="next" title="oVirt持续集成方案分析">
+                <i class="fa fa-chevron-left"></i> oVirt持续集成方案分析
               </a>
             
           </div>
@@ -1034,8 +1035,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/07/11/oVirt持续集成方案分析/" rel="prev" title="oVirt持续集成方案分析">
-                oVirt持续集成方案分析 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/07/13/CI-CD方案分析/" rel="prev" title="CI/CD方案分析">
+                CI/CD方案分析 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -1115,7 +1116,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1248,6 +1249,7 @@
     <i class="fa fa-cloud"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">simiam</span>
+  <span>&nbsp;<a href="http://www.miitbeian.gov.cn">闽ICP备18023112号</a></span>
 </div>
 
 

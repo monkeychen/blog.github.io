@@ -90,12 +90,13 @@
 
 
 <meta name="description" content="问题描述自从平台升级到3.0后，应用的JVM变得非常不稳定，主要体现为以下三个问题：  内存泄漏：2G的JVM，2天就崩。 方法区内存持续飙升，最终导致频繁的触发FullGC class load频繁导致CPU有30%的资源浪费  解决方案问题1解决思路：问题1相对好解决，先用jmap将堆快照dump出来，用mat分析了下，根据GC-ROOT找到引用路径即可，泄漏原因为：平台自研JPA组件的SQL">
-<meta name="keywords" content="Java,JVM">
+<meta name="keywords" content="JVM,PermGen,OutOfMemory">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JVM方法区(PermGen)内存快速飙升问题">
 <meta property="og:url" content="http://cloudnoter.com/2017/05/07/JVM方法区-PermGen-内存快速飙升问题/index.html">
 <meta property="og:site_name" content="Simiam">
 <meta property="og:description" content="问题描述自从平台升级到3.0后，应用的JVM变得非常不稳定，主要体现为以下三个问题：  内存泄漏：2G的JVM，2天就崩。 方法区内存持续飙升，最终导致频繁的触发FullGC class load频繁导致CPU有30%的资源浪费  解决方案问题1解决思路：问题1相对好解决，先用jmap将堆快照dump出来，用mat分析了下，根据GC-ROOT找到引用路径即可，泄漏原因为：平台自研JPA组件的SQL">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2017-05-07T13:48:21.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM方法区(PermGen)内存快速飙升问题">
@@ -442,7 +443,7 @@
 <h3 id="问题2-3解决思路："><a href="#问题2-3解决思路：" class="headerlink" title="问题2,3解决思路："></a><strong>问题2,3解决思路</strong>：</h3><p>以前从没碰到这种情况，方法区的内存大小在应用启动后应该是处于一个相对稳定的状态（因为大部分类在启动时就已经加载完了，就算使用CGLib动态生成代理类也应该是有一个上限，最多就是全部类的一倍），但问题2明显不属于这种情况，不管开多大的内存给方法区（通过<code>-X:MaxPermSize=xxxM</code>设置大小），应用总能在几分钟内持续升到最高值并触发FullGC，GC结束后，方法区占用内存降至接近0M（此处就发生的<code>class unload</code>），然后又进入新一轮的飙升周期（此处就发生<code>class loader</code>）。</p>
 <p>刚开始以为仍然是JPA组件使用CGLib不当的问题，认为是为了实现<code>lazy load</code>及权限控制时使用了过多的动态代理（每个<code>Action,Model,Service</code>都被创建为动态代理，更不合理的时每个model的get方法都使用<code>ProxyMethodInterceptor</code>，问当事人原因，其答复说为了<code>lazy load</code>，但其实只有关联字段，集合字段才有必要<code>lazy load</code>）。基于此做了修改，但测试结果还是没解决问题：因为JPA中并不是每次都创建一个新的proxy，而是根据class做了缓存的，因此只能另找办法。</p>
 <p>既然是方法区的问题，那是否可以将方法区的内容dump出来呢？于是查看了下<code>jmap</code>参数，其中的有<code>-permstat</code>可以用：<code>jmap -permstat &lt;pid&gt;</code><br>结果如下（截取）</p>
-<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="number">25007</span> intern Strings occupying <span class="number">2799672</span> bytes.  </div><div class="line">class_loader classesbytes parent_loaderalive? type  </div><div class="line">  </div><div class="line">  </div><div class="line">&lt;bootstrap&gt; <span class="number">262415108248</span>  null  live &lt;internal&gt;  </div><div class="line"><span class="number">0x000000076f045910</span> <span class="number">38758792</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span>  </div><div class="line"><span class="number">0x000000076f942f10</span> <span class="number">38758792</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span>  </div><div class="line"><span class="number">0x00000007d00e9ba0</span> <span class="number">40816816</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span>  </div><div class="line"><span class="number">0x00000007dd170c08</span> <span class="number">40816816</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span>  </div><div class="line"><span class="number">0x000000079e2f0070</span> <span class="number">40816816</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span>  </div><div class="line"><span class="number">0x00000007cd6b1140</span> <span class="number">13112</span>  null  dead sun/reflect/DelegatingClassLoader@<span class="number">0x0000000740067648</span>  </div><div class="line"><span class="number">0x000000076fb5d130</span> <span class="number">38758792</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span>  </div><div class="line"><span class="number">0x000000076fbe47c0</span> <span class="number">38758792</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span></div></pre></td></tr></table></figure>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">25007</span> intern Strings occupying <span class="number">2799672</span> bytes.  </span><br><span class="line">class_loader classesbytes parent_loaderalive? type  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">&lt;bootstrap&gt; <span class="number">262415108248</span>  null  live &lt;internal&gt;  </span><br><span class="line"><span class="number">0x000000076f045910</span> <span class="number">38758792</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span>  </span><br><span class="line"><span class="number">0x000000076f942f10</span> <span class="number">38758792</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span>  </span><br><span class="line"><span class="number">0x00000007d00e9ba0</span> <span class="number">40816816</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span>  </span><br><span class="line"><span class="number">0x00000007dd170c08</span> <span class="number">40816816</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span>  </span><br><span class="line"><span class="number">0x000000079e2f0070</span> <span class="number">40816816</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span>  </span><br><span class="line"><span class="number">0x00000007cd6b1140</span> <span class="number">13112</span>  null  dead sun/reflect/DelegatingClassLoader@<span class="number">0x0000000740067648</span>  </span><br><span class="line"><span class="number">0x000000076fb5d130</span> <span class="number">38758792</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span>  </span><br><span class="line"><span class="number">0x000000076fbe47c0</span> <span class="number">38758792</span> <span class="number">0x00000007617d4f70dead</span> com/atomikos/util/ClassLoadingHelper$<span class="number">1</span>@<span class="number">0x0000000741cb86e8</span></span><br></pre></td></tr></table></figure>
 <p><code>com/atomikos/util/ClassLoadingHelper$1</code>：是一个匿名内部类（该类是一个加载器），通过这个内部类加载器作为JDK <code>Proxy.newProxyInstance()</code>方法的参数，而后者就会生产大量的以Proxy$为前缀的动态类，并且未做任何缓存。<br>atomikos大家应该都很清楚：JTA的一个实现，但是哪个组件调用了这个工具类呢？通过断点分析，原来是JPA又自己写了个什么数据库连接池，池中的每个连接都是<code>ProxyConnection</code>，而池又好像失效的，频繁的回收，创建…</p>
 <blockquote>
 <p>到目前为止，我一直没搞清楚为何要用代理类型的连接，这代理的作用从代码中也没看出个门道来，也不是为做监控。</p>
@@ -495,8 +496,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/08/ZooKeeper-Administrator-s-Guide中文版/" rel="next" title="ZooKeeper Administrator's Guide中文版">
-                <i class="fa fa-chevron-left"></i> ZooKeeper Administrator's Guide中文版
+              <a href="/2017/04/29/HA专题-Pacemaker日常管理命令/" rel="next" title="HA专题--Pacemaker集群日常管理命令">
+                <i class="fa fa-chevron-left"></i> HA专题--Pacemaker集群日常管理命令
               </a>
             
           </div>
@@ -505,8 +506,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/04/29/HA专题-Pacemaker日常管理命令/" rel="prev" title="HA专题--Pacemaker集群日常管理命令">
-                HA专题--Pacemaker集群日常管理命令 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/05/08/ZooKeeper-Administrator-s-Guide中文版/" rel="prev" title="ZooKeeper Administrator's Guide中文版">
+                ZooKeeper Administrator's Guide中文版 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -586,7 +587,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -719,6 +720,7 @@
     <i class="fa fa-cloud"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">simiam</span>
+  <span>&nbsp;<a href="http://www.miitbeian.gov.cn">闽ICP备18023112号</a></span>
 </div>
 
 

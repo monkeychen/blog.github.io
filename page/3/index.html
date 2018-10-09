@@ -93,6 +93,7 @@
 <meta property="og:title" content="Simiam">
 <meta property="og:url" content="http://cloudnoter.com/page/3/index.html">
 <meta property="og:site_name" content="Simiam">
+<meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Simiam">
 
@@ -323,6 +324,170 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2017/05/07/JVM方法区-PermGen-内存快速飙升问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="simiam">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/simiam.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Simiam">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/05/07/JVM方法区-PermGen-内存快速飙升问题/" itemprop="url">
+                  JVM方法区(PermGen)内存快速飙升问题
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-07T07:01:22Z">
+                2017-05-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/05/07/JVM方法区-PermGen-内存快速飙升问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/05/07/JVM方法区-PermGen-内存快速飙升问题/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>自从平台升级到3.0后，应用的JVM变得非常不稳定，主要体现为以下三个问题：</p>
+<ol>
+<li>内存泄漏：2G的JVM，2天就崩。</li>
+<li>方法区内存持续飙升，最终导致频繁的触发FullGC</li>
+<li>class load频繁导致CPU有30%的资源浪费</li>
+</ol>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="问题1解决思路："><a href="#问题1解决思路：" class="headerlink" title="问题1解决思路："></a><strong>问题1解决思路</strong>：</h3><p>问题1相对好解决，先用jmap将堆快照dump出来，用mat分析了下，根据GC-ROOT找到引用路径即可，泄漏原因为：平台自研JPA组件的SQLQuery在实现lazy load时，由于CGLib使用不当(在向当前线程注册回调方法拦截器时，在使用完之后未及时注销)导致的查询结果缓存被线程池中的线程引用，在线程池容量开得比较大时最终将导致OOM异常。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/05/07/JVM方法区-PermGen-内存快速飙升问题/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2017/04/29/HA专题-Pacemaker日常管理命令/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -434,7 +599,7 @@
         
           <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。</p>
 <blockquote>
-<p>从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-based GUI界面）<br>文档来源于Pacemaker的<a href="https://github.com/ClusterLabs/pacemaker/blob/master/doc/pcs-crmsh-quick-ref.md">Github官网</a></p>
+<p>从CentOS6.4以后开始采用PCS替代crmsh来管理pacemaker集群（PCS专用于pacemaker+corosync的设置工具，其有CLI和web-based GUI界面）<br>文档来源于Pacemaker的<a href="https://github.com/ClusterLabs/pacemaker/blob/master/doc/pcs-crmsh-quick-ref.md" target="_blank" rel="noopener">Github官网</a></p>
 </blockquote>
           <!--noindex-->
           <div class="post-button text-center">
@@ -600,7 +765,7 @@
 <ul>
 <li>创建包含JSON字段的数据库表</li>
 </ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">"ipms_device_feature"</span> (</div><div class="line">  <span class="string">"ID"</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</div><div class="line">  <span class="string">"DEVICE_SERIAL_NUMBER"</span> <span class="built_in">varchar</span>(<span class="number">100</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">''</span> <span class="keyword">COMMENT</span> <span class="string">'设备SN'</span>,</div><div class="line">  <span class="string">"DEVICE_IP"</span> <span class="built_in">varchar</span>(<span class="number">32</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">''</span> <span class="keyword">COMMENT</span> <span class="string">'设备IP'</span>,</div><div class="line">  <span class="string">"FEATURES"</span> <span class="keyword">json</span> <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'设备巡检指标集'</span>,</div><div class="line">  <span class="string">"UPDATETIME"</span> <span class="keyword">timestamp</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="keyword">CURRENT_TIMESTAMP</span> <span class="keyword">ON</span> <span class="keyword">UPDATE</span> <span class="keyword">CURRENT_TIMESTAMP</span> <span class="keyword">COMMENT</span> <span class="string">'更新时间'</span>,</div><div class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">"ID"</span>)</div><div class="line">)</div></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">"ipms_device_feature"</span> (</span><br><span class="line">  <span class="string">"ID"</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">"DEVICE_SERIAL_NUMBER"</span> <span class="built_in">varchar</span>(<span class="number">100</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">''</span> <span class="keyword">COMMENT</span> <span class="string">'设备SN'</span>,</span><br><span class="line">  <span class="string">"DEVICE_IP"</span> <span class="built_in">varchar</span>(<span class="number">32</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">''</span> <span class="keyword">COMMENT</span> <span class="string">'设备IP'</span>,</span><br><span class="line">  <span class="string">"FEATURES"</span> <span class="keyword">json</span> <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'设备巡检指标集'</span>,</span><br><span class="line">  <span class="string">"UPDATETIME"</span> <span class="keyword">timestamp</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="keyword">CURRENT_TIMESTAMP</span> <span class="keyword">ON</span> <span class="keyword">UPDATE</span> <span class="keyword">CURRENT_TIMESTAMP</span> <span class="keyword">COMMENT</span> <span class="string">'更新时间'</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">"ID"</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2016/11/09/Java小问题汇总/#more" rel="contents">
@@ -760,11 +925,11 @@
         
           <p>#Composer学习笔记</p>
 <h2 id="一、安装-MacOS"><a href="#一、安装-MacOS" class="headerlink" title="一、安装(MacOS)"></a>一、安装(MacOS)</h2><blockquote>
-<p>系统要求：PHP5.3.2+以上版本<br>学习参考：<a href="https://getcomposer.org/doc/">Composer官方文档</a></p>
+<p>系统要求：PHP5.3.2+以上版本<br>学习参考：<a href="https://getcomposer.org/doc/" target="_blank" rel="noopener">Composer官方文档</a></p>
 </blockquote>
 <p>Composer安装分两种：</p>
 <h3 id="1-局部安装"><a href="#1-局部安装" class="headerlink" title="1.局部安装"></a>1.局部安装</h3><p>将<code>composer.phar</code>文件内嵌于PHP应用目录下，命令如下：</p>
-<figure class="highlight scilab"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">php -r <span class="string">"copy('</span>https:<span class="comment">//getcomposer.org/installer', 'composer-setup.php');"</span></div><div class="line">php -r <span class="string">"if (hash_file('</span>SHA384', <span class="string">'composer-setup.php'</span>) === <span class="string">'e115a8dc7871f15d853148a7fbac7da27d6c0030b848d9b3dc09e2a0388afed865e6a3d6b3c0fad45c48e2b5fc1196ae'</span>) &#123; echo <span class="string">'Installer verified'</span>; &#125; <span class="keyword">else</span> &#123; echo <span class="string">'Installer corrupt'</span>; unlink(<span class="string">'composer-setup.php'</span>); &#125; echo PHP_EOL;<span class="string">"</div><div class="line">php composer-setup.php</div><div class="line">php -r "</span>unlink(<span class="string">'composer-setup.php'</span>);<span class="string">"</span></div></pre></td></tr></table></figure>
+<figure class="highlight scilab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">php -r <span class="string">"copy('</span>https:<span class="comment">//getcomposer.org/installer', 'composer-setup.php');"</span></span><br><span class="line">php -r <span class="string">"if (hash_file('</span>SHA384', <span class="string">'composer-setup.php'</span>) === <span class="string">'e115a8dc7871f15d853148a7fbac7da27d6c0030b848d9b3dc09e2a0388afed865e6a3d6b3c0fad45c48e2b5fc1196ae'</span>) &#123; echo <span class="string">'Installer verified'</span>; &#125; <span class="keyword">else</span> &#123; echo <span class="string">'Installer corrupt'</span>; unlink(<span class="string">'composer-setup.php'</span>); &#125; echo PHP_EOL;<span class="string">"</span></span><br><span class="line"><span class="string">php composer-setup.php</span></span><br><span class="line"><span class="string">php -r "</span>unlink(<span class="string">'composer-setup.php'</span>);<span class="string">"</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>以上命令分别做如下几件事件：</p>
 <ul>
@@ -775,7 +940,7 @@
 </ul>
 </blockquote>
 <p>安装完成后，会在当前工作目录下生成可执行文件：<code>composer.phar</code>，你可以通过如下方式使用（运行）composer来进行项目的依赖管理：</p>
-<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">php composer.phar &lt;<span class="keyword">command</span>&gt;</div><div class="line"><span class="comment"># command指install等composer命令</span></div></pre></td></tr></table></figure>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">php composer.phar &lt;<span class="keyword">command</span>&gt;</span><br><span class="line"><span class="comment"># command指install等composer命令</span></span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2016/09/01/Composer学习笔记/#more" rel="contents">
@@ -939,10 +1104,10 @@
 <li>Mac Apache 有2个默认的网站目录，一个是<code>/Library/WebServer/Documents/</code>，一个是用户目录下的Sites目录（推荐使用），默认未开启；</li>
 <li>Apache 基本命令：</li>
 </ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">启动<span class="selector-pseudo">:sudo</span> <span class="selector-tag">apachectl</span> <span class="selector-tag">start</span></div><div class="line">停止<span class="selector-pseudo">:sudo</span> <span class="selector-tag">apachectl</span> <span class="selector-tag">stop</span></div><div class="line">重启<span class="selector-pseudo">:sudo</span> <span class="selector-tag">apachectl</span> <span class="selector-tag">restart</span></div></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">启动<span class="selector-pseudo">:sudo</span> <span class="selector-tag">apachectl</span> <span class="selector-tag">start</span></span><br><span class="line">停止<span class="selector-pseudo">:sudo</span> <span class="selector-tag">apachectl</span> <span class="selector-tag">stop</span></span><br><span class="line">重启<span class="selector-pseudo">:sudo</span> <span class="selector-tag">apachectl</span> <span class="selector-tag">restart</span></span><br></pre></td></tr></table></figure>
 <h2 id="1-配置apache"><a href="#1-配置apache" class="headerlink" title="1. 配置apache"></a>1. 配置apache</h2><p>Step 1. 在用户目录下用Finder创建 Sites 文件夹；</p>
 <p>Step 2. 在<code>/etc/apache2/users/</code>目录下添加 <code>username.conf</code>文件(username要替换成真正的用户名，下同)：</p>
-<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">cd</span> /etc/apache2/users  </div><div class="line">sudo <span class="keyword">vim</span> username.<span class="keyword">conf</span></div></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /etc/apache2<span class="built_in">/users </span> </span><br><span class="line">sudo vim username.conf</span><br></pre></td></tr></table></figure>
 <p>Step 3. 在<code>username.conf</code>文件中添加如下内容：<br>    <img src="/img/username_conf.png" alt="username.conf内容"></p>
           <!--noindex-->
           <div class="post-button text-center">
@@ -983,179 +1148,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2016/02/27/JNI引起的堆外内存泄漏问题分析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="simiam">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/simiam.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Simiam">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/27/JNI引起的堆外内存泄漏问题分析/" itemprop="url">
-                  JNI引起的堆外内存泄漏问题分析
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-26T21:18:48Z">
-                2016-02-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/02/27/JNI引起的堆外内存泄漏问题分析/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2016/02/27/JNI引起的堆外内存泄漏问题分析/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>客户现场的监控系统中有一个网络听诊器功能，其每隔1分钟会对全网设备进行ping操作，以此来尽可能快的发现设备及网络是否出现异常。暂且不说通过该功能来对设备及网络作健康检测是否靠谱。由于JAVA对于网络层以下的协议是无能为力的，而ping操作涉及ICMP与ARP协议，因此监控系统只能借助JNI机制来搞定。</p>
-<h1 id="BUG现象"><a href="#BUG现象" class="headerlink" title="BUG现象"></a>BUG现象</h1><p>监控系统的java.exe进程每隔几个小时就异常退出</p>
-<h1 id="问题定位"><a href="#问题定位" class="headerlink" title="问题定位"></a>问题定位</h1><ol>
-<li>通过应用系统的日志看是否为业务相关的异常引起的 –》日志中并无任何异常信息</li>
-<li>打开GC日志，并观察一段时间，看是否存在堆内存回收异常（泄漏或溢出） –》堆内存一切正常</li>
-<li>此时忽然想起，java.exe进程异常退出应该会生成相关的hs_err<pid>.log文件，果然在应用目录下找到了一堆错误文件。该日志也叫crash日志。 </li>
-<li>通过查看hs_err<pid>.log内容得知，原来是jni ping引入的dll调用异常导致java.exe进程异常中止了。<blockquote>
-<p>PS：如果能早点想起步骤3，那就不用浪费步骤2的功夫了。</p>
-</blockquote>
-</li>
-</ol>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/02/27/JNI引起的堆外内存泄漏问题分析/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1200,7 +1197,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1317,6 +1314,7 @@
     <i class="fa fa-cloud"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">simiam</span>
+  <span>&nbsp;<a href="http://www.miitbeian.gov.cn">闽ICP备18023112号</a></span>
 </div>
 
 

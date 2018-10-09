@@ -90,12 +90,13 @@
 
 
 <meta name="description" content="背景客户现场的监控系统中有一个网络听诊器功能，其每隔1分钟会对全网设备进行ping操作，以此来尽可能快的发现设备及网络是否出现异常。暂且不说通过该功能来对设备及网络作健康检测是否靠谱。由于JAVA对于网络层以下的协议是无能为力的，而ping操作涉及ICMP与ARP协议，因此监控系统只能借助JNI机制来搞定。 BUG现象监控系统的java.exe进程每隔几个小时就异常退出 问题定位 通过应用系统的日">
-<meta name="keywords" content="Java,JNI">
+<meta name="keywords" content="Java,JNI,Memory Leak,内存泄漏">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JNI引起的堆外内存泄漏问题分析">
 <meta property="og:url" content="http://cloudnoter.com/2016/02/27/JNI引起的堆外内存泄漏问题分析/index.html">
 <meta property="og:site_name" content="Simiam">
 <meta property="og:description" content="背景客户现场的监控系统中有一个网络听诊器功能，其每隔1分钟会对全网设备进行ping操作，以此来尽可能快的发现设备及网络是否出现异常。暂且不说通过该功能来对设备及网络作健康检测是否靠谱。由于JAVA对于网络层以下的协议是无能为力的，而ping操作涉及ICMP与ARP协议，因此监控系统只能借助JNI机制来搞定。 BUG现象监控系统的java.exe进程每隔几个小时就异常退出 问题定位 通过应用系统的日">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2017-04-29T06:07:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JNI引起的堆外内存泄漏问题分析">
@@ -455,15 +456,15 @@
 <p>在没有进一步证据的前提下，只能先猜测是否为进程物理内存出了问题，于是监测了下应用进程的物理内存损耗量，果然是缓慢递增的，但JVM堆内存仍然一切正常，由此大约知道是堆外内存使用上出了问题。</p>
 <p>关于堆外内存的相关知识，可参考下面的文章：</p>
 <ul>
-<li><a href="http://lovestblog.cn/blog/2015/08/21/rssxmx/" target="_blank" rel="external">进程物理内存远大于Xmx的问题分析</a></li>
-<li><a href="http://lovestblog.cn/blog/2015/05/12/direct-buffer/" target="_blank" rel="external">JVM源码分析之堆外内存完全解读</a></li>
+<li><a href="http://lovestblog.cn/blog/2015/08/21/rssxmx/" target="_blank" rel="noopener">进程物理内存远大于Xmx的问题分析</a></li>
+<li><a href="http://lovestblog.cn/blog/2015/05/12/direct-buffer/" target="_blank" rel="noopener">JVM源码分析之堆外内存完全解读</a></li>
 </ul>
 <blockquote>
 <p>至此，可以知道该问题与JAVA没啥关系了，但为了彻底搞明白，我还是硬着头皮找来DLL的C源码，想看看是否可以用我helloworld级别的C水平把这个问题搞定。</p>
 </blockquote>
-<h1 id="堆外内存-泄漏、异常-分析"><a href="#堆外内存-泄漏、异常-分析" class="headerlink" title="堆外内存[泄漏、异常]分析"></a>堆外内存[泄漏、异常]分析</h1><p>分析C/C++应用的内存，大伙一般都会想到perftool，可惜windows环境下我始终编译不过。于是谷歌上再搜索一把”windows内存泄漏”，发现知乎上有<a href="https://www.zhihu.com/question/19647750" target="_blank" rel="external">文章</a>推荐了一堆，但我要么下载不到，要么看不懂。最后是根据《<a href="http://www.cnblogs.com/skynet/archive/2011/02/20/1959162.html" target="_blank" rel="external">C/C++内存泄漏及检测</a>》介绍的方法定位到是dll中有一段代码使用了缓存导致内存泄漏，当内存达到JVM中设置的MaxDirectMemorySize值时，dll就会出现内存访问异常错误，最终导致java.exe进程异常退出了。</p>
+<h1 id="堆外内存-泄漏、异常-分析"><a href="#堆外内存-泄漏、异常-分析" class="headerlink" title="堆外内存[泄漏、异常]分析"></a>堆外内存[泄漏、异常]分析</h1><p>分析C/C++应用的内存，大伙一般都会想到perftool，可惜windows环境下我始终编译不过。于是谷歌上再搜索一把”windows内存泄漏”，发现知乎上有<a href="https://www.zhihu.com/question/19647750" target="_blank" rel="noopener">文章</a>推荐了一堆，但我要么下载不到，要么看不懂。最后是根据《<a href="http://www.cnblogs.com/skynet/archive/2011/02/20/1959162.html" target="_blank" rel="noopener">C/C++内存泄漏及检测</a>》介绍的方法定位到是dll中有一段代码使用了缓存导致内存泄漏，当内存达到JVM中设置的MaxDirectMemorySize值时，dll就会出现内存访问异常错误，最终导致java.exe进程异常退出了。</p>
 <blockquote>
-<p>PS：在定位堆外内存异常相关问题时，为了快速重现问题，可以将MaxDirectMemorySize改小，MaxDirectMemorySize的默认值可认为与-Xmx设置的值一样（严格上不是，参见<a href="http://lovestblog.cn/blog/2015/05/12/direct-buffer/" target="_blank" rel="external">JVM源码分析之堆外内存完全解读</a>）</p>
+<p>PS：在定位堆外内存异常相关问题时，为了快速重现问题，可以将MaxDirectMemorySize改小，MaxDirectMemorySize的默认值可认为与-Xmx设置的值一样（严格上不是，参见<a href="http://lovestblog.cn/blog/2015/05/12/direct-buffer/" target="_blank" rel="noopener">JVM源码分析之堆外内存完全解读</a>）</p>
 </blockquote>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>该问题并非通用性问题，写这篇文章主要是为了记录下当时解决该问题的整个定位过程，文中一些知识点可能表述有误，还请批评指正。</p>
 <blockquote>
@@ -513,8 +514,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/07/02/MAC下搭建Apache+PHP开发环境/" rel="next" title="MAC下搭建Apache+PHP开发环境">
-                <i class="fa fa-chevron-left"></i> MAC下搭建Apache+PHP开发环境
+              <a href="/2016/01/21/Laravel-5-2中文文档：HTTP路由/" rel="next" title="Laravel 5.2中文文档：HTTP路由">
+                <i class="fa fa-chevron-left"></i> Laravel 5.2中文文档：HTTP路由
               </a>
             
           </div>
@@ -523,8 +524,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/01/21/Laravel-5-2中文文档：HTTP路由/" rel="prev" title="Laravel 5.2中文文档：HTTP路由">
-                Laravel 5.2中文文档：HTTP路由 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/07/02/MAC下搭建Apache+PHP开发环境/" rel="prev" title="MAC下搭建Apache+PHP开发环境">
+                MAC下搭建Apache+PHP开发环境 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -604,7 +605,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -737,6 +738,7 @@
     <i class="fa fa-cloud"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">simiam</span>
+  <span>&nbsp;<a href="http://www.miitbeian.gov.cn">闽ICP备18023112号</a></span>
 </div>
 
 
