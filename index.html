@@ -324,6 +324,291 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2018/10/11/Maven使用总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="simiam">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/simiam.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Simiam">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/10/11/Maven使用总结/" itemprop="url">
+                  迟到的Maven笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-11T09:51:31Z">
+                2018-10-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/11/Maven使用总结/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/10/11/Maven使用总结/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="迟到的Maven笔记"><a href="#迟到的Maven笔记" class="headerlink" title="迟到的Maven笔记"></a>迟到的Maven笔记</h1><blockquote>
+<p>转载请注明出处：<a href="https://simiam.com" target="_blank" rel="noopener">simiam.com</a></p>
+</blockquote>
+<p>本文主要是对Maven学习与使用过程中的一些经验的总结，不是Maven的入门教程，如需要系统学习Maven，您可以看一下<a href="https://www.amazon.cn/dp/B009WMAZX4" target="_blank" rel="noopener">《Maven实战》</a>这本书，或看下以下几个在线教程：</p>
+<ul>
+<li><a href="http://www.infoq.com/cn/maven-practice" target="_blank" rel="noopener">InfoQ上与Maven有关的内容</a></li>
+<li><a href="http://wiki.jikexueyuan.com/project/maven/" target="_blank" rel="noopener">极客学院的Maven教程</a></li>
+<li><a href="https://www.jianshu.com/p/fd43b3d0fdb0" target="_blank" rel="noopener">Maven生命周期介绍</a></li>
+</ul>
+<h2 id="1-依赖声明中scope的使用"><a href="#1-依赖声明中scope的使用" class="headerlink" title="1. 依赖声明中scope的使用"></a>1. 依赖声明中scope的使用</h2><blockquote>
+<p>网络上有太多的文章介绍，但个人还是推荐直接看<a href="https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html" target="_blank" rel="noopener">官方文档</a>，英文不好的朋友可以看<a href="http://tangyanbo.iteye.com/blog/1503957" target="_blank" rel="noopener">这篇有点老的文章</a>。</p>
+</blockquote>
+<p>除了掌握基本内容外，还需要特别关注以下几个内容：</p>
+<ul>
+<li>provided与runtime的区别，system知道下有这个东西就行。</li>
+<li>import这个scope是后面引入的新scope，其只能用于<code>&lt;dependencyManagement&gt;</code>中且类型为pom的依赖项，个人感觉其主要作用在于对依赖版本进行分类管理。</li>
+<li>Maven依赖冲突的解决策略，可以参考<a href="https://www.jianshu.com/p/f6ca45865025" target="_blank" rel="noopener">这里</a></li>
+</ul>
+<h2 id="2-build配置"><a href="#2-build配置" class="headerlink" title="2. build配置"></a>2. <code>build</code>配置</h2><h3 id="2-1-Maven项目的标准目录结构"><a href="#2-1-Maven项目的标准目录结构" class="headerlink" title="2.1. Maven项目的标准目录结构"></a>2.1. Maven项目的标准目录结构</h3><ul>
+<li>src<ul>
+<li>main<ul>
+<li>java — 源文件 </li>
+<li>resources — 资源文件</li>
+<li>filters — 资源过滤文件</li>
+<li>config — 配置文件</li>
+<li>scripts — 脚本文件</li>
+<li>webapp — web应用文件</li>
+</ul>
+</li>
+<li>test<ul>
+<li>java — 测试源文件</li>
+<li>resources — 测试资源文件</li>
+<li>filters — 测试资源过滤文件</li>
+</ul>
+</li>
+<li>it — 集成测试</li>
+<li>assembly — assembly descriptors</li>
+<li>site — Site</li>
+</ul>
+</li>
+<li>target<ul>
+<li>generated-sources</li>
+<li>classes</li>
+<li>generated-test-sources</li>
+<li>test-classes</li>
+<li>xxx.jar</li>
+</ul>
+</li>
+<li>pom.xml</li>
+<li>LICENSE.txt</li>
+<li>NOTICE.txt</li>
+<li>README.txt</li>
+</ul>
+<h3 id="2-2-resources节点"><a href="#2-2-resources节点" class="headerlink" title="2.2. resources节点"></a>2.2. <code>resources</code>节点</h3><p>构建Maven项目的时候，如果没有进行特殊的配置，Maven会按照标准的目录结构查找和处理各种类型文件。</p>
+<blockquote>
+<p><strong>src/main/java和src/test/java</strong></p>
+<p>这两个目录中的所有<code>*.java</code>文件会分别在<code>comile</code>和<code>test-comiple</code>阶段被编译，编译结果分别放到了<code>target/classes</code>和<code>targe/test-classes</code>目录中，但是这两个目录中的其他文件都会被忽略掉。</p>
+<p><strong>src/main/resources和src/test/resources</strong></p>
+<p>这两个目录中的文件也会分别被复制到<code>target/classes</code>和<code>target/test-classes</code>目录中。</p>
+<p><strong>target/classes</strong></p>
+<p>打包插件默认会把这个目录中的所有内容打入到<code>jar</code>包或者<code>war</code>包中。</p>
+</blockquote>
+<p>资源文件是Java代码中要使用的文件。代码在执行的时候会到指定位置去查找这些文件。前面已经说了Maven默认的处理方式，但是有时候我们需要进行自定义的配置，比如下面两种情况：</p>
+<ul>
+<li>有的时候有些配置文件通常与<code>.java</code>文件一起放在<code>src/main/java</code>目录（如mybatis或hibernate的表映射文件）。</li>
+<li>有的时候还希望把其他目录中的资源也复制到<code>classes</code>目录中。这些情况下就需要在<code>pom.xml</code>文件中修改配置了。</li>
+</ul>
+<p>目前主要有如下两种方法修改配置：</p>
+<ul>
+<li>一种是在<code>&lt;build&gt;</code>元素下添加<code>&lt;resources&gt;</code>进行配置。</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    ......</span><br><span class="line">      <span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/resources<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">excludes</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">exclude</span>&gt;</span>**/*.properties<span class="tag">&lt;/<span class="name">exclude</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">exclude</span>&gt;</span>**/*.xml<span class="tag">&lt;/<span class="name">exclude</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">excludes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">filtering</span>&gt;</span>false<span class="tag">&lt;/<span class="name">filtering</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/java<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">includes</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.properties<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.xml<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">filtering</span>&gt;</span>false<span class="tag">&lt;/<span class="name">filtering</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br><span class="line">    ......</span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>另一种是在<code>&lt;build&gt;</code>的<code>&lt;plugins&gt;</code>子元素中配置<code>maven-resources-plugin</code>等处理资源文件的插件。</li>
+</ul>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-resources-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.5<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span></span><br><span class="line"><span class="xml">            <span class="tag">&lt;<span class="name">id</span>&gt;</span>copy-xmls<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span></span><br><span class="line"><span class="xml">            <span class="tag">&lt;<span class="name">phase</span>&gt;</span>process-sources<span class="tag">&lt;/<span class="name">phase</span>&gt;</span></span></span><br><span class="line"><span class="xml">            <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span></span><br><span class="line"><span class="xml">                <span class="tag">&lt;<span class="name">goal</span>&gt;</span>copy-resources<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span></span><br><span class="line"><span class="xml">            <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span></span><br><span class="line"><span class="xml">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span></span><br><span class="line"><span class="xml">                <span class="tag">&lt;<span class="name">outputDirectory</span>&gt;</span>$</span><span class="template-variable">&#123;basedir&#125;</span><span class="xml">/target/classes<span class="tag">&lt;/<span class="name">outputDirectory</span>&gt;</span></span></span><br><span class="line"><span class="xml">                <span class="tag">&lt;<span class="name">resources</span>&gt;</span></span></span><br><span class="line"><span class="xml">                    <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span></span><br><span class="line"><span class="xml">                        <span class="tag">&lt;<span class="name">directory</span>&gt;</span>$</span><span class="template-variable">&#123;basedir&#125;</span><span class="xml">/src/main/java<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span></span><br><span class="line"><span class="xml">                        <span class="tag">&lt;<span class="name">includes</span>&gt;</span></span></span><br><span class="line"><span class="xml">                            <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.xml<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span></span><br><span class="line"><span class="xml">                        <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></span></span><br><span class="line"><span class="xml">                    <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span></span><br><span class="line"><span class="xml">                <span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span></span><br><span class="line"><span class="xml">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p><code>resources</code>元素与<code>maven-resources-plugin</code>插件一般都是搭配在一起使用实现复杂的资源文件处理逻辑。</p>
+<p>默认情况下，Maven会从项目的<code>src/main/resources</code>目录下查找资源。如果你的资源不在此目录下，可以用<code>&lt;resources&gt;</code>标签指定，同时也支持多个目录，也支持<code>&lt;include&gt;,&lt;exclude&gt;</code>之类的精细化配置。</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="params">&lt;resources&gt;</span></span><br><span class="line">	<span class="params">&lt;resource&gt;</span></span><br><span class="line">		<span class="params">&lt;directory&gt;</span>src<span class="meta-keyword">/main/</span>resources1<span class="params">&lt;/directory&gt;</span></span><br><span class="line">	<span class="params">&lt;/resource&gt;</span></span><br><span class="line">	<span class="params">&lt;resource&gt;</span></span><br><span class="line">		<span class="params">&lt;directory&gt;</span>src<span class="meta-keyword">/main/</span>resources2<span class="params">&lt;/directory&gt;</span></span><br><span class="line">	<span class="params">&lt;/resource&gt;</span></span><br><span class="line"><span class="params">&lt;/resources&gt;</span></span><br></pre></td></tr></table></figure>
+<p>有的时候，资源文件中存在变量引用，可以使用<code>&lt;filtering&gt;</code>标签指定是否替换资源中的变量。变量的来源默认为pom文件中的<code>&lt;project&gt;根元素下的&lt;properties&gt;</code>标签或<code>&lt;profile&gt;下的&lt;properties&gt;</code>标签中定义的变量；当然也可以在<code>&lt;build&gt;</code>中定义过滤器资源。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">project</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">     ......</span><br><span class="line">    <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 自定义过滤器资源文件 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filters</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">filter</span>&gt;</span>filter-values.properties<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">    	   <span class="tag">&lt;/<span class="name">filters</span>&gt;</span></span><br><span class="line">    	   <span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/resources<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">filtering</span>&gt;</span>true<span class="tag">&lt;/<span class="name">filtering</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">profiles</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">profile</span>&gt;</span></span><br><span class="line">            ......</span><br><span class="line">        <span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">profiles</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>如果资源中本来存在不需要被替换的<code>${}</code>字符，则可以在<code>$</code>前加<code>\</code>，同时在<code>maven-resources-plugin</code>插件配置的<code>&lt;configuration&gt;</code>中使用``；若目录下存在二进制文件，则需要通过以下的后缀名来排除。
+
+<escape><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-resources-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">version</span>&gt;</span>3.0.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">	   <span class="comment">&lt;!-- 配置资源文件中的转义字符 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">escapeString</span>&gt;</span>\<span class="tag">&lt;/<span class="name">escapeString</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoding</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">encoding</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 如目录下存在二进制文件，则需要通过以下的后缀名来排除 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">nonFilteredFileExtensions</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">nonFilteredFileExtension</span>&gt;</span>pdf<span class="tag">&lt;/<span class="name">nonFilteredFileExtension</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">nonFilteredFileExtension</span>&gt;</span>swf<span class="tag">&lt;/<span class="name">nonFilteredFileExtension</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">nonFilteredFileExtensions</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure></escape></p>
+<p>如果你需要在其他阶段拷贝资源文件，可以使用插件目标copy-resources，类似配置如下：</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="params">&lt;plugin&gt;</span></span><br><span class="line">    <span class="params">&lt;artifactId&gt;</span>maven-resources-plugin<span class="params">&lt;/artifactId&gt;</span></span><br><span class="line">    <span class="params">&lt;version&gt;</span><span class="number">3.0</span><span class="number">.2</span><span class="params">&lt;/version&gt;</span></span><br><span class="line">    <span class="params">&lt;executions&gt;</span></span><br><span class="line">      <span class="params">&lt;execution&gt;</span></span><br><span class="line">        <span class="params">&lt;id&gt;</span>copy-resources<span class="params">&lt;/id&gt;</span></span><br><span class="line">        <span class="params">&lt;phase&gt;</span>validate<span class="params">&lt;/phase&gt;</span></span><br><span class="line">        <span class="params">&lt;goals&gt;</span></span><br><span class="line">            <span class="params">&lt;goal&gt;</span>copy-resources<span class="params">&lt;/goal&gt;</span></span><br><span class="line">        <span class="params">&lt;/goals&gt;</span></span><br><span class="line">        <span class="params">&lt;configuration&gt;</span></span><br><span class="line">            <span class="params">&lt;outputDirectory&gt;</span>$&#123;basedir&#125;<span class="meta-keyword">/target/</span>extra-resources<span class="params">&lt;/outputDirectory&gt;</span></span><br><span class="line">            <span class="params">&lt;resources&gt;</span>          </span><br><span class="line">                <span class="params">&lt;resource&gt;</span></span><br><span class="line">                    <span class="params">&lt;directory&gt;</span>src/non-packaged-resources<span class="params">&lt;/directory&gt;</span></span><br><span class="line">                    <span class="params">&lt;filtering&gt;</span>true<span class="params">&lt;/filtering&gt;</span></span><br><span class="line">                <span class="params">&lt;/resource&gt;</span></span><br><span class="line">            <span class="params">&lt;/resources&gt;</span>              </span><br><span class="line">        <span class="params">&lt;/configuration&gt;</span>            </span><br><span class="line">      <span class="params">&lt;/execution&gt;</span></span><br><span class="line">    <span class="params">&lt;/executions&gt;</span></span><br><span class="line"><span class="params">&lt;/plugin&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>更详细的配置请参考<a href="http://maven.apache.org/plugins/maven-resources-plugin/" target="_blank" rel="noopener"><code>maven-resources-plugin</code>插件官网</a></p>
+</blockquote>
+<p>简单总结：resources及其对应的插件的作用就是用于资源文件的处理（变量替换、编译时资源文件复制等），为后续的项目打包阶段作准备。</p>
+<blockquote>
+<p>一定要注意与<code>maven-assemble-plugin</code>插件区别开来，因为<code>assemble</code>也涉及到配置文件的拷贝。</p>
+</blockquote>
+<h3 id="2-3-plugin节点"><a href="#2-3-plugin节点" class="headerlink" title="2.3. plugin节点"></a>2.3. <code>plugin</code>节点</h3><ul>
+<li>介绍</li>
+</ul>
+<h4 id="2-3-1-常用插件"><a href="#2-3-1-常用插件" class="headerlink" title="2.3.1. 常用插件"></a>2.3.1. 常用插件</h4><ul>
+<li><p>maven-resources-plugin</p>
+</li>
+<li><p>maven-compiler-plugin</p>
+</li>
+<li><p>maven-surefire-plugin</p>
+</li>
+<li><p>maven-jar-plugin</p>
+</li>
+<li><p>maven-war-plugin</p>
+</li>
+<li><p>maven-source-plugin</p>
+</li>
+<li><p>maven-assembly-plugin</p>
+</li>
+<li><p>maven-dependency-plugin</p>
+</li>
+<li><p>maven-failsafe-plugin</p>
+</li>
+<li><p>maven-enforcer-plugin</p>
+</li>
+<li><p>spring-boot-maven-plugin</p>
+</li>
+</ul>
+<h2 id="3-profile配置"><a href="#3-profile配置" class="headerlink" title="3. profile配置"></a>3. profile配置</h2><blockquote>
+<p>通过profile中定义的property，基于工程中的properties模板生成最终的properties文件。</p>
+</blockquote>
+<h2 id="4-实战案例"><a href="#4-实战案例" class="headerlink" title="4. 实战案例"></a>4. 实战案例</h2><blockquote>
+<p>使用Maven搭建一个基于SpringBoot的工程介绍，及搭建过程中踩过的坑。</p>
+</blockquote>
+<ul>
+<li>使用<code>import scope</code>引入<code>spring-boot-dependencies</code>时无法引用POM中定义的property、pluginManagement等一系列<a href="https://stackoverflow.com/questions/40606267/how-does-importing-maven-dependencies-impact-plugin-management" target="_blank" rel="noopener">问题</a></li>
+</ul>
+<blockquote>
+<p>转载请注明出处：<a href="https://simiam.com" target="_blank" rel="noopener">simiam.com</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2018/08/17/Java内存模型/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1065,195 +1350,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2018/07/10/ovirt-engine开发环境搭建指南/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="simiam">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/simiam.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Simiam">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2018/07/10/ovirt-engine开发环境搭建指南/" itemprop="url">
-                  ovirt-engine开发环境搭建指南
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-10T15:04:48Z">
-                2018-07-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/分布式/" itemprop="url" rel="index">
-                    <span itemprop="name">分布式</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/分布式/虚拟化/" itemprop="url" rel="index">
-                    <span itemprop="name">虚拟化</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/07/10/ovirt-engine开发环境搭建指南/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/07/10/ovirt-engine开发环境搭建指南/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="ovirt-engine开发环境搭建指南"><a href="#ovirt-engine开发环境搭建指南" class="headerlink" title="ovirt-engine开发环境搭建指南"></a>ovirt-engine开发环境搭建指南</h1><h4 id="云管理平台组-陈志安"><a href="#云管理平台组-陈志安" class="headerlink" title="云管理平台组-陈志安"></a>云管理平台组-陈志安</h4><hr>
-<h1 id="中文"><a href="#中文" class="headerlink" title="中文"></a>中文</h1><hr>
-<blockquote>
-<p>提示：为了能比较顺畅的阅读本文档，您需要具体基本的docker基础知识及常用命令的使用。如果您尚未听说过docker，则请先通过<a href="https://docs.docker.com/" target="_blank" rel="noopener">docker官方文档</a>学习必要的知识。</p>
-</blockquote>
-<h2 id="重要说明：在windwos下存在以下需要注意的细节"><a href="#重要说明：在windwos下存在以下需要注意的细节" class="headerlink" title="重要说明：在windwos下存在以下需要注意的细节"></a>重要说明：在windwos下存在以下需要注意的细节</h2><ul>
-<li>在docker中创建的一些特殊文件，在外部主机上无法马上删除，需要重启外部主机，详见<a href="https://forums.docker.com/t/how-to-delete-files-on-host-created-by-container/20830/3" target="_blank" rel="noopener">这里</a></li>
-<li>如果将docker中的目录通过<code>volumn</code>参数映射至windows本地目录时，docker中的链接文件在windows的文件系统下是无法生效的，详见<a href="https://github.com/docker/for-win/issues/109" target="_blank" rel="noopener">这里</a></li>
-</ul>
-<h1 id="1-快速入门"><a href="#1-快速入门" class="headerlink" title="1. 快速入门"></a>1. 快速入门</h1><p>制作本镜像的主要目的：快速创建并启动一个近似于本地的ovirt-engine容器，它可以为有需要的开发人员（特别是基于windows平台）提供近似于本地的开发、测试、调试环境。</p>
-<h2 id="1-1-先决条件"><a href="#1-1-先决条件" class="headerlink" title="1.1. 先决条件"></a>1.1. 先决条件</h2><ul>
-<li>安装Docker运行环境，docker分企业版与社区版，我们只需要社区版即可，具体可参考<a href="https://docs.docker.com/install/linux/docker-ce/centos/" target="_blank" rel="noopener">Docker官网文档</a>。</li>
-</ul>
-<blockquote>
-<p>由于Windwos系统的特殊性，建议在Windows-10专业版或企业版（64位）系统上安装<a href="https://docs.docker.com/docker-for-windows/install/" target="_blank" rel="noopener">Docker for windows</a>（直接基于Windows Hyper-V）;<br>而之前的Windows版本则需要使用<a href="https://docs.docker.com/toolbox/toolbox_install_windows/" target="_blank" rel="noopener">Docker Toolbox on Windows</a>（需要借助Oracle Virtual Box）。</p>
-</blockquote>
-<p><strong>在Windwos上激活Hyper-V意味着无法同时运行Virtual Box与VMWare workstation等其他虚拟化平台</strong></p>
-<h2 id="1-2-构建ovirt-engine镜像"><a href="#1-2-构建ovirt-engine镜像" class="headerlink" title="1.2. 构建ovirt-engine镜像"></a>1.2. 构建ovirt-engine镜像</h2><blockquote>
-<p>如果您想自己定制一个新镜像，您才需要使用本节介绍的内容。正常情况下，您可以忽略本节内容。</p>
-</blockquote>
-<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 假设工作目录为：~/workspace/Dockerfiles，要创建的镜像名为：simiam/ovirt-engine-dev</span></span><br><span class="line"><span class="keyword">cd</span> ~<span class="string">/workspace/Dockerfiles/ovirt-engine</span></span><br><span class="line">docker build -t simiam/ovirt-engine-dev <span class="string">./latest</span></span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/07/10/ovirt-engine开发环境搭建指南/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1303,7 +1399,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1325,7 +1421,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1420,7 +1516,17 @@
     <i class="fa fa-cloud"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">simiam</span>
-  <span>&nbsp;<a href="http://www.miitbeian.gov.cn">闽ICP备18023112号</a></span>
+  <span>&nbsp;
+    <a href="http://www.miitbeian.gov.cn">
+      <p style="float:left; height:20px;line-height:20px;margin: 7px 0px 0px 5px; color:#939393;">闽ICP备18023112号</p>
+    </a>
+  </span>
+  <span style="width:300px;margin:0 auto; padding:20px 0;">&nbsp;
+		<a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=35012102500070" >
+      <img src="/images/batb.png" style="float:left; padding-top:7px; padding-left:30px;"/>
+      <p style="float:left; height:20px;line-height:20px;margin: 7px 0px 0px 5px; color:#939393; padding-right: 80px;">闽公网安备 35012102500070号</p>
+    </a>
+	</span>
 </div>
 
 
