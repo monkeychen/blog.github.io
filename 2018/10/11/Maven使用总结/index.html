@@ -97,7 +97,7 @@
 <meta property="og:site_name" content="Simiam">
 <meta property="og:description" content="Maven学习笔记 转载请注明出处：simiam.com  本文主要是对Maven学习与使用过程中的一些经验的总结，不是Maven的入门教程，如需要系统学习Maven，您可以看一下《Maven实战》这本书，或看下以下几个在线教程：  InfoQ上与Maven有关的内容 极客学院的Maven教程 Maven生命周期介绍  1. 依赖声明中scope的使用 网络上有太多的文章介绍，但个人还是推荐直接看">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-16T07:26:08.629Z">
+<meta property="og:updated_time" content="2018-10-16T07:32:14.881Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Maven学习笔记">
 <meta name="twitter:description" content="Maven学习笔记 转载请注明出处：simiam.com  本文主要是对Maven学习与使用过程中的一些经验的总结，不是Maven的入门教程，如需要系统学习Maven，您可以看一下《Maven实战》这本书，或看下以下几个在线教程：  InfoQ上与Maven有关的内容 极客学院的Maven教程 Maven生命周期介绍  1. 依赖声明中scope的使用 网络上有太多的文章介绍，但个人还是推荐直接看">
@@ -668,7 +668,7 @@
 <li>现存/缺失文件</li>
 </ul>
 <blockquote>
-<p><strong>注意：</strong>profile节点下<code>&lt;properties&gt;</code>中定义的属性值会覆盖其所在pom文件中定义的同名的全局属性。</p>
+<p><strong>注意：</strong>profile节点下定义的元素都会覆盖其所在Pom文件中定义的同名的节点，如同名plugin，properties中的同名属性等。</p>
 </blockquote>
 <h3 id="Spring框架的profile机制与Maven的profile机制的区别"><a href="#Spring框架的profile机制与Maven的profile机制的区别" class="headerlink" title="Spring框架的profile机制与Maven的profile机制的区别"></a>Spring框架的profile机制与Maven的profile机制的区别</h3><ul>
 <li>Spring框架提供的profile机制主要作用于运行时，即应用程序在运行时使用spring提供的profile相关机制来决定应用程序的各种动态行为。</li>

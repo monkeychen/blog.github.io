@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://cloudnoter.com/"/>
-  <updated>2018-10-16T07:26:08.629Z</updated>
+  <updated>2018-10-16T07:32:14.881Z</updated>
   <id>http://cloudnoter.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://cloudnoter.com/2018/10/11/Maven%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/"/>
     <id>http://cloudnoter.com/2018/10/11/Maven使用总结/</id>
     <published>2018-10-11T09:51:31.000Z</published>
-    <updated>2018-10-16T07:26:08.629Z</updated>
+    <updated>2018-10-16T07:32:14.881Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Maven学习笔记"><a href="#Maven学习笔记" class="headerlink" title="Maven学习笔记"></a>Maven学习笔记</h1><blockquote>
 <p>转载请注明出处：<a href="https://simiam.com" target="_blank" rel="noopener">simiam.com</a></p>
@@ -258,7 +258,7 @@
 <li>现存/缺失文件</li>
 </ul>
 <blockquote>
-<p><strong>注意：</strong>profile节点下<code>&lt;properties&gt;</code>中定义的属性值会覆盖其所在pom文件中定义的同名的全局属性。</p>
+<p><strong>注意：</strong>profile节点下定义的元素都会覆盖其所在Pom文件中定义的同名的节点，如同名plugin，properties中的同名属性等。</p>
 </blockquote>
 <h3 id="Spring框架的profile机制与Maven的profile机制的区别"><a href="#Spring框架的profile机制与Maven的profile机制的区别" class="headerlink" title="Spring框架的profile机制与Maven的profile机制的区别"></a>Spring框架的profile机制与Maven的profile机制的区别</h3><ul>
 <li>Spring框架提供的profile机制主要作用于运行时，即应用程序在运行时使用spring提供的profile相关机制来决定应用程序的各种动态行为。</li>
