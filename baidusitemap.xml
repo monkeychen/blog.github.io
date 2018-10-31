@@ -4,44 +4,80 @@
 
     
   <url>
-    <loc>http://cloudnoter.com/2018/10/11/Maven%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/</loc>
-    <lastmod>2018-10-16T07:32:14.881Z</lastmod>
+    <loc>http://cloudnoter.com/2018/07/10/ovirt-engine%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/</loc>
+    <lastmod>2018-10-31T03:39:34.857Z</lastmod>
     <data>
         <display>
-        <title>Maven学习笔记</title>
-        <pubTime>2018-10-11T09:51:31.000Z</pubTime>
+        <title>ovirt-engine开发环境搭建指南</title>
+        <pubTime>2018-07-10T15:04:48.000Z</pubTime>
         
-        <tag>Maven</tag>
+        <tag>ovirt</tag>
          
-        <tag>SpringBoot</tag>
+        <tag>engine</tag>
+         
+        <tag>虚拟化</tag>
          
          
            
              
-              <breadCrumb title="Java" url="http://cloudnoter.com/categories/Java/"/>
+              <breadCrumb title="分布式" url="http://cloudnoter.com/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
+          
+             
+              <breadCrumb title="虚拟化" url="http://cloudnoter.com/categories/%E5%88%86%E5%B8%83%E5%BC%8F/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
           
         </display>
     </data>
     </url>
 
     
-    
   <url>
-    <loc>http://cloudnoter.com/2018/08/17/Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/</loc>
-    <lastmod>2018-08-17T01:45:06.282Z</lastmod>
+    <loc>http://cloudnoter.com/2018/07/11/oVirt%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E6%96%B9%E6%A1%88%E5%88%86%E6%9E%90/</loc>
+    <lastmod>2018-10-31T03:39:15.037Z</lastmod>
     <data>
         <display>
-        <title>Java内存模型</title>
-        <pubTime>2018-08-17T09:39:43.000Z</pubTime>
+        <title>oVirt持续集成方案分析</title>
+        <pubTime>2018-07-10T16:21:08.000Z</pubTime>
         
-        <tag>Java</tag>
+        <tag>ovirt</tag>
          
-        <tag>JVM</tag>
+        <tag>engine</tag>
+         
+        <tag>虚拟化</tag>
          
          
            
              
-              <breadCrumb title="Java" url="http://cloudnoter.com/categories/Java/"/>
+              <breadCrumb title="分布式" url="http://cloudnoter.com/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
+          
+             
+              <breadCrumb title="虚拟化" url="http://cloudnoter.com/categories/%E5%88%86%E5%B8%83%E5%BC%8F/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://cloudnoter.com/2018/07/11/oVirt%E8%99%9A%E6%8B%9F%E5%8C%96%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E3%80%81%E7%BB%84%E4%BB%B6%E4%B8%8E%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86/</loc>
+    <lastmod>2018-10-31T03:38:52.221Z</lastmod>
+    <data>
+        <display>
+        <title>oVirt虚拟化关键概念、组件与技术原理</title>
+        <pubTime>2018-07-10T16:24:40.000Z</pubTime>
+        
+        <tag>ovirt</tag>
+         
+        <tag>engine</tag>
+         
+        <tag>虚拟化</tag>
+         
+         
+           
+             
+              <breadCrumb title="分布式" url="http://cloudnoter.com/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
+          
+             
+              <breadCrumb title="虚拟化" url="http://cloudnoter.com/categories/%E5%88%86%E5%B8%83%E5%BC%8F/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
           
         </display>
     </data>
@@ -50,7 +86,7 @@
     
   <url>
     <loc>http://cloudnoter.com/2018/07/13/CI-CD%E6%96%B9%E6%A1%88%E5%88%86%E6%9E%90/</loc>
-    <lastmod>2018-07-13T02:08:18.408Z</lastmod>
+    <lastmod>2018-10-31T03:37:54.063Z</lastmod>
     <data>
         <display>
         <title>CI/CD方案分析</title>
@@ -88,26 +124,21 @@
 
     
   <url>
-    <loc>http://cloudnoter.com/2018/07/11/oVirt%E8%99%9A%E6%8B%9F%E5%8C%96%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E3%80%81%E7%BB%84%E4%BB%B6%E4%B8%8E%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86/</loc>
-    <lastmod>2018-07-10T08:42:27.603Z</lastmod>
+    <loc>http://cloudnoter.com/2018/08/17/Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/</loc>
+    <lastmod>2018-10-16T07:39:46.050Z</lastmod>
     <data>
         <display>
-        <title>oVirt虚拟化关键概念、组件与技术原理</title>
-        <pubTime>2018-07-10T16:24:40.000Z</pubTime>
+        <title>Java内存模型</title>
+        <pubTime>2018-08-17T09:39:43.000Z</pubTime>
         
-        <tag>ovirt</tag>
+        <tag>Java</tag>
          
-        <tag>engine</tag>
-         
-        <tag>虚拟化</tag>
+        <tag>JVM</tag>
          
          
            
              
-              <breadCrumb title="分布式" url="http://cloudnoter.com/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
-          
-             
-              <breadCrumb title="虚拟化" url="http://cloudnoter.com/categories/%E5%88%86%E5%B8%83%E5%BC%8F/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
+              <breadCrumb title="Java" url="http://cloudnoter.com/categories/Java/"/>
           
         </display>
     </data>
@@ -115,58 +146,27 @@
 
     
   <url>
-    <loc>http://cloudnoter.com/2018/07/11/oVirt%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E6%96%B9%E6%A1%88%E5%88%86%E6%9E%90/</loc>
-    <lastmod>2018-07-10T08:32:30.137Z</lastmod>
+    <loc>http://cloudnoter.com/2018/10/11/Maven%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/</loc>
+    <lastmod>2018-10-16T07:32:14.881Z</lastmod>
     <data>
         <display>
-        <title>oVirt持续集成方案分析</title>
-        <pubTime>2018-07-10T16:21:08.000Z</pubTime>
+        <title>Maven学习笔记</title>
+        <pubTime>2018-10-11T09:51:31.000Z</pubTime>
         
-        <tag>ovirt</tag>
+        <tag>Maven</tag>
          
-        <tag>engine</tag>
-         
-        <tag>虚拟化</tag>
+        <tag>SpringBoot</tag>
          
          
            
              
-              <breadCrumb title="分布式" url="http://cloudnoter.com/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
-          
-             
-              <breadCrumb title="虚拟化" url="http://cloudnoter.com/categories/%E5%88%86%E5%B8%83%E5%BC%8F/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
+              <breadCrumb title="Java" url="http://cloudnoter.com/categories/Java/"/>
           
         </display>
     </data>
     </url>
 
     
-  <url>
-    <loc>http://cloudnoter.com/2018/07/10/ovirt-engine%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/</loc>
-    <lastmod>2018-07-10T07:22:56.650Z</lastmod>
-    <data>
-        <display>
-        <title>ovirt-engine开发环境搭建指南</title>
-        <pubTime>2018-07-10T15:04:48.000Z</pubTime>
-        
-        <tag>ovirt</tag>
-         
-        <tag>engine</tag>
-         
-        <tag>虚拟化</tag>
-         
-         
-           
-             
-              <breadCrumb title="分布式" url="http://cloudnoter.com/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
-          
-             
-              <breadCrumb title="虚拟化" url="http://cloudnoter.com/categories/%E5%88%86%E5%B8%83%E5%BC%8F/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
-          
-        </display>
-    </data>
-    </url>
-
     
   <url>
     <loc>http://cloudnoter.com/2018/06/04/ovirt-engine%E6%B0%B4%E5%B9%B3%E6%89%A9%E5%B1%95%E5%8F%AF%E8%A1%8C%E6%80%A7%E5%88%86%E6%9E%90/</loc>

@@ -97,12 +97,12 @@
 <meta property="og:site_name" content="Simiam">
 <meta property="og:description" content="ovirt-engine开发环境搭建指南云管理平台组-陈志安 中文  提示：为了能比较顺畅的阅读本文档，您需要具体基本的docker基础知识及常用命令的使用。如果您尚未听说过docker，则请先通过docker官方文档学习必要的知识。  重要说明：在windwos下存在以下需要注意的细节 在docker中创建的一些特殊文件，在外部主机上无法马上删除，需要重启外部主机，详见这里 如果将docker中">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://oaivivmzx.bkt.clouddn.com/engine-deploy-dir-tree.png">
-<meta property="og:updated_time" content="2018-07-10T07:22:56.650Z">
+<meta property="og:image" content="http://img.simiam.com/engine-deploy-dir-tree.png">
+<meta property="og:updated_time" content="2018-10-31T03:39:34.857Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ovirt-engine开发环境搭建指南">
 <meta name="twitter:description" content="ovirt-engine开发环境搭建指南云管理平台组-陈志安 中文  提示：为了能比较顺畅的阅读本文档，您需要具体基本的docker基础知识及常用命令的使用。如果您尚未听说过docker，则请先通过docker官方文档学习必要的知识。  重要说明：在windwos下存在以下需要注意的细节 在docker中创建的一些特殊文件，在外部主机上无法马上删除，需要重启外部主机，详见这里 如果将docker中">
-<meta name="twitter:image" content="http://oaivivmzx.bkt.clouddn.com/engine-deploy-dir-tree.png">
+<meta name="twitter:image" content="http://img.simiam.com/engine-deploy-dir-tree.png">
 
 
 
@@ -548,7 +548,7 @@
 <li>使用docker命令：<code>docker exec -it &lt;容器名&gt; /bin/bash</code></li>
 </ul>
 <h2 id="1-7-ovirt-engine部署目录介绍"><a href="#1-7-ovirt-engine部署目录介绍" class="headerlink" title="1.7. ovirt-engine部署目录介绍"></a>1.7. ovirt-engine部署目录介绍</h2><p>ovirt-engine平台部署在wildfly(jboss)服务器上，但其并不是采用wildfly官方所描述的标准部署方式及部署结构，其使用一套自己的部署目录结构，如下：</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/engine-deploy-dir-tree.png" alt="Dir-Tree"></p>
+<p><img src="http://img.simiam.com/engine-deploy-dir-tree.png" alt="Dir-Tree"></p>
 <p>这些目录与<code>wildfly</code>环境的关联关系</p>
 <figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-Djboss.home.dir=<span class="regexp">/usr/share</span><span class="regexp">/ovirt-engine-wildfly </span></span><br><span class="line"><span class="regexp">-Djboss.server.base.dir=/env</span><span class="regexp">/ovirt-engine-deploy/share</span><span class="regexp">/ovirt-engine </span></span><br><span class="line"><span class="regexp">-Djboss.server.data.dir=/env</span><span class="regexp">/ovirt-engine-deploy/var</span><span class="regexp">/lib/ovirt</span>-engine </span><br><span class="line">-Djboss.server.log.dir=<span class="regexp">/env/ovirt</span>-engine-deploy/var/log/ovirt-engine </span><br><span class="line">-Djboss.server.config.dir=<span class="regexp">/env/ovirt</span>-engine-deploy/var/<span class="class"><span class="keyword">lib</span>/<span class="title">ovirt</span>-<span class="title">engine</span>/<span class="title">jboss_runtime</span>/<span class="title">config</span> </span></span><br><span class="line">-Djboss.server.temp.dir=<span class="regexp">/env/ovirt</span>-engine-deploy/var/<span class="class"><span class="keyword">lib</span>/<span class="title">ovirt</span>-<span class="title">engine</span>/<span class="title">jboss_runtime</span>/<span class="title">tmp</span> </span></span><br><span class="line">-Djboss.controller.temp.dir=<span class="regexp">/env/ovirt</span>-engine-deploy/var/<span class="class"><span class="keyword">lib</span>/<span class="title">ovirt</span>-<span class="title">engine</span>/<span class="title">jboss_runtime</span>/<span class="title">tmp</span></span></span><br></pre></td></tr></table></figure>
 <h1 id="2-ovirt-engine本地开发调试环境搭建"><a href="#2-ovirt-engine本地开发调试环境搭建" class="headerlink" title="2. ovirt-engine本地开发调试环境搭建"></a>2. ovirt-engine本地开发调试环境搭建</h1><blockquote>

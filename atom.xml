@@ -318,11 +318,11 @@
     <link href="http://cloudnoter.com/2018/08/17/Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/"/>
     <id>http://cloudnoter.com/2018/08/17/Java内存模型/</id>
     <published>2018-08-17T09:39:43.000Z</published>
-    <updated>2018-08-17T01:45:06.282Z</updated>
+    <updated>2018-10-16T07:39:46.050Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Java内存模型"><a href="#Java内存模型" class="headerlink" title="Java内存模型"></a>Java内存模型</h1><blockquote>
-<p>转载请注明出处：<a href="http://cloudnoter.com">cloudnoter.com</a></p>
-<p>转载请注明出处：<a href="http://cloudnoter.com">cloudnoter.com</a></p>
+<p>转载请注明出处：<a href="http://cloudnoter.com">simiam.com</a></p>
+<p>转载请注明出处：<a href="http://cloudnoter.com">simiam.com</a></p>
 </blockquote>
 ]]></content>
     
@@ -347,32 +347,32 @@
     <link href="http://cloudnoter.com/2018/07/13/CI-CD%E6%96%B9%E6%A1%88%E5%88%86%E6%9E%90/"/>
     <id>http://cloudnoter.com/2018/07/13/CI-CD方案分析/</id>
     <published>2018-07-13T09:56:59.000Z</published>
-    <updated>2018-07-13T02:08:18.408Z</updated>
+    <updated>2018-10-31T03:37:54.063Z</updated>
     
     <content type="html"><![CDATA[<h1 id="CI-CD方案分析"><a href="#CI-CD方案分析" class="headerlink" title="CI/CD方案分析"></a>CI/CD方案分析</h1><h2 id="1-DevOps介绍"><a href="#1-DevOps介绍" class="headerlink" title="1. DevOps介绍"></a>1. DevOps介绍</h2><p>随着软件发布迭代的频率越来越高，传统的“瀑布型”（开发—测试—发布）模式已经不能满足快速交付的需求。2009年左右DevOps（Development和Operations的组合）应运而生，简单地来说，就是更好的优化开发(DEV)、测试(QA)、运维(OPS)的流程，开发运维一体化，通过高度自动化工具与流程来使得软件构建、测试、发布更加快捷、频繁和可靠。</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/what-is-devops.jpg" alt="DevOps的组成"></p>
+<p><img src="http://img.simiam.com/what-is-devops.jpg" alt="DevOps的组成"></p>
 <p>DevOps出现以前，开发与运维对于生产环境上出现的问题是这样处理的：</p>
 <a id="more"></a>
 <p>运维人员：</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/devops-ops-say.png" alt="It&#39;s not my machine"></p>
+<p><img src="http://img.simiam.com/devops-ops-say.png" alt="It&#39;s not my machine"></p>
 <p>开发人员：</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/devops-dev-say.png" alt="It&#39;s not my code"></p>
+<p><img src="http://img.simiam.com/devops-dev-say.png" alt="It&#39;s not my code"></p>
 <p>处理问题的模式：（未进行有效沟通，而是相互责备、报怨，在经过长时间的各种扯皮后把问题解决了）</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/before-devops.png" alt="Before apply DevOps"></p>
+<p><img src="http://img.simiam.com/before-devops.png" alt="Before apply DevOps"></p>
 <p>DevOps出现以后，开发与运维的关系转变为：</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/devops-love.png" alt="Think for peer"></p>
+<p><img src="http://img.simiam.com/devops-love.png" alt="Think for peer"></p>
 <p>因此，他们对于生产环境上出现的问题是这样处理的：</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/devops-together.png" alt="Think for peer"></p>
+<p><img src="http://img.simiam.com/devops-together.png" alt="Think for peer"></p>
 <p>处理问题的模式变为：（相互理解，充分沟通并最终快速解决问题）</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/after-devops.png" alt="After apply DevOps"></p>
+<p><img src="http://img.simiam.com/after-devops.png" alt="After apply DevOps"></p>
 <h3 id="1-1-DevOps生命周期"><a href="#1-1-DevOps生命周期" class="headerlink" title="1.1. DevOps生命周期"></a>1.1. DevOps生命周期</h3><p>DevOps集文化理念、实践和工具于一身，可以提高组织高速交付应用程序和服务的能力，与使用传统软件开发和基础设施管理流程相比，能够帮助组织更快地发展和改进产品。这种速度使组织能够更好地服务其客户，并在市场上更高效地参与竞争。</p>
 <p>DevOps是一个完整的面向IT运维的工作流，以IT自动化以及持续集成（CI）、持续部署（CD）为基础，来优化程式开发、测试、系统运维等所有环节，其典型的运作流程如下：</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/devops-lifecycle.png" alt="DevOps-lifecycle"></p>
+<p><img src="http://img.simiam.com/devops-lifecycle.png" alt="DevOps-lifecycle"></p>
 <p>上图中的<code>Build, Test, Release</code>对应的CI/CD平台中的构建、测试、交付（部署）这几个概念，也就是说CI/CD是实施DevOps的基础，除此之外还会涉及源码质量管理平台（静态代码分析、潜在BUG分析、单元测试覆盖报表等）。</p>
 <p>实施DevOps前，软件开发管理生命周期如下：</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/devops-old-way.png" alt="before apply devops"></p>
+<p><img src="http://img.simiam.com/devops-old-way.png" alt="before apply devops"></p>
 <p>实施DevOps后，软件开发管理生命周期如下：</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/devops-new-way.png" alt="after apply devops"></p>
+<p><img src="http://img.simiam.com/devops-new-way.png" alt="after apply devops"></p>
 <h3 id="1-2-适用场景"><a href="#1-2-适用场景" class="headerlink" title="1.2. 适用场景"></a>1.2. 适用场景</h3><p>到底DevOps能给企业带来什么样的业务价值呢？DevOps平台的理念固然是将软件研发的全生命周期管理起来，但是并不意味着一定要做到全生命周期的管理，落实到企业内部，终究还是要结合企业的现状和实际的需求，有选择性有目标的去建设。对于企业而言，不管是提升IT的运营效率70%，还是做到开发测试环境的持续集成、自动化测试、自动化部署，亦或是一天部署10次这种DevOps最初的目标，最重要的还是要结合现状，先认清DevOps能给企业带来什么样的业务价值。</p>
 <p>DevOps涉及到源码质量管理、持续集成、持续交付、持续部署、运维管理等多个系统平台，其天然适合那些主要提供线上服务的互联网团队（特别是基于微服务架构的团队）。而对于非互联网企业（主要是传统软件厂商）来说，其主要是为用户提交软件产品，基本不存在运维管理的需求。同时，传统软件厂商的软件开发管理生命周期中，其对源码质量管理、持续集成、持续交付的需求比较强烈，而持续部署主要是为了解决开发与测试环境自动化搭建问题。</p>
 <p>企业引入DevOps也可能需要对企业组织架构进行调整，以解决部门墙问题。</p>
@@ -391,21 +391,21 @@
 <p>引入CI意味着：在家里远程办公的开发人员A与在公司办公的开发人员B可以很方便的在同一个项目中进行协同办公，而不需要担心源码合并问题，因为他们的每次源码提交操作都会触发CI进行构建、测试以验证他们的代码是否能正常工作。</p>
 <p>开发人员通常会使用CI服务器来进行源码构建与集成，为了让持续集成流程有效的运行起来，项目组的所有开发人员都需要编写单元测试代码以保证其提交的代码能按预期的目标执行，同时不会影响其他人的工作成果。当所有的单元测试用例都执行通过后，这些集成后的代码还不能马上交付或部署至生产环境，因为在交付前还需要在集成测试环境（准生产环境）进行集成测试、验收测试（Acceptance Testing），这部分内容属于持续交付的范畴，下节将会详细介绍。</p>
 <p>下图为持续集成的主要流程：</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/continuous-integration-flow.png" alt="Continuous Integration"></p>
+<p><img src="http://img.simiam.com/continuous-integration-flow.png" alt="Continuous Integration"></p>
 <p>引入持续集成的好处：</p>
 <ul>
 <li>集成频率高，至少每天一次，集成时间可预期可控。</li>
 <li>可快速暴露问题，加速问题定位</li>
 </ul>
 <h4 id="2-1-2-持续交付"><a href="#2-1-2-持续交付" class="headerlink" title="2.1.2. 持续交付"></a>2.1.2. 持续交付</h4><p>持续交付(Continuous Delivery)是指在持续集成的基础上，将集成后的代码部署到更贴近真实运行环境的“准生产环境”（production-like）中。 比如，我们完成单元测试后，可以把代码部署到连接数据库的Staging环境中进行更多的测试。如果代码没有问题，可以继续手动部署到生产环境中。</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/continuous-delivery-flow.png" alt="Continuous Delivery"></p>
+<p><img src="http://img.simiam.com/continuous-delivery-flow.png" alt="Continuous Delivery"></p>
 <p>由上图可知，从开发一直到项目可交付整个过程中涉及的环境可能有：开发环境、测试环境（包括压测环境）、准生产环境，生产环境，这整个过程也常被称为部署管道（Deployment Pipeline），每个环境所执行的测试用例也将不一样，只有前一个环境的测试用例全部通过才能继续进入下一个环境（即自动部署新环境 + 执行适合该环境的测试用例）；同时每个环境的执行结果都会及时反馈给相应的开发人员，如果环境部署异常或用例执行失败他们就能更容易更及时的解决问题。</p>
 <p>整个过程基本按“部署环境 -&gt; 执行测试用例 -&gt; … -&gt; 部署环境 -&gt; 执行测试用例”这一模式不断重复，因此为了实现自动化的持续交付，“自动化部署”、“可自动化执行的测试用例”是关键的前提条件。</p>
 <blockquote>
 <p>有一点需要注意，对于提供线上服务的团队，当功能代码可交付时，还需要将相关代码部署至生产环境，但这一部署过程是纯手工的。这也是持续交付与持续部署的区别。</p>
 </blockquote>
 <h4 id="2-1-3-持续部署"><a href="#2-1-3-持续部署" class="headerlink" title="2.1.3. 持续部署"></a>2.1.3. 持续部署</h4><p>持续部署(Continuous Deploy)是在持续交付的基础上，把部署到生产环境的过程自动化。持续部署和持续交付的区别就是最终部署到生产环境是自动化的。</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/continuous-deployment-flow.png" alt="Continuous Deployment"></p>
+<p><img src="http://img.simiam.com/continuous-deployment-flow.png" alt="Continuous Deployment"></p>
 <p>这里大家也许有个疑问：在生产环境是否需要执行测试用例，如果需要执行，那会否影响系统性能或产生脏数据？</p>
 <p>这个问题不好简单的回答是或否，从我自己的经验来讲：</p>
 <ul>
@@ -423,7 +423,7 @@
 <li>软件发布平台：为可交付的软件提供对外发行及展示的平台，如基于Nexus的maven仓库、用于托管docker镜像的镜像仓库、NPM私有仓库等。</li>
 </ul>
 <h3 id="3-1-CI-CD平台分析"><a href="#3-1-CI-CD平台分析" class="headerlink" title="3.1. CI/CD平台分析"></a>3.1. CI/CD平台分析</h3><p>通用指标分析结果：</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/ci-platform-compare.png" alt="CI/CD平台比对"></p>
+<p><img src="http://img.simiam.com/ci-platform-compare.png" alt="CI/CD平台比对"></p>
 <p>上面的分析结果中，排除掉非开源与收费版的，就只剩下Jenkins，Gitlab CI，Go CD，Flow CI四个版本，而flow.ci为国内开源项目，根据国内开源项目的尿性（基本都是先开源后收费），个人认为也不适合使用Flow CI。那么就只剩下三个可选方案了。</p>
 <h4 id="Jenkins"><a href="#Jenkins" class="headerlink" title="Jenkins"></a>Jenkins</h4><p>Jenkins是一款用Java编写的开源的跨平台的CI工具，同时可以通过插件扩展功能。Jenkins插件非常好用，我们可以容易地添加自己的插件。除了它的扩展性之外，Jenkins还有另一个非常好的功能——它可以在多台机器上进行分布式地构建和负载测试。Jenkins是根据MIT许可协议发布的，因此可以自由地使用和分发。</p>
 <p>总的来说：Jenkins是最好的持续集成工具之一，它既强大又灵活。但其UI比较古老，同时学习它可能要花费一些时间，如果你需要一个灵活的持续集成解决方案，那么学习如何使用它将是非常值得的。</p>
@@ -443,11 +443,11 @@
 <h3 id="3-2-代码质量管理平台"><a href="#3-2-代码质量管理平台" class="headerlink" title="3.2. 代码质量管理平台"></a>3.2. 代码质量管理平台</h3><h4 id="SonarQube"><a href="#SonarQube" class="headerlink" title="SonarQube"></a>SonarQube</h4><p>随着IT行业中软件产品的推陈出新，客户对于软件产品的要求也越来越高，因此如何高质量的管理软件代码，及时地对代码质量进行分析并给出合理的解决方案就成为了当下必须要解决的一个问题。与当今众多的代码质量管理工具相比，SonarQube更具有特色和竞争力，其优势主要体现为：它是一个开源的代码质量管理系统，支持25+种语言，可以通过使用插件机制与eclipse、JIRA、Jenkins等其他外部工具集成，从而实现了对代码质量的全面自动化分析和管理。</p>
 <p>SonarQube既可以本地安装也可以选择托管在云端，云端托管地址为：<a href="https://sonarcloud.io/" target="_blank" rel="noopener">https://sonarcloud.io/</a>。</p>
 <p>可用的SonarQube管理平台：<a href="http://172.21.192.216:9000/" target="_blank" rel="noopener">SonarQube Demo</a></p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/sonarqube-demo.png" alt="SonarQube截图"></p>
+<p><img src="http://img.simiam.com/sonarqube-demo.png" alt="SonarQube截图"></p>
 <h4 id="Jenkins-CheckStyle-FindBug"><a href="#Jenkins-CheckStyle-FindBug" class="headerlink" title="Jenkins + CheckStyle + FindBug"></a>Jenkins + CheckStyle + FindBug</h4><p>Jenkins，CheckStyle，FindBug三者配合起来能够实现最基本代码分析需求，但其分析结果展现还需要再配合其他插件来实现，同时其展示界面比较古老，本质上讲该功能是依附于Jenkins的，并不是一个独立的代码质量管理平台。</p>
 <h3 id="3-3-自动化测试工具"><a href="#3-3-自动化测试工具" class="headerlink" title="3.3. 自动化测试工具"></a>3.3. 自动化测试工具</h3><h4 id="3-3-1-支持BDD-行为驱动开发-的自动化测试框架分析"><a href="#3-3-1-支持BDD-行为驱动开发-的自动化测试框架分析" class="headerlink" title="3.3.1. 支持BDD(行为驱动开发)的自动化测试框架分析"></a>3.3.1. 支持BDD(行为驱动开发)的自动化测试框架分析</h4><p>自动化测试可以快速自动完成大量测试用例，节约巨大的人工测试成本；同时它需要拥有专业开发技能的人才能完成开发，且需要大量时间进行维护（在需求经常变化的情况下），所以大部分具有很好开发技能的人员不是很愿意编写自动化用例。但由于软件规模的高速增长，人力资源的逐步稀缺，自动化测试已是势在必行。</p>
 <p>对于自动化测试首先需要保证其功能是对客户有价值的和正确可用的。而这一切的基础就是用例要能测试客户的需求，期望，最好能让客户参与到测试用例的开发过程中来或让客户评审测试用例，因此出现了ATDD、BDD等各种理论方法来支撑这一行为。现有很多自动化测试工具可支持ATDD、BDD等，比如Cucumber、RobotFramework、SpecFlow、JBehave、Fitness、Concordion、Guage等，其中Cucumber和RobotFramework是最流行的两个框架，本文将简单分析这两个框架（想要完全搞懂这两个框架还是需要安排相关资源投入分析）：</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/cucumber-robot-compare.png" alt="Cucumber VS RobotFramework"></p>
+<p><img src="http://img.simiam.com/cucumber-robot-compare.png" alt="Cucumber VS RobotFramework"></p>
 <h4 id="3-3-2-单元测试Mock框架"><a href="#3-3-2-单元测试Mock框架" class="headerlink" title="3.3.2. 单元测试Mock框架"></a>3.3.2. 单元测试Mock框架</h4><p>单元测试的思路是在不涉及依赖关系的情况下测试代码（隔离性），所以测试代码与其他类或者系统的关系应该尽量被消除。一个可行的消除方法是替换掉依赖类（测试替换），也就是说我们可以使用替身来替换掉真正的依赖对象。</p>
 <p>常见的测试模拟类的分类如下：</p>
 <ul>
@@ -528,7 +528,7 @@
     <summary type="html">
     
       &lt;h1 id=&quot;CI-CD方案分析&quot;&gt;&lt;a href=&quot;#CI-CD方案分析&quot; class=&quot;headerlink&quot; title=&quot;CI/CD方案分析&quot;&gt;&lt;/a&gt;CI/CD方案分析&lt;/h1&gt;&lt;h2 id=&quot;1-DevOps介绍&quot;&gt;&lt;a href=&quot;#1-DevOps介绍&quot; class=&quot;headerlink&quot; title=&quot;1. DevOps介绍&quot;&gt;&lt;/a&gt;1. DevOps介绍&lt;/h2&gt;&lt;p&gt;随着软件发布迭代的频率越来越高，传统的“瀑布型”（开发—测试—发布）模式已经不能满足快速交付的需求。2009年左右DevOps（Development和Operations的组合）应运而生，简单地来说，就是更好的优化开发(DEV)、测试(QA)、运维(OPS)的流程，开发运维一体化，通过高度自动化工具与流程来使得软件构建、测试、发布更加快捷、频繁和可靠。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://oaivivmzx.bkt.clouddn.com/what-is-devops.jpg&quot; alt=&quot;DevOps的组成&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://img.simiam.com/what-is-devops.jpg&quot; alt=&quot;DevOps的组成&quot;&gt;&lt;/p&gt;
 &lt;p&gt;DevOps出现以前，开发与运维对于生产环境上出现的问题是这样处理的：&lt;/p&gt;
     
     </summary>
@@ -565,12 +565,12 @@
     <link href="http://cloudnoter.com/2018/07/11/oVirt%E8%99%9A%E6%8B%9F%E5%8C%96%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E3%80%81%E7%BB%84%E4%BB%B6%E4%B8%8E%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86/"/>
     <id>http://cloudnoter.com/2018/07/11/oVirt虚拟化关键概念、组件与技术原理/</id>
     <published>2018-07-10T16:24:40.000Z</published>
-    <updated>2018-07-10T08:42:27.603Z</updated>
+    <updated>2018-10-31T03:38:52.221Z</updated>
     
     <content type="html"><![CDATA[<h1 id="oVirt虚拟化关键概念、组件与技术原理"><a href="#oVirt虚拟化关键概念、组件与技术原理" class="headerlink" title="oVirt虚拟化关键概念、组件与技术原理"></a>oVirt虚拟化关键概念、组件与技术原理</h1><h4 id="云管理平台组-陈志安"><a href="#云管理平台组-陈志安" class="headerlink" title="云管理平台组-陈志安"></a>云管理平台组-陈志安</h4><hr>
 <h2 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h2><h3 id="1-1-ovirt-engine"><a href="#1-1-ovirt-engine" class="headerlink" title="1.1. ovirt-engine"></a>1.1. ovirt-engine</h3><p>ovirt-engine为虚拟化环境提供了一个集中管理的平台，用户可以根据具体的需求选择使用不同的方式来访问ovirt-engine。</p>
 <p>ovirt-engine架构图如下：</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/ovirt-engine-infra.png" alt="ovirt-engine架构图"></p>
+<p><img src="http://img.simiam.com/ovirt-engine-infra.png" alt="ovirt-engine架构图"></p>
 <ul>
 <li>应用服务器（ovirt-Wildfly）</li>
 </ul>
@@ -629,7 +629,7 @@
 <p>具体安装配置文件请参考<a href="https://www.ovirt.org/documentation/quickstart/quickstart-guide/#install-hosts" target="_blank" rel="noopener">官方文档</a></p>
 </blockquote>
 <p>ovirt-node的主机核心架构图如下：</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/ovirt-node-infra.png" alt="ovirt-node架构图"></p>
+<p><img src="http://img.simiam.com/ovirt-node-infra.png" alt="ovirt-node架构图"></p>
 <ul>
 <li>KVM(Kernel-based Virtual Machine)</li>
 </ul>
@@ -669,11 +669,11 @@
 <h3 id="1-4-存储简介"><a href="#1-4-存储简介" class="headerlink" title="1.4. 存储简介"></a>1.4. 存储简介</h3><p>ovirt虚拟化平台使用一个集中的存储系统来保存虚拟磁盘镜像、模板、快照和ISO文件。存储被分为由各个存储域组成的存储池，一个数据中心只有一个存储池。存储域由一组存储空间和代表这些存储空间内部结构的元数据所组成。目前有三种存储域类型：数据存储域，导出存储域，ISO存储域，三种存储域的介绍见后续章节。</p>
 <p>每个数据中心都必须包括一个数据存储域，而每个数据存储域也只能关联一个数据中心。存储域是用于提供资源共享的，因此数据中心的所有主机都必须能访问所有存储域。</p>
 <h3 id="1-5-网络简介"><a href="#1-5-网络简介" class="headerlink" title="1.5. 网络简介"></a>1.5. 网络简介</h3><p>ovirt虚拟化环境的网络架构提供该环境中不同对象间的网络连接，同时它还可以用来实现网络隔离。其网络架构图如下：</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/ovirt-engine-network.png" alt="ovirt网络架构图"></p>
+<p><img src="http://img.simiam.com/ovirt-engine-network.png" alt="ovirt网络架构图"></p>
 <p>用来处理虚拟机间网络连接的逻辑网络是通过计算节点上的基于软件的网桥实现的。在默认情况 下，ovirt-engine在安装过程中会创建一个名为“ovirtmgmt管理网络”的逻辑网络。此外系统管理员还可以添加专用的存储逻辑网络和专用的显示逻辑网络。</p>
 <h2 id="2-存储"><a href="#2-存储" class="headerlink" title="2. 存储"></a>2. 存储</h2><p>在介绍ovirt虚拟化环境的存储相关内容前，我们需要简单了解下几种常见的存储服务类型：块存储，文件存储，对象存储。</p>
 <p>下图是常见存储服务类型的系统层级分布图：</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/storage-service-type.jpg" alt="存储类型系统层级分布图"></p>
+<p><img src="http://img.simiam.com/storage-service-type.jpg" alt="存储类型系统层级分布图"></p>
 <p>我们从底层往上看，最底层就是硬盘，多个硬盘可以做成RAID组，无论是单个硬盘还是RAID组，都可以做成PV，多个PV物理卷捏在一起构成卷组（VG）。接下来可以从卷组上切出很多个逻辑卷（LV）。到LV这一层为止，数据一直都是以块（Block）的形式存在的，这时候提供出来的服务就是块存储服务。你可以通过FC协议或者iSCSI协议访问LV，映射到主机端本地，成为一个裸设备。在主机端可以直接在上面安装数据库，也可以格式化成文件系统后交给应用程序使用，这时候就是一个标准的SAN存储设备的访问模式，<strong>网络间传送的是块</strong>。</p>
 <p>如果不急着访问，也可以在本地做文件系统，之后以NFS/CIFS协议挂载，映射到本地目录，直接以文件形式访问，这就成了NAS访问的模式，<strong>在网络间传送的是文件</strong>。</p>
 <p>如果不走NAS，在本地文件系统上面部署OSD服务端，把整个设备做成一个OSD，这样的节点多来几个，再加上必要的MDS节点，互联网另一端的应用程序再通过HTTP协议直接进行访问，这就变成了对象存储的访问模式。当然对象存储通常不需要专业的存储设备，前面那些LV/VG/PV层也可以统统不要，直接在硬盘上做本地文件系统，之后再做成OSD，这种才是对象存储的标准模式，对象存储的硬件设备通常就用大盘位的服务器。</p>
@@ -746,7 +746,7 @@
 <h4 id="2-4-2-元数据存储目录结构"><a href="#2-4-2-元数据存储目录结构" class="headerlink" title="2.4.2. 元数据存储目录结构"></a>2.4.2. 元数据存储目录结构</h4><p>ovirt-engine在启动时会将每个数据中心中的存储域配置信息下发给各个主机上的VDSM实例，VDSM分根据接收到的存储域配置信息将相关存储域挂载至主机。挂载成功后，你将可以在每个主机的如下目录查看到存储域的相关信息（包括元数据）：</p>
 <figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 元数据存储目录</span></span><br><span class="line"><span class="meta-keyword">/rhev/</span>data-center/<span class="params">&lt;storage_pool_uuid&gt;</span></span><br></pre></td></tr></table></figure>
 <p>下图是V3版元数据存储目录结构示意图：</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/storage-metadata-tree-descr.png" alt="V3版元数据存储目录结构示意图"></p>
+<p><img src="http://img.simiam.com/storage-metadata-tree-descr.png" alt="V3版元数据存储目录结构示意图"></p>
 <p><strong>注意：</strong> 文件存储类型的存储域与块设备类型的存储域的元数据存储位置是不同的，块设备类型存储域的元数据是存放在主存储域（马上到！）对应的卷组（VG）的标签（Tag）中，而不是dom_md目录下的metadata文件中。dom_md/metadata存放的是该存储域下虚拟机磁盘镜像（LV）的元数据集，每个虚拟机磁盘镜像（LV）的元数据存放在metadata块设备存储空间的某一个索引位置上，该索引位置信息则保存在虚拟机磁盘镜像所在的逻辑卷（LV）的标签（Tag）上。</p>
 <blockquote>
 <p>相关查询命令：<code>vgs, lvs</code>等，块设备存储域元数据的具体细节由VDSM负责维护，本文档不深入介绍。</p>
@@ -758,7 +758,7 @@
 </blockquote>
 <h3 id="2-6-SPM-Storage-Pool-Manager"><a href="#2-6-SPM-Storage-Pool-Manager" class="headerlink" title="2.6. SPM(Storage Pool Manager)"></a>2.6. SPM(Storage Pool Manager)</h3><h4 id="2-6-1-SPM简介"><a href="#2-6-1-SPM简介" class="headerlink" title="2.6.1. SPM简介"></a>2.6.1. SPM简介</h4><p>ovirt虚拟化平台使用元数据来描述存储域的内部结构。结构元数据会被写到每个存储域的一个数据段中，它被用来记录镜像和快照的创建删除，以及卷和域的扩展操作。所有主机会使用“一人写，多人读”的机制来处理存储域元数据。这个能修改存储域元数据的主机就是SPM主机（后面简称SPM）。</p>
 <p>下图是存储域元数据读写数据流示意图：</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/storage-metadata-io.png" alt="存储域元数据读写数据流示意图"></p>
+<p><img src="http://img.simiam.com/storage-metadata-io.png" alt="存储域元数据读写数据流示意图"></p>
 <p>SPM负责协调数据中心内所有存储域元数据的变更操作，比如创建删除磁盘镜像、创建合并快照、在存储域之间复制镜像、创建虚拟机模板、块设备存储分配等。一个数据中心只能有一个SPM主机，数据中心中的其它主机对存储域元数据信息只有读权限。</p>
 <p>一个主机（计算节点）有两种方式升级为SPM主机：</p>
 <ul>
@@ -863,7 +863,7 @@
 <li>当为一个角色网络(如“一个迁移网络”或“一个显示网络”)设置网络标签时，会在所有主机上产生大量部署这个网络的操作。这些大量的网络添加操作是通过使用DHCP实现的，而不是通过输入静态地址实现的。这将节省很多人工工作量。</li>
 </ul>
 <h3 id="3-2-集群网络"><a href="#3-2-集群网络" class="headerlink" title="3.2. 集群网络"></a>3.2. 集群网络</h3><p>集群层的网络对象包括：集群、逻辑网络。常见的集群内网络拓扑图如下：</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/cluster-network-topo.png" alt="集群内的网络拓扑图"></p>
+<p><img src="http://img.simiam.com/cluster-network-topo.png" alt="集群内的网络拓扑图"></p>
 <p>一个数据中心就是由多个集群组成的一个逻辑组，而一个集群则是由多个主机组成的一个逻辑组。上图中“集群内的网络拓扑图” 展示了一个集群中所包括的项。</p>
 <p>在一个集群中的所有主机都可以访问相同的存储域，同时它们也在集群这一层来关联逻辑网络。对于一个虚拟机逻辑网络来说，为了使虚拟机可以使用它，它必须通过ovirt-engine在集群中的所有主机上定义并配置，而对于其它类型的逻辑网络，它们只需要在使用这些网络的主机上定义。</p>
 <p>ovirt-engine中的数据中心支持多主机网络配置。当一个网络设置更新后，这个更新后的配置信息会自动应用到这个数据中心中所有分配了这个网络的主机上。</p>
@@ -879,7 +879,7 @@
 <p>ovirt虚拟化环境中的每个虚拟机逻辑网络都必须由一个主机上的一个网桥设备支持。当为一个集群定义了一个新的虚拟机逻辑网络后，在这个集群的所有主机上都需要创建一个匹配的网桥设备，这样，这个新的虚拟机逻辑网络才可以被虚拟机使用。ovirt-engine会自动为虚拟机逻辑网络创建所需要的网桥设备。<br>ovirt-engine为虚拟机逻辑网络所创建的网桥设备需要和主机上的一个网络接口关联。如果和网桥相关联的主机网络接口已经被其它网络所使用，则新加入的网络接口将同样可以共享那些已经连接到主机网络接口中的网络。当虚拟机被创建并被添加到一个特定的逻辑网中时，它们的虚拟网卡会被添加到那个逻辑网所在的网桥中。这样，虚拟机就可以和连接到相同网桥中的其它设备进行网络通信。</p>
 <p>不处理虚拟机网络流量的逻辑网络会和主机的网卡直接进行关联。</p>
 <p>典型的逻辑网络拓扑如下图：</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/cluster-logical-network-ovirtmgmt.png" alt="典型的逻辑网络拓扑图"></p>
+<p><img src="http://img.simiam.com/cluster-logical-network-ovirtmgmt.png" alt="典型的逻辑网络拓扑图"></p>
 <h5 id="Required网络"><a href="#Required网络" class="headerlink" title="Required网络"></a>Required网络</h5><p>一个“Required”网络就是一个逻辑网络，它对一个集群中的所有主机都有效。当一个主机上的“Required”网络无法工作时，在它上面运行的虚拟机会被迁移到另外一个主机上，而具体的迁移过程取决于所选择的调度策略。这一点对于运行关键任务服务的虚拟机非常重要，其所依赖的逻辑网络必须设置为“Required”。</p>
 <blockquote>
 <p>请注意，当创建一个逻辑网络创建并加入到集群后，网络类型默认为：“Required”。</p>
@@ -902,18 +902,18 @@
 <li>多网桥、多VLAN和网卡配置。</li>
 </ul>
 <h4 id="网桥配置"><a href="#网桥配置" class="headerlink" title="网桥配置"></a>网桥配置</h4><p>在ovirt虚拟化环境中最简单的配置为“网桥 + 网卡”的配置，如下图。它通过网桥将一个或多个虚拟机连接至主机的物理网卡。</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/host-config-bridge.png" alt="网桥与网卡配置"></p>
+<p><img src="http://img.simiam.com/host-config-bridge.png" alt="网桥与网卡配置"></p>
 <p>这种配置的一个实例就是安装ovirt-engine时自动创建的ovirtmgmt网桥。在安装的过程中，ovirt-engine在主机上安装 VDSM，VDSM的安装过程中会创建ovirtmgmt网桥。ovirtmgmt网桥可以获得主机的IP地址来实现主机的管理网络功能。</p>
 <h4 id="VLAN配置"><a href="#VLAN配置" class="headerlink" title="VLAN配置"></a>VLAN配置</h4><p>下图展示了基于VLAN的另一种可选配置：</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/host-config-bridge-vlan.png" alt="基于VLAN的网桥与网卡配置"></p>
+<p><img src="http://img.simiam.com/host-config-bridge-vlan.png" alt="基于VLAN的网桥与网卡配置"></p>
 <p>通过使用VLAN为这个网络中的数据传输提供了一个安全的通道。另外，使用多个VLAN还可以实现把多个网桥连接到一个网卡的功能。</p>
 <h4 id="网桥与Bond配置"><a href="#网桥与Bond配置" class="headerlink" title="网桥与Bond配置"></a>网桥与Bond配置</h4><p>下图所显示的配置中包括一个网络Bond，多个主机网卡通过Bond和同一个网桥和网络进行连接。</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/host-config-bridge-bond.png" alt="基于Bond的网桥与网卡配置"></p>
+<p><img src="http://img.simiam.com/host-config-bridge-bond.png" alt="基于Bond的网桥与网卡配置"></p>
 <p>通过Bond创建了一个逻辑连接来把两个(或更多)物理网卡（NIC）连接起来。这种配置可以提供网卡容错、增加网络带宽等特性，具体取决于所配置的bond-mode。</p>
 <h4 id="多网桥、多VLAN与单网卡配置"><a href="#多网桥、多VLAN与单网卡配置" class="headerlink" title="多网桥、多VLAN与单网卡配置"></a>多网桥、多VLAN与单网卡配置</h4><p>下图所显示的配置把一个网卡连接到两个VLAN（这需要网络交换机的配合，相应的上联口需要配置为trunk模式）。主机使用两个独立的vNIC来分别处理两个VLAN网络数据，而每个VLAN会通过vNIC连接到不同的网桥中。在此基础上，每个网桥可以被多个虚拟机使用。</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/host-config-bridge-multi-vlan.png" alt="多网桥+多VLAN+单网卡配置"></p>
+<p><img src="http://img.simiam.com/host-config-bridge-multi-vlan.png" alt="多网桥+多VLAN+单网卡配置"></p>
 <h4 id="多网桥、多VLAN与单Bond配置"><a href="#多网桥、多VLAN与单Bond配置" class="headerlink" title="多网桥、多VLAN与单Bond配置"></a>多网桥、多VLAN与单Bond配置</h4><p>下图所显示的使用多个网卡组成一个Bond设备来连接到多个VLAN的配置视图。</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/host-config-bridge-vlan-bond.png" alt="多网桥+多VLAN+单Bond配置"></p>
+<p><img src="http://img.simiam.com/host-config-bridge-vlan-bond.png" alt="多网桥+多VLAN+单Bond配置"></p>
 <p>这个配置中的VLAN通过Bond设备和网卡进行连接。每个VLAN连接到不同的网桥，每个网桥可以连接一个或多个虚拟机。</p>
 <h2 id="4-电源管理"><a href="#4-电源管理" class="headerlink" title="4. 电源管理"></a>4. 电源管理</h2><h3 id="4-1-电源管理和隔离介绍"><a href="#4-1-电源管理和隔离介绍" class="headerlink" title="4.1. 电源管理和隔离介绍"></a>4.1. 电源管理和隔离介绍</h3><p>当设置了电源管理和隔离(fence)功能后，ovirt虚拟化环境将会提供更好的灵活性和稳定性。电源管理功能将可以使ovirt-engine控制主机的电源操作，其中最重要的一点是可以在主机出现故障时重新启动主机。</p>
 <p>隔离功能主要用于把出现故障的主机从ovirt虚拟化环境中分离出来，从而使整个虚拟化环境正常运行。当被隔离的主机的故障被排除后，它可以重新返回正常工作的状态，并被重新加入到原来的虚拟环境中。</p>
@@ -1000,11 +1000,11 @@
 <p>以上的2个值决定了“虚拟机迁移阈值(threshold)”的范围。当集群中的每个主机上所运行的虚拟机数据都在这个阈值范围内时，系统认为集群处于“负载均衡”的状态。</p>
 <p>除此之外，因为作为SPM的主机通常需要有较低的虚拟机负载，因此管理员还可以设置在SPM主机上能预留的虚拟机资源的数量，这个值决定了SPM主机可以比其它主机少运行多少个虚拟机。 </p>
 <p>当集群中的某个主机上所运行的虚拟机数量超过了配置的最大值（单机可运行的最大虚拟机数量），并且集群中有至少一个主机所运行的虚拟机数量低于“虚拟机迁移阈值”的下限时，这个主机上的一个虚拟机就会被迁移到有最低利用率的主机上。如果迁移一个虚拟机后集群还没有处于“负载均衡”状态，系统会重复以上过程来迁移另外一个虚拟机，直到这个集群达到了“负载均衡”状态。</p>
-<h4 id="5-1-2-负载均衡策略：均匀分布（Evenly-Distributed）"><a href="#5-1-2-负载均衡策略：均匀分布（Evenly-Distributed）" class="headerlink" title="5.1.2. 负载均衡策略：均匀分布（Evenly_Distributed）"></a>5.1.2. 负载均衡策略：均匀分布（Evenly_Distributed）</h4><p><img src="http://oaivivmzx.bkt.clouddn.com/load-balance-policy-evenly-distributed.png" alt="Evenly_Distributed"></p>
+<h4 id="5-1-2-负载均衡策略：均匀分布（Evenly-Distributed）"><a href="#5-1-2-负载均衡策略：均匀分布（Evenly-Distributed）" class="headerlink" title="5.1.2. 负载均衡策略：均匀分布（Evenly_Distributed）"></a>5.1.2. 负载均衡策略：均匀分布（Evenly_Distributed）</h4><p><img src="http://img.simiam.com/load-balance-policy-evenly-distributed.png" alt="Evenly_Distributed"></p>
 <p>Evenly_Distributed这个策略是指：ovirt-engine通过选择CPU的负载最低或可用内存量最大的主机来运行一个新的虚拟机的策略。具体选择哪个指标（CPU负载或内存可用量）及指标的值，则由该策略的配置参数决定。</p>
 <p>另外系统还可以设置一个时间值参数，这个参数的意思是说集群中的主机的最大CPU负载或最低内存可用量能够持续的最大时间值。如果主机CPU或内存最在负载持续时间超过这个阈值，则ovirt-engine将发起虚拟迁移任务，这个主机上的一个虚拟机会被迁移到集群中的CPU或内存利用率最低的一个主机上。如果迁移完成后，原来的主机的CPU和内存利用率仍然高于所限定的值，则重复以上步骤迁移它上面的另外一台主机，直到主机的CPU和内存利用率降到所限制的范围之内。<strong>主机资源检测任务一分钟执行一次。</strong></p>
 <p>Evenly_Distributed策略与VM_Evenly_Distributed策略的区别是：前者基于CPU或内存利用率作为迁移的触发参考条件，而后者则以运行在主机上的虚拟机数量作为迁移的触发参考条件。</p>
-<h4 id="5-1-3-负载均衡策略：节能（Power-Saving）"><a href="#5-1-3-负载均衡策略：节能（Power-Saving）" class="headerlink" title="5.1.3. 负载均衡策略：节能（Power_Saving）"></a>5.1.3. 负载均衡策略：节能（Power_Saving）</h4><p><img src="http://oaivivmzx.bkt.clouddn.com/load-balance-policy-power-saving.png" alt="Power_Saving"></p>
+<h4 id="5-1-3-负载均衡策略：节能（Power-Saving）"><a href="#5-1-3-负载均衡策略：节能（Power-Saving）" class="headerlink" title="5.1.3. 负载均衡策略：节能（Power_Saving）"></a>5.1.3. 负载均衡策略：节能（Power_Saving）</h4><p><img src="http://img.simiam.com/load-balance-policy-power-saving.png" alt="Power_Saving"></p>
 <p>这个策略会把新虚拟机运行在CPU和内存利用率最低的主机上。</p>
 <p>系统管理员可以设置一个“最大服务级别”值，这个值代表了集群中的主机所允许的最大CPU和内存利用率，如果主机的CPU和内存利用率超过了这个值，整个环境的性能就会下降。</p>
 <p>系统管理员还可以设置一个“最低服务级别”值，它代表了在主机的 CPU和内存利用率低于这个值时，从用电的角度来讲,继续运行这个主机将会被判断为是不符合“经济效益”的。</p>
@@ -1018,7 +1018,7 @@
 <li>除了启用HA特性的虚拟机外，将不会在该集群中的任意一台主机上启动虚拟机。（即：用户可以创建具有HA特性的虚拟机并人为启动该虚拟机）</li>
 <li>当主机异常时，具有HA特性的虚拟机将会重启，同时也能够迁移原来运行在该主机上的虚拟机。</li>
 </ul>
-<h3 id="5-2-高可用性虚拟机资源预留"><a href="#5-2-高可用性虚拟机资源预留" class="headerlink" title="5.2. 高可用性虚拟机资源预留"></a>5.2. 高可用性虚拟机资源预留</h3><p><img src="http://oaivivmzx.bkt.clouddn.com/ovirt-cluster-ha-reservation.png" alt="功能示意图"></p>
+<h3 id="5-2-高可用性虚拟机资源预留"><a href="#5-2-高可用性虚拟机资源预留" class="headerlink" title="5.2. 高可用性虚拟机资源预留"></a>5.2. 高可用性虚拟机资源预留</h3><p><img src="http://img.simiam.com/ovirt-cluster-ha-reservation.png" alt="功能示意图"></p>
 <p>具有高可用性(HA)虚拟机资源预留策略可以使ovirt-engine监控集群资源的使用情况，从而可以保证在需要的时候为高可以性虚拟机提供有效的资源。ovirt-engine可以把虚拟机标识为“高可用性”，在需要的时候，这些虚拟机可以在其它主机上重启。在高可用性虚拟机资源预留功能被启用时，ovirt-engine会为高可用性虚拟机预留一些资源，以防在主机故障的情况下，这些高可用虚拟机需要进行迁移时，能保证集群中有足够的资源来完成迁移操作。</p>
 <h3 id="5-3-调度机制"><a href="#5-3-调度机制" class="headerlink" title="5.3. 调度机制"></a>5.3. 调度机制</h3><p>在ovirt虚拟化环境中，调度(scheduling)是指ovirt-engine在集群中选择一个主机作为新虚拟机或将要迁移的虚拟机的目标主机（宿主机）的过程。</p>
 <p>作为一个可以运行新虚拟机或从其它主机上迁移来的虚拟机的主机，它需要有足够的空闲内存和CPU资源来运行这些虚拟机。需要注意的是虚拟机是无法在CPU过载的主机上启动的。默认情况下，主机的CPU利用率在5分钟内都维持在80%以上的话，该主机就会被标识为CPU过载。<code>5分钟与80%</code>这两个参数是可以在管理界面上进行修改的。如果有多个主机都满足这个要求，系统会根据集群负载均衡策略来选择一个主机。例如，如果使用“Evenly_Distributed”策略，ovirt-engine会选择有最低CPU利用率的主机。如果使用“Power_Saving”策略，在“最大服务级别”和“最低服务级别”范围内的、CPU利用率最低的主机会被选择。另外，SPM的状态也会影响主机的选择过程。一个非SPM主机比SPM主机有更大的概率被选中。例如，如果集群中有SPM主机和非SPM主机，第一个需要在集群中运行的虚拟机会在非SPM主机上运行。</p>
@@ -1045,16 +1045,16 @@
 <p>如果在进行快照时，虚拟机有支持静止功能的guest代理，VDSM会使用libvirt和代理进行交互来准备快照。 在实际进行快照前，没有完成的写操作会被完成，然后文件系统会被”冻结”。当快照操作完成后，libvirt会把对虚拟机的写操作切换到新的卷上，文件系统被“解冻”，对磁盘的写操作会被恢复。</p>
 <p>所有的实时快照都会尝试使用静止功能。如果虚拟机因为没有安装支持静止功能的guest代理而造成快照失败，实时快照会重新运行，但不会使用<code>use-quiescing</code>标志（即不会再尝试使用quiescing特性）。当一个使用了静止功能的文件系统的虚拟机使用快照恢复到以前状态时，虚拟机在启动时不会对文件系统进行检查。如果被恢复的虚拟机上没有使用静止功能，在使用快照恢复系统后，启动虚拟机时就需要对文件系统进行检查。</p>
 <h4 id="6-1-2-创建快照"><a href="#6-1-2-创建快照" class="headerlink" title="6.1.2. 创建快照"></a>6.1.2. 创建快照</h4><p>在ovirt虚拟化环境中，第一次为一个虚拟机创建快照和以后为这个虚拟机创建后续快照的过程不同。虚拟机的第一个快照会保留镜像格式(QCOW2或RAW)，它把当前存在的卷作为一个基础镜像（母镜像）。后续的快照只是一个附加的COW层，它只记录当前系统和前一个快照中的变化。<br>在ovirt虚拟化环境中，一个虚拟机通常使用RAW磁盘镜像(除非在创建时使用了“精简(thin)”镜像，或用户指定使用QCOW2格式)。下图所示，创建的快照会包括虚拟磁盘的镜像，它将作为后续快照的基本镜像。</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/vm-snapshot-create-init.png" alt="第一次为VM创建快照"></p>
+<p><img src="http://img.simiam.com/vm-snapshot-create-init.png" alt="第一次为VM创建快照"></p>
 <p>在第一个快照创建以后再创建的快照将只创建一个新的COW卷，这个卷包括了当前系统和前一个快照间的变化。每个新的COW层在开始时都只包括COW元数据，而后续使用和操作虚拟机所产生的变化数据会被添加到这个新的COW层中。如果虚拟机需要修改前一个COW层的数据时，相应的数据会从前一层中读出，并把变化的数据写到新的COW层中。虚拟机在定位数据时会以从最新到最老的顺序在各个COW中查找。</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/vm-snapshot-create-post.png" alt="非第一次为VM创建快照"></p>
+<p><img src="http://img.simiam.com/vm-snapshot-create-post.png" alt="非第一次为VM创建快照"></p>
 <h4 id="6-1-2-预览快照"><a href="#6-1-2-预览快照" class="headerlink" title="6.1.2. 预览快照"></a>6.1.2. 预览快照</h4><p>系统管理员可以通过预览以前创建的所有快照来决定把虚拟机恢复到什么状态。</p>
 <p>管理员可以在一台虚拟机的所有快照列表中选择一个快照来查看它的内容。如下图“预览快照” 所示，每个快照都被保存为一个COW卷，当它被预览时，这个快照会被复制到一个新的预览层上。虚拟机将会和预览层进行交流，而不是直接访问实际的快照。</p>
 <p>在管理员预览快照后，可以使用这个快照来把虚拟机恢复到快照创建时的状态。如果管理员使用快照进行恢复系统后，虚拟机将会被关联到预览层。</p>
 <p>在快照预览完成后，管理员可以选择<code>Undo</code>来删除在预览过程中创建的预览层。这时虽然预览层会被删除，原来保存快照的层还会保留。</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/vm-snapshot-preview.png" alt="快照预览"></p>
+<p><img src="http://img.simiam.com/vm-snapshot-preview.png" alt="快照预览"></p>
 <h4 id="6-1-3-删除快照"><a href="#6-1-3-删除快照" class="headerlink" title="6.1.3. 删除快照"></a>6.1.3. 删除快照</h4><p>当快照不再需要时，您可以删除它们。删除快照后，您将无法把虚拟机恢复到这些快照所包括的时间点上。删除快照并不一定会获得更多的可用存储空间，而这些快照的数据也不一定会被实际删除。例如，您的虚拟机有5个快照，如果您删除了第3个快照，第3个快照中的数据可能仍然会存在在系统中，因为第4和第5个快照可能会需要这些数据（只有第3个快照中已变更的数据才会被删除，已变更的数据存在于第4个快照或第5个快照）。一般情况下，删除快照通常可以提高虚拟机的性能。</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/vm-snapshot-delete.png" alt="快照删除"></p>
+<p><img src="http://img.simiam.com/vm-snapshot-delete.png" alt="快照删除"></p>
 <p>快照删除会被作为一个异步的块任务处理，VDSM会为虚拟机在恢复文件中维护一个操作记录，从而使此任务可以被跟踪，即使在进行操作期间VDSM被重启或虚拟机被关闭时任务也可以被跟踪。当操作开始后，正被删除的快照将不能被预览，或作为一个恢复点(即使删除操作失败或被中断)。</p>
 <p>活跃的层（可读可写的COW层）被合并到它的上一层的这一个操作可被分为两个阶段：</p>
 <ul>
@@ -1089,7 +1089,7 @@
       &lt;h1 id=&quot;oVirt虚拟化关键概念、组件与技术原理&quot;&gt;&lt;a href=&quot;#oVirt虚拟化关键概念、组件与技术原理&quot; class=&quot;headerlink&quot; title=&quot;oVirt虚拟化关键概念、组件与技术原理&quot;&gt;&lt;/a&gt;oVirt虚拟化关键概念、组件与技术原理&lt;/h1&gt;&lt;h4 id=&quot;云管理平台组-陈志安&quot;&gt;&lt;a href=&quot;#云管理平台组-陈志安&quot; class=&quot;headerlink&quot; title=&quot;云管理平台组-陈志安&quot;&gt;&lt;/a&gt;云管理平台组-陈志安&lt;/h4&gt;&lt;hr&gt;
 &lt;h2 id=&quot;1-介绍&quot;&gt;&lt;a href=&quot;#1-介绍&quot; class=&quot;headerlink&quot; title=&quot;1. 介绍&quot;&gt;&lt;/a&gt;1. 介绍&lt;/h2&gt;&lt;h3 id=&quot;1-1-ovirt-engine&quot;&gt;&lt;a href=&quot;#1-1-ovirt-engine&quot; class=&quot;headerlink&quot; title=&quot;1.1. ovirt-engine&quot;&gt;&lt;/a&gt;1.1. ovirt-engine&lt;/h3&gt;&lt;p&gt;ovirt-engine为虚拟化环境提供了一个集中管理的平台，用户可以根据具体的需求选择使用不同的方式来访问ovirt-engine。&lt;/p&gt;
 &lt;p&gt;ovirt-engine架构图如下：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://oaivivmzx.bkt.clouddn.com/ovirt-engine-infra.png&quot; alt=&quot;ovirt-engine架构图&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://img.simiam.com/ovirt-engine-infra.png&quot; alt=&quot;ovirt-engine架构图&quot;&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;应用服务器（ovirt-Wildfly）&lt;/li&gt;
 &lt;/ul&gt;
@@ -1133,7 +1133,7 @@
     <link href="http://cloudnoter.com/2018/07/11/oVirt%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E6%96%B9%E6%A1%88%E5%88%86%E6%9E%90/"/>
     <id>http://cloudnoter.com/2018/07/11/oVirt持续集成方案分析/</id>
     <published>2018-07-10T16:21:08.000Z</published>
-    <updated>2018-07-10T08:32:30.137Z</updated>
+    <updated>2018-10-31T03:39:15.037Z</updated>
     
     <content type="html"><![CDATA[<h1 id="oVirt持续集成方案分析"><a href="#oVirt持续集成方案分析" class="headerlink" title="oVirt持续集成方案分析"></a>oVirt持续集成方案分析</h1><h4 id="云管理平台组-陈志安"><a href="#云管理平台组-陈志安" class="headerlink" title="云管理平台组-陈志安"></a>云管理平台组-陈志安</h4><hr>
 <h2 id="1-STDCI"><a href="#1-STDCI" class="headerlink" title="1. STDCI"></a>1. STDCI</h2><p>oVirt项目定义了一套标准规范，通过这套标准，一个源码工程就可以一种通用的方式定义其应该如何被构建、测试、部署与发行，而这个定义规则是独立于开发该源码工程所使用的编程语言及工具，本质上讲它是由oVirt制定的适用于<code>CI/CD(持续集成/持续部署)</code>的<code>DSL(Domain Specific Language)</code>，这套规范简称为<code>STDCI</code>。</p>
@@ -1166,7 +1166,7 @@
 <blockquote>
 <p>本文不深入讲解STDCI的使用说明，您可直接参考：<a href="http://ovirt-infra-docs.readthedocs.io/en/latest/CI/Build_and_test_standards/index.html" target="_blank" rel="noopener">STDCI介绍文档</a></p>
 </blockquote>
-<h2 id="2-DevOps平台"><a href="#2-DevOps平台" class="headerlink" title="2. DevOps平台"></a>2. DevOps平台</h2><h3 id="全局流程图"><a href="#全局流程图" class="headerlink" title="全局流程图"></a>全局流程图</h3><p><img src="http://oaivivmzx.bkt.clouddn.com/ovirt-devops.png" alt="ovirt-devops全局流程图"></p>
+<h2 id="2-DevOps平台"><a href="#2-DevOps平台" class="headerlink" title="2. DevOps平台"></a>2. DevOps平台</h2><h3 id="全局流程图"><a href="#全局流程图" class="headerlink" title="全局流程图"></a>全局流程图</h3><p><img src="http://img.simiam.com/ovirt-devops.png" alt="ovirt-devops全局流程图"></p>
 <blockquote>
 <p>Jenkins持续集成系统有一个核心概念：任务（也称为Job），我们通常所说的搭建Jenkins持续集成环境其实就是创建一系列的任务并指定触发任务执行的条件（事件），在某一指定的事件被Jenkins系统捕获后，它将执行相应的任务，这一过程就是一次集成。</p>
 </blockquote>
@@ -1187,8 +1187,8 @@
 <blockquote>
 <p>实现原理也相对简单：因为Jenkins-Job定义了一系列持续集成任务，因此也可以再增加一个特殊的任务，这个任务就是JenkinsJobDeploy，一旦该任务被执行，它就会从Jenkins-Job定义Git仓库下载最新的任务定义脚本并更新Jenkins系统上的任务。</p>
 </blockquote>
-<h4 id="2-1-1-Jenkins任务初始化流程"><a href="#2-1-1-Jenkins任务初始化流程" class="headerlink" title="2.1.1. Jenkins任务初始化流程"></a>2.1.1. Jenkins任务初始化流程</h4><p><img src="http://oaivivmzx.bkt.clouddn.com/jenkins-job-init.png" alt="Jenkins任务初始化流程"></p>
-<h4 id="2-1-2-Jenkins任务管理自动化流程"><a href="#2-1-2-Jenkins任务管理自动化流程" class="headerlink" title="2.1.2. Jenkins任务管理自动化流程"></a>2.1.2. Jenkins任务管理自动化流程</h4><p><img src="http://oaivivmzx.bkt.clouddn.com/jenkins-job-mgmt.png" alt="Jenkins任务管理自动化流程"></p>
+<h4 id="2-1-1-Jenkins任务初始化流程"><a href="#2-1-1-Jenkins任务初始化流程" class="headerlink" title="2.1.1. Jenkins任务初始化流程"></a>2.1.1. Jenkins任务初始化流程</h4><p><img src="http://img.simiam.com/jenkins-job-init.png" alt="Jenkins任务初始化流程"></p>
+<h4 id="2-1-2-Jenkins任务管理自动化流程"><a href="#2-1-2-Jenkins任务管理自动化流程" class="headerlink" title="2.1.2. Jenkins任务管理自动化流程"></a>2.1.2. Jenkins任务管理自动化流程</h4><p><img src="http://img.simiam.com/jenkins-job-mgmt.png" alt="Jenkins任务管理自动化流程"></p>
 <h3 id="2-2-ovirt持续集成"><a href="#2-2-ovirt持续集成" class="headerlink" title="2.2. ovirt持续集成"></a>2.2. ovirt持续集成</h3><p>oVirt每个子项目的持续集成流程并无特殊之处，都根据Jenkins上的任务配置步骤依次执行相关脚本：编译、单元测试、构建、部署测试环境、系统测试、发行。</p>
 <p><strong>需要强调的是</strong>：这些持续集成相关的脚本都是通过JJB生成的，且这些脚本最终是由STDCI引擎串联调度完成一次集成过程，而开发人员只需要编写STDCI每个阶段(stage)需要执行的脚本。</p>
 <h3 id="2-3-涉及到技术"><a href="#2-3-涉及到技术" class="headerlink" title="2.3. 涉及到技术"></a>2.3. 涉及到技术</h3><h4 id="2-3-1-Python"><a href="#2-3-1-Python" class="headerlink" title="2.3.1. Python"></a>2.3.1. Python</h4><p>Python是oVirt持续集成方案的主力开发语言，核心的STDCI控制引擎、OST系统测试框架、与ansible相关的自动化部署脚本、Jenkins Job Builder都是用Python编写。</p>
@@ -1289,7 +1289,7 @@
     <link href="http://cloudnoter.com/2018/07/10/ovirt-engine%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/"/>
     <id>http://cloudnoter.com/2018/07/10/ovirt-engine开发环境搭建指南/</id>
     <published>2018-07-10T15:04:48.000Z</published>
-    <updated>2018-07-10T07:22:56.650Z</updated>
+    <updated>2018-10-31T03:39:34.857Z</updated>
     
     <content type="html"><![CDATA[<h1 id="ovirt-engine开发环境搭建指南"><a href="#ovirt-engine开发环境搭建指南" class="headerlink" title="ovirt-engine开发环境搭建指南"></a>ovirt-engine开发环境搭建指南</h1><h4 id="云管理平台组-陈志安"><a href="#云管理平台组-陈志安" class="headerlink" title="云管理平台组-陈志安"></a>云管理平台组-陈志安</h4><hr>
 <h1 id="中文"><a href="#中文" class="headerlink" title="中文"></a>中文</h1><hr>
@@ -1394,7 +1394,7 @@
 <li>使用docker命令：<code>docker exec -it &lt;容器名&gt; /bin/bash</code></li>
 </ul>
 <h2 id="1-7-ovirt-engine部署目录介绍"><a href="#1-7-ovirt-engine部署目录介绍" class="headerlink" title="1.7. ovirt-engine部署目录介绍"></a>1.7. ovirt-engine部署目录介绍</h2><p>ovirt-engine平台部署在wildfly(jboss)服务器上，但其并不是采用wildfly官方所描述的标准部署方式及部署结构，其使用一套自己的部署目录结构，如下：</p>
-<p><img src="http://oaivivmzx.bkt.clouddn.com/engine-deploy-dir-tree.png" alt="Dir-Tree"></p>
+<p><img src="http://img.simiam.com/engine-deploy-dir-tree.png" alt="Dir-Tree"></p>
 <p>这些目录与<code>wildfly</code>环境的关联关系</p>
 <figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-Djboss.home.dir=<span class="regexp">/usr/share</span><span class="regexp">/ovirt-engine-wildfly </span></span><br><span class="line"><span class="regexp">-Djboss.server.base.dir=/env</span><span class="regexp">/ovirt-engine-deploy/share</span><span class="regexp">/ovirt-engine </span></span><br><span class="line"><span class="regexp">-Djboss.server.data.dir=/env</span><span class="regexp">/ovirt-engine-deploy/var</span><span class="regexp">/lib/ovirt</span>-engine </span><br><span class="line">-Djboss.server.log.dir=<span class="regexp">/env/ovirt</span>-engine-deploy/var/log/ovirt-engine </span><br><span class="line">-Djboss.server.config.dir=<span class="regexp">/env/ovirt</span>-engine-deploy/var/<span class="class"><span class="keyword">lib</span>/<span class="title">ovirt</span>-<span class="title">engine</span>/<span class="title">jboss_runtime</span>/<span class="title">config</span> </span></span><br><span class="line">-Djboss.server.temp.dir=<span class="regexp">/env/ovirt</span>-engine-deploy/var/<span class="class"><span class="keyword">lib</span>/<span class="title">ovirt</span>-<span class="title">engine</span>/<span class="title">jboss_runtime</span>/<span class="title">tmp</span> </span></span><br><span class="line">-Djboss.controller.temp.dir=<span class="regexp">/env/ovirt</span>-engine-deploy/var/<span class="class"><span class="keyword">lib</span>/<span class="title">ovirt</span>-<span class="title">engine</span>/<span class="title">jboss_runtime</span>/<span class="title">tmp</span></span></span><br></pre></td></tr></table></figure>
 <h1 id="2-ovirt-engine本地开发调试环境搭建"><a href="#2-ovirt-engine本地开发调试环境搭建" class="headerlink" title="2. ovirt-engine本地开发调试环境搭建"></a>2. ovirt-engine本地开发调试环境搭建</h1><blockquote>

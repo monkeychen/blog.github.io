@@ -97,14 +97,14 @@
 <meta property="og:site_name" content="Simiam">
 <meta property="og:description" content="oVirt持续集成方案分析云管理平台组-陈志安 1. STDCIoVirt项目定义了一套标准规范，通过这套标准，一个源码工程就可以一种通用的方式定义其应该如何被构建、测试、部署与发行，而这个定义规则是独立于开发该源码工程所使用的编程语言及工具，本质上讲它是由oVirt制定的适用于CI/CD(持续集成/持续部署)的DSL(Domain Specific Language)，这套规范简称为STDCI。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://oaivivmzx.bkt.clouddn.com/ovirt-devops.png">
-<meta property="og:image" content="http://oaivivmzx.bkt.clouddn.com/jenkins-job-init.png">
-<meta property="og:image" content="http://oaivivmzx.bkt.clouddn.com/jenkins-job-mgmt.png">
-<meta property="og:updated_time" content="2018-07-10T08:32:30.137Z">
+<meta property="og:image" content="http://img.simiam.com/ovirt-devops.png">
+<meta property="og:image" content="http://img.simiam.com/jenkins-job-init.png">
+<meta property="og:image" content="http://img.simiam.com/jenkins-job-mgmt.png">
+<meta property="og:updated_time" content="2018-10-31T03:39:15.037Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="oVirt持续集成方案分析">
 <meta name="twitter:description" content="oVirt持续集成方案分析云管理平台组-陈志安 1. STDCIoVirt项目定义了一套标准规范，通过这套标准，一个源码工程就可以一种通用的方式定义其应该如何被构建、测试、部署与发行，而这个定义规则是独立于开发该源码工程所使用的编程语言及工具，本质上讲它是由oVirt制定的适用于CI/CD(持续集成/持续部署)的DSL(Domain Specific Language)，这套规范简称为STDCI。">
-<meta name="twitter:image" content="http://oaivivmzx.bkt.clouddn.com/ovirt-devops.png">
+<meta name="twitter:image" content="http://img.simiam.com/ovirt-devops.png">
 
 
 
@@ -478,7 +478,7 @@
 <blockquote>
 <p>本文不深入讲解STDCI的使用说明，您可直接参考：<a href="http://ovirt-infra-docs.readthedocs.io/en/latest/CI/Build_and_test_standards/index.html" target="_blank" rel="noopener">STDCI介绍文档</a></p>
 </blockquote>
-<h2 id="2-DevOps平台"><a href="#2-DevOps平台" class="headerlink" title="2. DevOps平台"></a>2. DevOps平台</h2><h3 id="全局流程图"><a href="#全局流程图" class="headerlink" title="全局流程图"></a>全局流程图</h3><p><img src="http://oaivivmzx.bkt.clouddn.com/ovirt-devops.png" alt="ovirt-devops全局流程图"></p>
+<h2 id="2-DevOps平台"><a href="#2-DevOps平台" class="headerlink" title="2. DevOps平台"></a>2. DevOps平台</h2><h3 id="全局流程图"><a href="#全局流程图" class="headerlink" title="全局流程图"></a>全局流程图</h3><p><img src="http://img.simiam.com/ovirt-devops.png" alt="ovirt-devops全局流程图"></p>
 <blockquote>
 <p>Jenkins持续集成系统有一个核心概念：任务（也称为Job），我们通常所说的搭建Jenkins持续集成环境其实就是创建一系列的任务并指定触发任务执行的条件（事件），在某一指定的事件被Jenkins系统捕获后，它将执行相应的任务，这一过程就是一次集成。</p>
 </blockquote>
@@ -499,8 +499,8 @@
 <blockquote>
 <p>实现原理也相对简单：因为Jenkins-Job定义了一系列持续集成任务，因此也可以再增加一个特殊的任务，这个任务就是JenkinsJobDeploy，一旦该任务被执行，它就会从Jenkins-Job定义Git仓库下载最新的任务定义脚本并更新Jenkins系统上的任务。</p>
 </blockquote>
-<h4 id="2-1-1-Jenkins任务初始化流程"><a href="#2-1-1-Jenkins任务初始化流程" class="headerlink" title="2.1.1. Jenkins任务初始化流程"></a>2.1.1. Jenkins任务初始化流程</h4><p><img src="http://oaivivmzx.bkt.clouddn.com/jenkins-job-init.png" alt="Jenkins任务初始化流程"></p>
-<h4 id="2-1-2-Jenkins任务管理自动化流程"><a href="#2-1-2-Jenkins任务管理自动化流程" class="headerlink" title="2.1.2. Jenkins任务管理自动化流程"></a>2.1.2. Jenkins任务管理自动化流程</h4><p><img src="http://oaivivmzx.bkt.clouddn.com/jenkins-job-mgmt.png" alt="Jenkins任务管理自动化流程"></p>
+<h4 id="2-1-1-Jenkins任务初始化流程"><a href="#2-1-1-Jenkins任务初始化流程" class="headerlink" title="2.1.1. Jenkins任务初始化流程"></a>2.1.1. Jenkins任务初始化流程</h4><p><img src="http://img.simiam.com/jenkins-job-init.png" alt="Jenkins任务初始化流程"></p>
+<h4 id="2-1-2-Jenkins任务管理自动化流程"><a href="#2-1-2-Jenkins任务管理自动化流程" class="headerlink" title="2.1.2. Jenkins任务管理自动化流程"></a>2.1.2. Jenkins任务管理自动化流程</h4><p><img src="http://img.simiam.com/jenkins-job-mgmt.png" alt="Jenkins任务管理自动化流程"></p>
 <h3 id="2-2-ovirt持续集成"><a href="#2-2-ovirt持续集成" class="headerlink" title="2.2. ovirt持续集成"></a>2.2. ovirt持续集成</h3><p>oVirt每个子项目的持续集成流程并无特殊之处，都根据Jenkins上的任务配置步骤依次执行相关脚本：编译、单元测试、构建、部署测试环境、系统测试、发行。</p>
 <p><strong>需要强调的是</strong>：这些持续集成相关的脚本都是通过JJB生成的，且这些脚本最终是由STDCI引擎串联调度完成一次集成过程，而开发人员只需要编写STDCI每个阶段(stage)需要执行的脚本。</p>
 <h3 id="2-3-涉及到技术"><a href="#2-3-涉及到技术" class="headerlink" title="2.3. 涉及到技术"></a>2.3. 涉及到技术</h3><h4 id="2-3-1-Python"><a href="#2-3-1-Python" class="headerlink" title="2.3.1. Python"></a>2.3.1. Python</h4><p>Python是oVirt持续集成方案的主力开发语言，核心的STDCI控制引擎、OST系统测试框架、与ansible相关的自动化部署脚本、Jenkins Job Builder都是用Python编写。</p>
