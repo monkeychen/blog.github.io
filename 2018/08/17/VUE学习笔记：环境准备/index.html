@@ -97,7 +97,7 @@
 <meta property="og:site_name" content="Simiam">
 <meta property="og:description" content="转载请注明出处：simiam.com  1. NodeNode是JavaScript语言的服务器运行环境。 所谓“运行环境”有两层意思：首先，JavaScript语言通过Node在服务器运行，在这个意义上，Node有点像JavaScript虚拟机；其次，Node提供大量工具库，使得JavaScript语言与操作系统互动（比如读写文件、新建子进程），在这个意义上，Node又是JavaScript的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-15T04:15:11.661Z">
+<meta property="og:updated_time" content="2019-04-15T04:21:23.575Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="VUE学习笔记：环境准备">
 <meta name="twitter:description" content="转载请注明出处：simiam.com  1. NodeNode是JavaScript语言的服务器运行环境。 所谓“运行环境”有两层意思：首先，JavaScript语言通过Node在服务器运行，在这个意义上，Node有点像JavaScript虚拟机；其次，Node提供大量工具库，使得JavaScript语言与操作系统互动（比如读写文件、新建子进程），在这个意义上，Node又是JavaScript的">
@@ -449,6 +449,7 @@
 <li>安装方式一：访问官方网站nodejs.org或者github.com/nodesource/distributions，查看Node的最新版本和安装方法。</li>
 <li>安装方式二：通过官方网站提供编译好的各平台下的二进制包，可以把它们解压到/usr/local/lib/nodejs目录下面，具体过程如下：</li>
 </ul>
+<a id="more"></a>
 <figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 如macOS下的二进制包</span></span><br><span class="line">sudo mkdir -p /usr/local/<span class="class"><span class="keyword">lib</span>/<span class="title">nodejs</span></span></span><br><span class="line">sudo cd /usr/local/<span class="class"><span class="keyword">lib</span>/<span class="title">nodejs</span></span></span><br><span class="line">sudo wget <span class="symbol">https:</span>/<span class="regexp">/nodejs.org/dist</span><span class="regexp">/v10.15.3/node</span>-v10.<span class="number">15.3</span>-darwin-x64.tar.gz</span><br><span class="line">sudo tar -zxvf node-v10.<span class="number">15.3</span>-darwin-x64.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置环境变量，如在~/.profile文件末尾增加如下内容：</span></span><br><span class="line">export PATH=<span class="regexp">/usr/local</span><span class="regexp">/lib/nodejs</span><span class="regexp">/node-v10.15.3-darwin-x64/bin</span>:$PATH</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行如下命令使配置生效：</span></span><br><span class="line">. ~<span class="regexp">/.profile</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp"># 测试安装是否成功</span></span><br><span class="line"><span class="regexp">node -v</span></span><br><span class="line"><span class="regexp">npm version</span></span><br><span class="line"><span class="regexp">npx -v</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>更新方式：更新node.js版本，可以通过node.js的n模块完成，具体过程如下：</li>
