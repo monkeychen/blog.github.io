@@ -663,6 +663,215 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2018/08/17/VUE学习笔记：环境准备/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="simiam">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/simiam.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Simiam">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/08/17/VUE学习笔记：环境准备/" itemprop="url">
+                  VUE学习笔记：环境准备
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-17T09:39:43Z">
+                2018-08-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/17/VUE学习笔记：环境准备/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/08/17/VUE学习笔记：环境准备/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>转载请注明出处：<a href="http://simiam.com" target="_blank" rel="noopener">simiam.com</a></p>
+</blockquote>
+<h1 id="1-Node"><a href="#1-Node" class="headerlink" title="1. Node"></a>1. Node</h1><p>Node是JavaScript语言的服务器运行环境。</p>
+<p>所谓“运行环境”有两层意思：首先，JavaScript语言通过Node在服务器运行，在这个意义上，Node有点像JavaScript虚拟机；其次，Node提供大量工具库，使得JavaScript语言与操作系统互动（比如读写文件、新建子进程），在这个意义上，Node又是JavaScript的工具库。</p>
+<p>Node内部采用Google公司的V8引擎，作为JavaScript语言解释器；通过自行开发的libuv库，调用操作系统资源。</p>
+<h2 id="1-1-安装与更新"><a href="#1-1-安装与更新" class="headerlink" title="1.1. 安装与更新"></a>1.1. 安装与更新</h2><ul>
+<li>安装方式一：访问官方网站nodejs.org或者github.com/nodesource/distributions，查看Node的最新版本和安装方法。</li>
+<li>安装方式二：通过官方网站提供编译好的各平台下的二进制包，可以把它们解压到/usr/local/lib/nodejs目录下面，具体过程如下：</li>
+</ul>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 如macOS下的二进制包</span></span><br><span class="line">sudo mkdir -p /usr/local/<span class="class"><span class="keyword">lib</span>/<span class="title">nodejs</span></span></span><br><span class="line">sudo cd /usr/local/<span class="class"><span class="keyword">lib</span>/<span class="title">nodejs</span></span></span><br><span class="line">sudo wget <span class="symbol">https:</span>/<span class="regexp">/nodejs.org/dist</span><span class="regexp">/v10.15.3/node</span>-v10.<span class="number">15.3</span>-darwin-x64.tar.gz</span><br><span class="line">sudo tar -zxvf node-v10.<span class="number">15.3</span>-darwin-x64.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置环境变量，如在~/.profile文件末尾增加如下内容：</span></span><br><span class="line">export PATH=<span class="regexp">/usr/local</span><span class="regexp">/lib/nodejs</span><span class="regexp">/node-v10.15.3-darwin-x64/bin</span>:$PATH</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行如下命令使配置生效：</span></span><br><span class="line">. ~<span class="regexp">/.profile</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp"># 测试安装是否成功</span></span><br><span class="line"><span class="regexp">node -v</span></span><br><span class="line"><span class="regexp">npm version</span></span><br><span class="line"><span class="regexp">npx -v</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>更新方式：更新node.js版本，可以通过node.js的n模块完成，具体过程如下：</li>
+</ul>
+<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 通过npm安装<span class="built_in">n</span>模块</span><br><span class="line">sudo npm install <span class="built_in">n</span> -g</span><br><span class="line"></span><br><span class="line"># 通过<span class="built_in">n</span>模块，将node.js更新为最新发布的稳定版</span><br><span class="line">sudo <span class="built_in">n</span> stable</span><br><span class="line"></span><br><span class="line"># <span class="built_in">n</span>模块也可以指定安装特定版本的node</span><br><span class="line">sudo <span class="built_in">n</span> <span class="number">10.10</span>.<span class="number">21</span></span><br></pre></td></tr></table></figure>
+<h2 id="1-2-基本用法"><a href="#1-2-基本用法" class="headerlink" title="1.2. 基本用法"></a>1.2. 基本用法</h2><ul>
+<li>安装环境搭建完成后，运行node.js程序，其实就是使用node命令读取解析执行JavaScript脚本。比如当前目录存在一个<code>demo.js</code>脚本文件，可以这样执行：</li>
+</ul>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">node</span> <span class="title">demo</span></span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">$ <span class="keyword">node</span> <span class="title">demo</span>.js</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用<code>-e</code>参数，可以执行代码字符串：</li>
+</ul>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">node</span> <span class="title">-e</span> 'console.log(<span class="string">"Hello World"</span>)'</span><br><span class="line"><span class="comment"># 执行输出结果为：Hello World</span></span><br></pre></td></tr></table></figure>
+<h2 id="1-3-REPL环境"><a href="#1-3-REPL环境" class="headerlink" title="1.3. REPL环境"></a>1.3. REPL环境</h2><blockquote>
+<p>REPL是Node.js与用户互动的shell，各种基本的shell功能都可以在里面使用，比如使用上下方向键遍历曾经使用过的命令。</p>
+</blockquote>
+<p>在命令行键入node命令，后面没有文件名，就进入一个Node.js的REPL环境（Read–eval–print loop，”读取-求值-输出”循环），可以直接运行各种JavaScript命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> node</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> 1+1</span></span><br><span class="line">2</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 特殊变量下划线（_）表示上一个命令的返回结果</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> _ + 1</span></span><br><span class="line">3</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 在REPL中，如果运行一个表达式，会直接在命令行返回结果。如果运行一条语句，就不会有任何输出，因为语句没有返回值。</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如下面代码的第二条命令，没有显示任何结果。因为这是一条语句，不是表达式，所以没有返回值</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> x = 1</span></span><br><span class="line">1</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> var x = 1</span></span><br></pre></td></tr></table></figure>
+<h1 id="2-模块包管理器npm"><a href="#2-模块包管理器npm" class="headerlink" title="2. 模块包管理器npm"></a>2. 模块包管理器npm</h1><p>npm是Node的模块管理器，功能极其强大，它是Node获得成功的重要原因之一。npm是随node一起发布安装的，不需要单独安装。正因为有了npm，我们只要使用如下一行命令，就能安装或更新别人写好的模块。</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装新模块</span></span><br><span class="line">sudo <span class="built_in">npm</span> install module_name@version [-g]</span><br><span class="line"><span class="comment"># 更新新模块</span></span><br><span class="line">sudo <span class="built_in">npm</span> update module_name@version [-g]</span><br></pre></td></tr></table></figure>
+<p>参数选项<code>-g</code>代表是全局安装，即会安装到<code>/usr/local/lib/node_modules</code>目录下，如果不加则为本地安装，会将模块安装在当前目录的<code>node_modules</code>目录下。</p>
+<h2 id="2-1-npm自身版本更新"><a href="#2-1-npm自身版本更新" class="headerlink" title="2.1. npm自身版本更新"></a>2.1. npm自身版本更新</h2><p>因为在安装Node的时候，会连带一起安装npm。但是Node附带的npm可能不是最新版本，最好用下面的命令，更新到最新版本。</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">npm</span> install <span class="built_in">npm</span>@latest -g</span><br></pre></td></tr></table></figure>
+<p>上面的命令中，@latest表示最新版本，-g表示全局安装。所以，命令的主干是npm install npm，也就是使用npm安装自己。之所以可以这样，是因为npm本身与Node的其他模块没有区别，其本质上也是一个node模块，因此可以通过npm命令来进行版本更新。</p>
+<p>然后，运行下面的命令，查看各种信息。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看 npm 命令列表</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> npm <span class="built_in">help</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看各个命令的简单用法</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> npm -l</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看 npm 的版本</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> npm -v</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看 npm 的配置</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> npm config list -l</span></span><br></pre></td></tr></table></figure>
+<h1 id="3-版本管理工具nvm"><a href="#3-版本管理工具nvm" class="headerlink" title="3. 版本管理工具nvm"></a>3. 版本管理工具nvm</h1><p>如果想在同一台机器，同时安装多个版本的node.js，就需要用到版本管理工具nvm。</p>
+<h2 id="3-1-安装与更新"><a href="#3-1-安装与更新" class="headerlink" title="3.1. 安装与更新"></a>3.1. 安装与更新</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">clone</span> https://github.com/creationix/nvm.git ~/.nvm</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">source</span> ~/.nvm/nvm.sh</span></span><br></pre></td></tr></table></figure>
+<p>安装以后，nvm的执行脚本，每次使用前都要激活，建议将其加入<code>~/.bashrc</code>文件（假定使用Bash）。激活后，就可以安装指定版本的Node，命令如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装最新版本</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nvm install node</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装指定版本</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nvm install 0.12.1</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 使用已安装的最新版本</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nvm use node</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 使用指定版本的node</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nvm use 0.12</span></span><br></pre></td></tr></table></figure>
+<p>nvm也允许进入指定版本的<code>REPL</code>环境（Read–eval–print loop，”读取-求值-输出”循环）：</p>
+<blockquote>
+<p>REPL是Node.js与用户互动的shell，各种基本的shell功能都可以在里面使用，比如使用上下方向键遍历曾经使用过的命令。</p>
+</blockquote>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nvm <span class="keyword">run</span><span class="bash"> 0.12</span></span><br></pre></td></tr></table></figure>
+<p>如果在项目根目录下新建一个<code>.nvmrc</code>文件，将版本号写入其中，就只输入<code>nvm use</code>命令即可，不再需要附加版本号。</p>
+<p>下面是其他经常用到的nvm使用命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看本地安装的所有版本</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nvm ls</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看服务器上所有可供安装的版本。</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nvm ls-remote</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 退出已经激活的nvm，使用deactivate命令。</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> nvm deactivate</span></span><br></pre></td></tr></table></figure>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ul>
+<li><a href="http://javascript.ruanyifeng.com/nodejs/npm.html" target="_blank" rel="noopener">npm模块管理器</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2016/01/npm-install.html" target="_blank" rel="noopener">npm模块安装机制简介</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2019/02/npx.html" target="_blank" rel="noopener">npx使用教程</a></li>
+</ul>
+<blockquote>
+<p>转载请注明出处：<a href="http://simiam.com" target="_blank" rel="noopener">simiam.com</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2018/07/13/CI-CD方案分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1063,190 +1272,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2018/07/11/oVirt持续集成方案分析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="simiam">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/simiam.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Simiam">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2018/07/11/oVirt持续集成方案分析/" itemprop="url">
-                  oVirt持续集成方案分析
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-10T16:21:08Z">
-                2018-07-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/分布式/" itemprop="url" rel="index">
-                    <span itemprop="name">分布式</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/分布式/虚拟化/" itemprop="url" rel="index">
-                    <span itemprop="name">虚拟化</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/07/11/oVirt持续集成方案分析/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/07/11/oVirt持续集成方案分析/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="oVirt持续集成方案分析"><a href="#oVirt持续集成方案分析" class="headerlink" title="oVirt持续集成方案分析"></a>oVirt持续集成方案分析</h1><h4 id="云管理平台组-陈志安"><a href="#云管理平台组-陈志安" class="headerlink" title="云管理平台组-陈志安"></a>云管理平台组-陈志安</h4><hr>
-<h2 id="1-STDCI"><a href="#1-STDCI" class="headerlink" title="1. STDCI"></a>1. STDCI</h2><p>oVirt项目定义了一套标准规范，通过这套标准，一个源码工程就可以一种通用的方式定义其应该如何被构建、测试、部署与发行，而这个定义规则是独立于开发该源码工程所使用的编程语言及工具，本质上讲它是由oVirt制定的适用于<code>CI/CD(持续集成/持续部署)</code>的<code>DSL(Domain Specific Language)</code>，这套规范简称为<code>STDCI</code>。</p>
-<p>CI团队可以基于这套标准创建像<code>mock_runner</code>这一类通用的构建、测试、部署与发行工具，这些工具以统一的方式来处理所有的ovirt工程。</p>
-<p>oVirt项目的持续集成系统（CI系统）就是使用这套标准以自动化的方式执行该项目下各个工程的构建、测试、部署、发行进程。</p>
-<blockquote>
-<p>该规范的实现请参考：<a href="https://github.com/oVirt/jenkins/tree/master/scripts" target="_blank" rel="noopener"><code>https://github.com/oVirt/jenkins/tree/master/scripts</code></a></p>
-</blockquote>
-<h3 id="1-1-Stage"><a href="#1-1-Stage" class="headerlink" title="1.1. Stage"></a>1.1. Stage</h3><p><code>STDCI</code>中的一个核心概念是“stage”，State是指作用在变更过的源码上的各种操作，它代表了源码从开发人员初始创建到成为正式发布产品整个生命周期的各个阶段。在每个特定的stage会执行一系列与该stage相关的各种操作（命令），这些操作命令是由每个具体工程定义。</p>
-<p>当前STDCI定义了如下几个常用的stage：</p>
-<ul>
-<li>build-artifacts：该阶段定义了如何从源码构建出用户可使用的归档文件，比如RPM包或Docker镜像之类的文件。</li>
-<li>build-artifacts-manual：该阶段主要定义了如何从tar格式的源码包进行项目构建，一般在人工处理的方式进行正式版本发布时会涉及到该阶段，比较少用。</li>
-<li>check-patch：这个阶段定义了当代码发生变更时如何进行代码质量、功能或回归验证。一般是用户在Github等平台上发起PR请求会触发与该阶段关联的操作。</li>
-<li>check-merged：这个阶段定义了当代码发生变更时如何进行代码质量、功能或回归验证。一般是分支合并操作后会触发与该阶段关联的操作。</li>
-<li>poll-upstream-sources：有时项目会依赖的上游或外部项目或库，该阶段主要定义了上游或外部依赖项目的更新操作。</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/07/11/oVirt持续集成方案分析/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1296,7 +1321,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-count">23</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1307,7 +1332,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-count">17</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1318,7 +1343,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">31</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

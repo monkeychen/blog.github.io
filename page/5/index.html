@@ -331,6 +331,177 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2016/01/12/PhpStorm-Laravel-5-1开发环境搭建/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="simiam">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/simiam.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Simiam">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/01/12/PhpStorm-Laravel-5-1开发环境搭建/" itemprop="url">
+                  PhpStorm+Laravel_5.1开发环境搭建
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-12T00:26:13Z">
+                2016-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Php/" itemprop="url" rel="index">
+                    <span itemprop="name">Php</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/01/12/PhpStorm-Laravel-5-1开发环境搭建/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/01/12/PhpStorm-Laravel-5-1开发环境搭建/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>参数文档：<a href="https://confluence.jetbrains.com/display/PhpStorm/Laravel+Development+using+PhpStorm" target="_blank" rel="noopener">Laravel Development using PhpStorm</a></p>
+</blockquote>
+<ol>
+<li>在PhpStorm + Laravel5.1下无法为artisan创建【command line tool support】问题</li>
+</ol>
+<p><strong>现象</strong>：<br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Problem</span><br><span class="line">Failed <span class="keyword">to</span> parse output <span class="keyword">as</span> xml: Error <span class="keyword">on</span> line <span class="number">4</span>: Content <span class="keyword">is</span> <span class="keyword">not</span> allowed <span class="keyword">in</span> prolog..</span><br><span class="line">Command</span><br><span class="line">php.exe C:\Users\Maxim.Kolmakov\PhpstormProjects\Laravel<span class="number">-5</span>\artisan <span class="built_in">list</span> <span class="comment">--xml</span></span><br><span class="line">Output                                                                               </span><br><span class="line">  [ErrorException]                                                             </span><br><span class="line">  The <span class="comment">--xml option was deprecated in version 2.7 and will be removed in versi  </span></span><br><span class="line">  <span class="keyword">on</span> <span class="number">3.0</span>. Use <span class="keyword">the</span> <span class="comment">--format option instead.</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>原因</strong>：<br>Laravel 5.1版的Artisan的命令行的xml标志位已经被删除，详见Symfony的<a href="https://github.com/symfony/console/commit/6d6d9031b9148fed0e2aacb98ac23ce6168ba7ac" target="_blank" rel="noopener">Git提交记录</a>。</p>
+<p><strong>解决办法</strong>：2种</p>
+<ul>
+<li>将Laravel降级为5.0版本</li>
+<li>到目录[项目根目录]/vendor/symfony/console/Command下将如下两个文件还原回去：<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">HelpCommand</span><span class="selector-class">.php</span></span><br><span class="line"><span class="selector-tag">ListCommand</span><span class="selector-class">.php</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>2.<a href="https://github.com/koomai/phpstorm-laravel-live-templates" target="_blank" rel="noopener">phpstorm laravel live template</a></p>
+<blockquote>
+<p>转载请注明出处：<a href="http://cloudnoter.com">cloudnoter.com</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2015/12/20/嵌套删除SQL引起的死锁问题分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -686,7 +857,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-count">23</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -697,7 +868,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-count">17</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -708,7 +879,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">31</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
