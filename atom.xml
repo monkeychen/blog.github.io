@@ -2649,7 +2649,7 @@
     <link href="http://cloudnoter.com/2016/11/09/Java%E5%B0%8F%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/"/>
     <id>http://cloudnoter.com/2016/11/09/Java小问题汇总/</id>
     <published>2016-11-08T22:09:00.000Z</published>
-    <updated>2017-05-07T13:47:18.000Z</updated>
+    <updated>2019-06-24T11:46:57.436Z</updated>
     
     <content type="html"><![CDATA[<h2 id="1-MySQL5-7下的JSON字段中文乱码问题"><a href="#1-MySQL5-7下的JSON字段中文乱码问题" class="headerlink" title="1. MySQL5.7下的JSON字段中文乱码问题"></a>1. MySQL5.7下的JSON字段中文乱码问题</h2><p>中文乱码问题在Java Web开发中经常碰到，大部分原因是后端与前端的编码不一致造成的（如tomcat的默认编码为ISO-8859-1，而前端为GBK），解决办法也简单，只需要加一个<code>CharsetEncodingFilter</code>就行。但本文要讲的不是这一类总是，而是纯粹的后端问题。</p>
 <h3 id="1-1-环境准备"><a href="#1-1-环境准备" class="headerlink" title="1.1 环境准备"></a>1.1 环境准备</h3><blockquote>
@@ -2690,9 +2690,11 @@
 <ul>
 <li><p><strong>原因分析</strong>：新版Eclipse在启动单元测试用例时调用的是JUnit新版本的方法，即Eclipse已不支持junit4.9以下的版本。</p>
 </li>
-<li><p><strong>解决办法</strong>：升级JUnit依赖版本即可 </p>
+<li><p><strong>解决办法</strong>：升级JUnit依赖版本即可</p>
 </li>
 </ul>
+<h2 id="Windows下修改tomcat配置"><a href="#Windows下修改tomcat配置" class="headerlink" title="Windows下修改tomcat配置"></a>Windows下修改tomcat配置</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 将tomcat安装成window后台服务：</span></span><br><span class="line">service.bat install tomcat8-cza</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 卸载服务</span></span><br><span class="line">service.bat remove tomcat8-cza</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 配置JVM内存参数</span></span><br><span class="line">cd &lt;tomcat_home&gt;/bin</span><br><span class="line">tomcat8w.exe //MS/tomcat8-cza</span><br><span class="line"><span class="meta">#</span><span class="bash"> 在桌面右下角可以看到tomcat8w.exe的服务管理图标，点击“配置”，选择“java”标签，即可修改JVM参数。</span></span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># 获取echarts地图中各地区的经纬度信息</span></span></span><br></pre></td></tr></table></figure>
+<p>echarts.getMap(‘福州’).geoJson.features.forEach(function(item){console.log(‘“‘ + item.properties.name + ‘“‘ + “: [“ + item.properties.cp + “],”)});<br>```</p>
 <h2 id="待续…"><a href="#待续…" class="headerlink" title="待续…"></a>待续…</h2><blockquote>
 <p>转载请注明出处：<a href="http://cloudnoter.com">cloudnoter.com</a></p>
 </blockquote>
