@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://cloudnoter.com/"/>
-  <updated>2019-04-19T03:13:56.779Z</updated>
+  <updated>2020-03-07T14:24:17.484Z</updated>
   <id>http://cloudnoter.com/</id>
   
   <author>
@@ -14,6 +14,61 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>聊聊微服务架构</title>
+    <link href="http://cloudnoter.com/2020/03/08/%E8%81%8A%E8%81%8A%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84/"/>
+    <id>http://cloudnoter.com/2020/03/08/聊聊微服务架构/</id>
+    <published>2020-03-07T21:49:03.000Z</published>
+    <updated>2020-03-07T14:24:17.484Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="架构发展史"><a href="#架构发展史" class="headerlink" title="架构发展史"></a>架构发展史</h2><h2 id="什么是微服务"><a href="#什么是微服务" class="headerlink" title="什么是微服务"></a>什么是微服务</h2><h2 id="微服务的优点及使用场景"><a href="#微服务的优点及使用场景" class="headerlink" title="微服务的优点及使用场景"></a>微服务的优点及使用场景</h2><p>从开发、测试、运维、架构几个角度分析</p>
+<h2 id="微服务不是银弹"><a href="#微服务不是银弹" class="headerlink" title="微服务不是银弹"></a>微服务不是银弹</h2>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;架构发展史&quot;&gt;&lt;a href=&quot;#架构发展史&quot; class=&quot;headerlink&quot; title=&quot;架构发展史&quot;&gt;&lt;/a&gt;架构发展史&lt;/h2&gt;&lt;h2 id=&quot;什么是微服务&quot;&gt;&lt;a href=&quot;#什么是微服务&quot; class=&quot;headerlink&quot; title=&quot;什
+    
+    </summary>
+    
+      <category term="架构技术" scheme="http://cloudnoter.com/categories/%E6%9E%B6%E6%9E%84%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="微服务" scheme="http://cloudnoter.com/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+    
+      <category term="SpringCloud" scheme="http://cloudnoter.com/tags/SpringCloud/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>VUE学习笔记：vue-router动态路由权限管理</title>
+    <link href="http://cloudnoter.com/2019/08/02/VUE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9Avue-router%E5%8A%A8%E6%80%81%E8%B7%AF%E7%94%B1/"/>
+    <id>http://cloudnoter.com/2019/08/02/VUE学习笔记：vue-router动态路由/</id>
+    <published>2019-08-01T16:28:43.000Z</published>
+    <updated>2020-03-07T14:16:39.938Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="场景描述"><a href="#场景描述" class="headerlink" title="场景描述"></a>场景描述</h2><p>众所周知，任何一个完善的web系统都需要可访问的URL资源进行权限控制，即不同的用户所能访问的URL是不一样的。在前后端未分离前，整个权限控制逻辑都是由后端控制（如通过AOP技术等）。后面随着前端技术的不断发展（如vue等JS框架），慢慢出现了前后端分离的架构模式，特别是单页面应用（SPA）的流行，前端也开始有了对模块路由访问权限控制的需求，因此像<code>vue-router</code>这类专门负责前端路由业务的组件就亮相了。</p>
+<p><code>vue</code>中引入<code>vue-router</code>的方式如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<p>动态路由权限管理是指：根据服务端用户角色生成适合该用户的路由配置信息，并更新Router实例下的routes属性。</p>
+<h2 id="vue-router原理"><a href="#vue-router原理" class="headerlink" title="vue-router原理"></a>vue-router原理</h2><blockquote>
+<p>转载请注明出处：<a href="http://simiam.com" target="_blank" rel="noopener">simiam.com</a></p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;场景描述&quot;&gt;&lt;a href=&quot;#场景描述&quot; class=&quot;headerlink&quot; title=&quot;场景描述&quot;&gt;&lt;/a&gt;场景描述&lt;/h2&gt;&lt;p&gt;众所周知，任何一个完善的web系统都需要可访问的URL资源进行权限控制，即不同的用户所能访问的URL是不一样的。在前后端未分
+    
+    </summary>
+    
+      <category term="前端" scheme="http://cloudnoter.com/categories/%E5%89%8D%E7%AB%AF/"/>
+    
+    
+      <category term="vue" scheme="http://cloudnoter.com/tags/vue/"/>
+    
+      <category term="npm" scheme="http://cloudnoter.com/tags/npm/"/>
+    
+  </entry>
   
   <entry>
     <title>VUE学习笔记：环境准备</title>
@@ -429,22 +484,26 @@
   </entry>
   
   <entry>
-    <title>Java内存模型</title>
+    <title>学习便签</title>
     <link href="http://cloudnoter.com/2018/08/17/Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/"/>
     <id>http://cloudnoter.com/2018/08/17/Java内存模型/</id>
     <published>2018-08-17T09:39:43.000Z</published>
-    <updated>2019-04-15T00:36:41.891Z</updated>
+    <updated>2019-11-14T06:56:55.406Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="Java内存模型"><a href="#Java内存模型" class="headerlink" title="Java内存模型"></a>Java内存模型</h1><blockquote>
+    <content type="html"><![CDATA[<h1 id="学习便签"><a href="#学习便签" class="headerlink" title="学习便签"></a>学习便签</h1><blockquote>
 <p>转载请注明出处：<a href="http://simiam.com" target="_blank" rel="noopener">simiam.com</a></p>
+</blockquote>
+<h2 id="HUE"><a href="#HUE" class="headerlink" title="HUE"></a>HUE</h2><p>本地源码构建安装：</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd &lt;hue_dir_path&gt;</span><br><span class="line">export LDFLAGS=-L/usr/local/opt/openssl/<span class="class"><span class="keyword">lib</span></span></span><br><span class="line">export CPPFLAGS=-I/usr/local/opt/openssl/<span class="keyword">include</span></span><br><span class="line">make clean</span><br><span class="line">make apps</span><br><span class="line">./build/env/bin/supervisor</span><br><span class="line">登录默认用户名密码：admin/admin</span><br></pre></td></tr></table></figure>
+<blockquote>
 <p>转载请注明出处：<a href="http://simiam.com" target="_blank" rel="noopener">simiam.com</a></p>
 </blockquote>
 ]]></content>
     
     <summary type="html">
     
-      &lt;h1 id=&quot;Java内存模型&quot;&gt;&lt;a href=&quot;#Java内存模型&quot; class=&quot;headerlink&quot; title=&quot;Java内存模型&quot;&gt;&lt;/a&gt;Java内存模型&lt;/h1&gt;&lt;blockquote&gt;
-&lt;p&gt;转载请注明出处：&lt;a href=&quot;http://simiam.co
+      &lt;h1 id=&quot;学习便签&quot;&gt;&lt;a href=&quot;#学习便签&quot; class=&quot;headerlink&quot; title=&quot;学习便签&quot;&gt;&lt;/a&gt;学习便签&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;转载请注明出处：&lt;a href=&quot;http://simiam.com&quot; target=&quot;_blan
     
     </summary>
     
@@ -3018,182 +3077,6 @@
       <category term="Java" scheme="http://cloudnoter.com/tags/Java/"/>
     
       <category term="JNI" scheme="http://cloudnoter.com/tags/JNI/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Laravel 5.2中文文档：HTTP路由</title>
-    <link href="http://cloudnoter.com/2016/01/21/Laravel-5-2%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3%EF%BC%9AHTTP%E8%B7%AF%E7%94%B1/"/>
-    <id>http://cloudnoter.com/2016/01/21/Laravel-5-2中文文档：HTTP路由/</id>
-    <published>2016-01-20T21:31:08.000Z</published>
-    <updated>2017-05-07T13:38:03.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="基本路由"><a href="#基本路由" class="headerlink" title="基本路由"></a>基本路由</h1><p>所有的Laravel路由规则都定义在<code>app/Http/routes.php</code>文件中，Laravel框架在初始化时将自动加载该文件。Laravel中最基本的路由规则如下：</p>
-<pre><code>Route::get(&apos;foo&apos;, function () {
-    return &apos;Hello World&apos;;
-});
-</code></pre><p>其接受两个参数：匹配该路由的URI、路由处理闭包<code>Closure</code>；该闭包定义了具体的路由规则。</p>
-<p><strong>默认路由文件</strong></p>
-<p>默认情况下，<code>routes.php</code>中可以定义简单的路由，或者将这些路由定义在路由组中。路由组将利用<code>web</code>中间件为定义在其中的路由规则提供’会话状态’与<code>CSRF</code>保存等功能。<br><a id="more"></a></p>
-<p>任何未放在路由组中的路由规则将无权访问会话，也无法享受web中间件提供的<code>CSRF</code>保护等特性，因此如果您定义的路由规则需要web中间件提供的这些特性时，你需要确保将这些路由规则放入路由组中；通过情况下，我们会将大部分的路由规则都放在路由组中。</p>
-<pre><code>Route::group([&apos;middleware&apos; =&gt; [&apos;web&apos;]], function () {
-    //
-});
-</code></pre><p><strong>Route类中可用的路由方法</strong></p>
-<p>框架路由引擎允许你注册如下的路由规则来响应相应的HTTP请求动作：</p>
-<pre><code>Route::get($uri, $callback);
-Route::post($uri, $callback);
-Route::put($uri, $callback);
-Route::patch($uri, $callback);
-Route::delete($uri, $callback);
-Route::options($uri, $callback);
-</code></pre><p>有时你需要注册一个路由规则来响应多个HTTP请求动作，因此你可以使用<code>Route</code>类的<code>match</code>方法来满足该需求。甚至你可以使用<code>Route</code>类的<code>any</code>方法来响应所有的HTTP请求动作。</p>
-<pre><code>Route::match([&apos;get&apos;, &apos;post&apos;], &apos;/&apos;, function () {
-    //
-});
-
-Route::any(&apos;foo&apos;, function () {
-    //
-});
-</code></pre><h1 id="路由参数-占位符"><a href="#路由参数-占位符" class="headerlink" title="路由参数(占位符)"></a>路由参数(占位符)</h1><p>Laravel中路由规则配置中的URL中允许设置参数(占位符)，便于闭包或控制器方法提取与引用。Laravel的路由URL中参数占位符配置方式分两种：必选与可选。</p>
-<blockquote>
-<p>这种机制蛮适合开发符合RESTful规范的应用，这里有一篇由《黑客与画家》、《软件随想录》译者阮一峰写的介绍RESTful概念的文章： <a href="http://www.ruanyifeng.com/blog/2011/09/restful" target="_blank" rel="noopener">理解RESTful架构</a></p>
-</blockquote>
-<p><strong>必选参数占位符</strong></p>
-<p>所谓必选，即HTTP请求的URL中参数占位符的部分必需有具体的数据，否则该路由规则不会被匹配到。比如，你可能需要从请求URL中获取用户的ID时，你就可以定义如下的路由规则：</p>
-<pre><code>Route::get(&apos;user/{id}&apos;, function ($id) {
-    return &apos;User &apos;.$id;
-});
-// 当请求URL为http://somesite/user/2时，2将被提取出来并赋值给闭包函数中的变量id
-</code></pre><p>由上面的例子可知，路由参数占位符是由一对花括号来定义的。当然，我们也可以在URL中定义多个参数占位符，如下：</p>
-<pre><code>Route::get(&apos;posts/{post}/comments/{comment}&apos;, function ($postId, $commentId) {
-     //
-});
-</code></pre><blockquote>
-<p>注意：路由参数占位符的定义需要符合PHP变量命名规范，如不能包含”-“符。</p>
-</blockquote>
-<p><strong>可选参数占位符</strong></p>
-<p>如果想让路由参数占位符是可选的（有时请求URL中的占位符部分可能是空的），此时可以在占位符名称的后面加上一个问号”?”即可。</p>
-<pre><code>Route::get(&apos;user/{name?}&apos;, function ($name = null) {
-    return $name;
-});
-
-Route::get(&apos;user/{name?}&apos;, function ($name = &apos;John&apos;) {
-    return $name;
-});
-</code></pre><blockquote>
-<p>当URL参数占位符设置为可选时，后面的闭包函数的参数<strong>需要</strong>提供默认值。</p>
-</blockquote>
-<h1 id="命名路由"><a href="#命名路由" class="headerlink" title="命名路由"></a>命名路由</h1><p>命名路由将允许你方便的生成URL或重定向URL，这些生成的URL最终将匹配该路由规则。你可通过如下方式定义命名路由：</p>
-<pre><code>Route::get(&apos;profile&apos;, [&apos;as&apos; =&gt; &apos;profile&apos;, function () {
-    //
-}]);
-</code></pre><p>闭包函数的第二个数组参数的元素键值需要指定为”as”，元素值即为路由规则名。当然，你也可以为控制器的方法来代替上面的闭包函数，如下：</p>
-<pre><code>Route::get(&apos;profile&apos;, [
-    &apos;as&apos; =&gt; &apos;profile&apos;, &apos;uses&apos; =&gt; &apos;UserController@showProfile&apos;
-]);
-</code></pre><p>定义命名路由还有如下方式：</p>
-<pre><code>Route::get(&apos;user/profile&apos;, &apos;UserController@showProfile&apos;)-&gt;name(&apos;profile&apos;);
-</code></pre><p>即先定义一个普通路由，然后再调用该路由规则实例的name方法。</p>
-<p><strong>路由组与命名路由</strong></p>
-<p>如果你正在使用路由规则组时，你可以在路由规则组定义的属性数组中添加一个key为”as”，值为某字符串的元素，该元素的值将作为该路由组中包含的路由名字的前缀。如下：</p>
-<pre><code>Route::group([&apos;as&apos; =&gt; &apos;admin::&apos;], function () {
-    Route::get(&apos;dashboard&apos;, [&apos;as&apos; =&gt; &apos;dashboard&apos;, function () {
-        // Route named &quot;admin::dashboard&quot;
-    }]);
-});
-</code></pre><p><strong>生成匹配命名路由的URL</strong></p>
-<p>一旦你已经为某一路由起了相应的名字，那么你就可以通过全局函数<code>route</code>来生成相应的URL：</p>
-<pre><code>// Generating URLs...
-$url = route(&apos;profile&apos;);
-
-// Generating Redirects...
-return redirect()-&gt;route(&apos;profile&apos;);
-</code></pre><p>如果命名路由规则的URL部分包含参数占位符，则你可以将参数值作为<code>route</code>函数的第二个数组参数的元素传入，框架将自动用该参数值代替占位符以生成相应的URL。</p>
-<pre><code>Route::get(&apos;user/{id}/profile&apos;, [&apos;as&apos; =&gt; &apos;profile&apos;, function ($id) {
-    //
-}]);
-
-$url = route(&apos;profile&apos;, [&apos;id&apos; =&gt; 1]);
-</code></pre><h1 id="路由组"><a href="#路由组" class="headerlink" title="路由组"></a>路由组</h1><blockquote>
-<p>转载请注明出处：<a href="http://cloudnoter.com">cloudnoter.com</a></p>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;基本路由&quot;&gt;&lt;a href=&quot;#基本路由&quot; class=&quot;headerlink&quot; title=&quot;基本路由&quot;&gt;&lt;/a&gt;基本路由&lt;/h1&gt;&lt;p&gt;所有的Laravel路由规则都定义在&lt;code&gt;app/Http/routes.php&lt;/code&gt;文件中，Laravel框架在初始化时将自动加载该文件。Laravel中最基本的路由规则如下：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Route::get(&amp;apos;foo&amp;apos;, function () {
-    return &amp;apos;Hello World&amp;apos;;
-});
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;其接受两个参数：匹配该路由的URI、路由处理闭包&lt;code&gt;Closure&lt;/code&gt;；该闭包定义了具体的路由规则。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;默认路由文件&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;默认情况下，&lt;code&gt;routes.php&lt;/code&gt;中可以定义简单的路由，或者将这些路由定义在路由组中。路由组将利用&lt;code&gt;web&lt;/code&gt;中间件为定义在其中的路由规则提供’会话状态’与&lt;code&gt;CSRF&lt;/code&gt;保存等功能。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="Translation" scheme="http://cloudnoter.com/categories/Translation/"/>
-    
-    
-      <category term="php" scheme="http://cloudnoter.com/tags/php/"/>
-    
-      <category term="laravel" scheme="http://cloudnoter.com/tags/laravel/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Java调试工具:JDB</title>
-    <link href="http://cloudnoter.com/2016/01/13/Java%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7-JDB/"/>
-    <id>http://cloudnoter.com/2016/01/13/Java调试工具-JDB/</id>
-    <published>2016-01-12T23:25:28.000Z</published>
-    <updated>2017-04-29T06:07:27.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>代码调试是大家在日常应用开发定位BUG时会经常使用的技能。然而在客户生产环境下，一没有开发环境，二没有外网连接，如果此时应用出问题，而通过日志又无法定位时，该怎么办呢？</p>
-<p>也许有人会按如下步骤来定位问题（假设BUG可复现且客户允许应用服务重启）：</p>
-<ol>
-<li>在本地可能出问题的相关代码中添加许多的日志信息，以将应用运行状态打印出来。</li>
-<li>打包并部署至客户现场环境</li>
-<li>复现BUG并查看日志信息并最终解决问题</li>
-</ol>
-<p>其实JDK中提供的JDB是一个更加理想现场调试工具，其包含的命令列表如下：</p>
-<a id="more"></a>
-<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line">** JDB命令列表 **</span><br><span class="line">connectors                <span class="comment">-- 列出此 VM 中可用的连接器和传输器</span></span><br><span class="line"></span><br><span class="line">run [类 [参数]]        <span class="comment">-- 开始执行应用程序的主类</span></span><br><span class="line"></span><br><span class="line">threads [线程组]     <span class="comment">-- 列出线程</span></span><br><span class="line">thread &lt;线程 ID&gt;        <span class="comment">-- 设置默认线程</span></span><br><span class="line">suspend [线程 ID]    <span class="comment">-- 暂停线程（默认值为 all）</span></span><br><span class="line">resume [线程 ID]     <span class="comment">-- 恢复线程（默认值为 all）</span></span><br><span class="line">where [&lt;线程 ID&gt; | all] <span class="comment">-- 转储线程的堆栈</span></span><br><span class="line">wherei [&lt;线程 ID&gt; | all] <span class="comment">-- 转储线程的堆栈以及 pc 信息</span></span><br><span class="line">up [n 帧]             <span class="comment">-- 向上移动线程的堆栈</span></span><br><span class="line">down [n 帧]           <span class="comment">-- 向下移动线程的堆栈</span></span><br><span class="line"><span class="built_in">kill</span> &lt;线程 ID&gt; &lt;表达式&gt;   <span class="comment">-- 中止具有给定的异常对象的线程</span></span><br><span class="line">interrupt &lt;线程 ID&gt;     <span class="comment">-- 中断线程</span></span><br><span class="line"></span><br><span class="line">print &lt;表达式&gt;              <span class="comment">-- 输出表达式的值</span></span><br><span class="line">dump &lt;表达式&gt;               <span class="comment">-- 输出所有对象信息</span></span><br><span class="line">eval &lt;表达式&gt;               <span class="comment">-- 计算表达式的值（与 print 作用相同）</span></span><br><span class="line"><span class="built_in">set</span> &lt;lvalue&gt; = &lt;表达式&gt;     <span class="comment">-- 为字段/变量/数组元素指定新值</span></span><br><span class="line">locals                    <span class="comment">-- 输出当前堆栈帧中的所有本地变量</span></span><br><span class="line"></span><br><span class="line">classes                   <span class="comment">-- 列出当前已知的类</span></span><br><span class="line">class &lt;类 ID&gt;          <span class="comment">-- 显示已命名类的详细信息</span></span><br><span class="line">methods &lt;类 ID&gt;        <span class="comment">-- 列出类的方法</span></span><br><span class="line">fields &lt;类 ID&gt;         <span class="comment">-- 列出类的字段</span></span><br><span class="line"></span><br><span class="line">threadgroups              <span class="comment">-- 列出线程组</span></span><br><span class="line">threadgroup &lt;名称&gt;        <span class="comment">-- 设置当前线程组</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">stop</span> <span class="keyword">in</span> &lt;类 ID&gt;.&lt;方法&gt;[(参数类型,...)]</span><br><span class="line">                          <span class="comment">-- 在方法中设置断点</span></span><br><span class="line"><span class="built_in">stop</span> <span class="keyword">at</span> &lt;类 ID&gt;:&lt;行&gt; <span class="comment">-- 在行中设置断点</span></span><br><span class="line"><span class="built_in">clear</span> &lt;类 ID&gt;.&lt;方法&gt;[(参数类型,...)]</span><br><span class="line">                          <span class="comment">-- 清除方法中的断点</span></span><br><span class="line"><span class="built_in">clear</span> &lt;类 ID&gt;:&lt;行&gt;   <span class="comment">-- 清除行中的断点</span></span><br><span class="line"><span class="built_in">clear</span>                     <span class="comment">-- 列出断点</span></span><br><span class="line"><span class="keyword">catch</span> [uncaught|caught|all] &lt;类 ID&gt;|&lt;类模式&gt;</span><br><span class="line">                          <span class="comment">-- 出现指定的异常时中断</span></span><br><span class="line">ignore [uncaught|caught|all] &lt;类 ID&gt;|&lt;类模式&gt;</span><br><span class="line">                          <span class="comment">-- 对于指定的异常，取消 'catch'</span></span><br><span class="line">watch [access|all] &lt;类 ID&gt;.&lt;字段名&gt;</span><br><span class="line">                          <span class="comment">-- 监视对字段的访问/修改</span></span><br><span class="line">unwatch [access|all] &lt;类 ID&gt;.&lt;字段名&gt;</span><br><span class="line">                          <span class="comment">-- 停止监视对字段的访问/修改</span></span><br><span class="line">trace [go] methods [thread]</span><br><span class="line">                          <span class="comment">-- 跟踪方法的进入和退出。</span></span><br><span class="line">                          <span class="comment">-- 除非指定 'go'，否则所有线程都将暂停</span></span><br><span class="line">trace [go] method exit | exits [thread]</span><br><span class="line">                          <span class="comment">-- 跟踪当前方法的退出或所有方法的退出</span></span><br><span class="line">                          <span class="comment">-- 除非指定 'go'，否则所有线程都将暂停</span></span><br><span class="line">untrace [方法]         <span class="comment">-- 停止跟踪方法的进入和/或退出</span></span><br><span class="line">step                      <span class="comment">-- 执行当前行</span></span><br><span class="line">step up                   <span class="comment">-- 执行到当前方法返回其调用方</span></span><br><span class="line">stepi                     <span class="comment">-- 执行当前指令</span></span><br><span class="line">next                      <span class="comment">-- 跳过一行（跨过调用）</span></span><br><span class="line">cont                      <span class="comment">-- 从断点处继续执行</span></span><br><span class="line"></span><br><span class="line">list [<span class="built_in">line</span> <span class="built_in">number</span>|method] <span class="comment">-- 输出源代码</span></span><br><span class="line">use（或 sourcepath）[源文件路径]</span><br><span class="line">                          <span class="comment">-- 显示或更改源路径</span></span><br><span class="line">exclude [&lt;类模式&gt;, ...|“无”]</span><br><span class="line">                          <span class="comment">-- 不报告指定类的步骤或方法事件</span></span><br><span class="line">classpath                 <span class="comment">-- 从目标 VM 输出类路径信息</span></span><br><span class="line"></span><br><span class="line">monitor &lt;命令&gt;         <span class="comment">-- 每次程序停止时执行命令</span></span><br><span class="line">monitor                   <span class="comment">-- 列出监视器</span></span><br><span class="line">unmonitor &lt;监视器号&gt;      <span class="comment">-- 删除某个监视器</span></span><br><span class="line"><span class="built_in">read</span> &lt;文件名&gt;           <span class="comment">-- 读取并执行某个命令文件</span></span><br><span class="line"></span><br><span class="line">lock &lt;表达式&gt;               <span class="comment">-- 输出对象的锁信息</span></span><br><span class="line">threadlocks [线程 ID]   <span class="comment">-- 输出线程的锁信息</span></span><br><span class="line"></span><br><span class="line">pop                       <span class="comment">-- 弹出整个堆栈，且包含当前帧</span></span><br><span class="line">reenter                   <span class="comment">-- 与 pop 作用相同，但重新进入当前帧</span></span><br><span class="line">redefine &lt;类 ID&gt; &lt;类文件名&gt;</span><br><span class="line">                          <span class="comment">-- 重新定义类代码</span></span><br><span class="line"></span><br><span class="line">disablegc &lt;表达式&gt;          <span class="comment">-- 禁止对象的垃圾回收</span></span><br><span class="line">enablegc &lt;表达式&gt;           <span class="comment">-- 允许对象的垃圾回收</span></span><br><span class="line"></span><br><span class="line">!!                        <span class="comment">-- 重复执行最后一个命令</span></span><br><span class="line">&lt;n&gt; &lt;命令&gt;             <span class="comment">-- 将命令重复执行 n 次</span></span><br><span class="line"><span class="comment"># &lt;命令&gt;               -- 放弃（不执行）</span></span><br><span class="line">help（或 ?）               <span class="comment">-- 列出命令</span></span><br><span class="line"><span class="built_in">version</span>                   <span class="comment">-- 输出版本信息</span></span><br><span class="line">exit（或 quit）            <span class="comment">-- 退出调试器</span></span><br><span class="line"></span><br><span class="line">&lt;类 ID&gt;: 带有软件包限定符的完整类名</span><br><span class="line">&lt;类模式&gt;: 带有前导或后缀通配符 (*) 的类名</span><br><span class="line">&lt;线程 ID&gt;: <span class="string">'threads'</span> 命令中所报告的线程号</span><br><span class="line">&lt;表达式&gt;: Java(TM) 编程语言表达式。</span><br><span class="line">支持大多数常见语法。</span><br><span class="line"></span><br><span class="line">可以将启动命令置于 <span class="string">"jdb.ini"</span> 或 <span class="string">".jdbrc"</span> 之中</span><br><span class="line">（两者位于 user.home 或 user.dir 中）</span><br></pre></td></tr></table></figure>
-<p>有关JDB的使用详细介绍请参考<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jdb.html" target="_blank" rel="noopener">官方文档</a>。接下来我将用JDB调试Tomcat（以Tomcat7为例）下的应用来介绍下JDB的简单用法。</p>
-<p>使用JDB进行调试，大概有下面几个步骤：</p>
-<ol>
-<li><p>在服务器上创建setenv.bat文件，并输入如下内容，并将该文件放在Tomcat安装目录的bin目录下，并重启Tomcat；</p>
- <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="builtin-name">set</span> <span class="attribute">CATALINA_OPTS</span>=<span class="string">"-agentlib:jdwp=transport=dt_socket,address=8787,server=y,suspend=n"</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>将应用系统的源码解压至某一目录，如src_dir1与src_dir2</p>
-</li>
-<li>在CLI下输入以下命令连接至服务器上的Tomcat <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jdb -connect com<span class="selector-class">.sun</span><span class="selector-class">.jdi</span><span class="selector-class">.SocketAttach</span>:hostname=localhost,port=<span class="number">8787</span>,timeout=<span class="number">3000</span> -sourcepath src_dir1:src_dir2</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>这样就可以进入JDB的DEBUG环境了，你可以通过stop命令创建断点，通过next命令单行调试，通过step命令单步调试，通过step up命令返回至上层调用点等，具体使用网上一堆参考资料。</p>
-<blockquote>
-<p>转载请注明出处：<a href="http://cloudnoter.com">cloudnoter.com</a></p>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;代码调试是大家在日常应用开发定位BUG时会经常使用的技能。然而在客户生产环境下，一没有开发环境，二没有外网连接，如果此时应用出问题，而通过日志又无法定位时，该怎么办呢？&lt;/p&gt;
-&lt;p&gt;也许有人会按如下步骤来定位问题（假设BUG可复现且客户允许应用服务重启）：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;在本地可能出问题的相关代码中添加许多的日志信息，以将应用运行状态打印出来。&lt;/li&gt;
-&lt;li&gt;打包并部署至客户现场环境&lt;/li&gt;
-&lt;li&gt;复现BUG并查看日志信息并最终解决问题&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;其实JDK中提供的JDB是一个更加理想现场调试工具，其包含的命令列表如下：&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Java" scheme="http://cloudnoter.com/categories/Java/"/>
-    
-    
-      <category term="Java" scheme="http://cloudnoter.com/tags/Java/"/>
-    
-      <category term="JDB" scheme="http://cloudnoter.com/tags/JDB/"/>
     
   </entry>
   
