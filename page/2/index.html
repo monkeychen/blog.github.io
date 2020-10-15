@@ -331,415 +331,6 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2018/07/13/CI-CD方案分析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="simiam">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/simiam.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Simiam">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2018/07/13/CI-CD方案分析/" itemprop="url">
-                  CI/CD方案分析
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-13T09:56:59Z">
-                2018-07-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/devops/" itemprop="url" rel="index">
-                    <span itemprop="name">devops</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/devops/CI/" itemprop="url" rel="index">
-                    <span itemprop="name">CI</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/devops/CI/CD/" itemprop="url" rel="index">
-                    <span itemprop="name">CD</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/devops/CI/CD/持续集成/" itemprop="url" rel="index">
-                    <span itemprop="name">持续集成</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/devops/CI/CD/持续集成/持续交付/" itemprop="url" rel="index">
-                    <span itemprop="name">持续交付</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/devops/CI/CD/持续集成/持续交付/持续部署/" itemprop="url" rel="index">
-                    <span itemprop="name">持续部署</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/07/13/CI-CD方案分析/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/07/13/CI-CD方案分析/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="CI-CD方案分析"><a href="#CI-CD方案分析" class="headerlink" title="CI/CD方案分析"></a>CI/CD方案分析</h1><h2 id="1-DevOps介绍"><a href="#1-DevOps介绍" class="headerlink" title="1. DevOps介绍"></a>1. DevOps介绍</h2><p>随着软件发布迭代的频率越来越高，传统的“瀑布型”（开发—测试—发布）模式已经不能满足快速交付的需求。2009年左右DevOps（Development和Operations的组合）应运而生，简单地来说，就是更好的优化开发(DEV)、测试(QA)、运维(OPS)的流程，开发运维一体化，通过高度自动化工具与流程来使得软件构建、测试、发布更加快捷、频繁和可靠。</p>
-<p><img src="http://img.simiam.com/what-is-devops.jpg" alt="DevOps的组成"></p>
-<p>DevOps出现以前，开发与运维对于生产环境上出现的问题是这样处理的：</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/07/13/CI-CD方案分析/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2018/07/11/oVirt虚拟化关键概念、组件与技术原理/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="simiam">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/simiam.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Simiam">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2018/07/11/oVirt虚拟化关键概念、组件与技术原理/" itemprop="url">
-                  oVirt虚拟化关键概念、组件与技术原理
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-10T16:24:40Z">
-                2018-07-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/分布式/" itemprop="url" rel="index">
-                    <span itemprop="name">分布式</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/分布式/虚拟化/" itemprop="url" rel="index">
-                    <span itemprop="name">虚拟化</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/07/11/oVirt虚拟化关键概念、组件与技术原理/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/07/11/oVirt虚拟化关键概念、组件与技术原理/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="oVirt虚拟化关键概念、组件与技术原理"><a href="#oVirt虚拟化关键概念、组件与技术原理" class="headerlink" title="oVirt虚拟化关键概念、组件与技术原理"></a>oVirt虚拟化关键概念、组件与技术原理</h1><h4 id="云管理平台组-陈志安"><a href="#云管理平台组-陈志安" class="headerlink" title="云管理平台组-陈志安"></a>云管理平台组-陈志安</h4><hr>
-<h2 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h2><h3 id="1-1-ovirt-engine"><a href="#1-1-ovirt-engine" class="headerlink" title="1.1. ovirt-engine"></a>1.1. ovirt-engine</h3><p>ovirt-engine为虚拟化环境提供了一个集中管理的平台，用户可以根据具体的需求选择使用不同的方式来访问ovirt-engine。</p>
-<p>ovirt-engine架构图如下：</p>
-<p><img src="http://img.simiam.com/ovirt-engine-infra.png" alt="ovirt-engine架构图"></p>
-<ul>
-<li>应用服务器（ovirt-Wildfly）</li>
-</ul>
-<p>Wildfly是一个JavaEE应用服务器，但是需要注意的是部署ovirt-engine所需要的wildfly是特殊定制过的，因此您不能将其它应用部署在这个为ovirt-engine专门定制的wildfly上，为了便于与通用版本区分开来，本文档后续将定制版本统称为ovirt-wildfly。</p>
-<ul>
-<li>用户门户（User Portal）</li>
-</ul>
-<p>桌面系统虚拟化为用户提供了一个近似于物理PC的桌面系统。用户可以使用网络浏览器来访问用户门户，并通过用户门户来访问分配给他们的虚拟桌面资源（SPICE/VNC）。系统管理员需要为每个用户设定他们可能访问的资源及相关权限。User Portal的用户有两种类型：标准用户、高级用户。标准用户可以启动、停止和使用分配给他们的虚拟桌面（无法编辑虚拟机配置），而高级用户则还可以执行一些额外的管理任务（如创建、删除、编辑虚拟机，管理虚拟磁盘和网络接口等）。</p>
-<ul>
-<li>管理门户（Admin Portal）</li>
-</ul>
-<p>管理门户是ovirt-engine的一个图形管理界面。管理员可以通过该管理界面来监控、创建并维护整个ovirt虚拟环境中的所有资源（计算、网络、存储）。通过管理门户可执行如下操作：</p>
-<blockquote>
-<ul>
-<li>创建和管理虚拟基础架构（网络、存储域）</li>
-<li>创建和管理虚拟机</li>
-<li>创建和管理逻辑项（数据中心、集群）</li>
-<li>安装和管理计算节点（虚拟主机）</li>
-<li>用户权限管理</li>
-</ul>
-</blockquote>
-<p>详细的使用文档请查阅<a href="https://www.ovirt.org/documentation/admin-guide/administration-guide/" target="_blank" rel="noopener">官方文档</a>。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/07/11/oVirt虚拟化关键概念、组件与技术原理/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2018/07/11/oVirt持续集成方案分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1277,6 +868,368 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2018/02/28/《代码整洁之道》学习笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="simiam">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/simiam.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Simiam">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/02/28/《代码整洁之道》学习笔记/" itemprop="url">
+                  《代码整洁之道》学习笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-27T22:56:45Z">
+                2018-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/读书/" itemprop="url" rel="index">
+                    <span itemprop="name">读书</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/28/《代码整洁之道》学习笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/02/28/《代码整洁之道》学习笔记/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="1-What"><a href="#1-What" class="headerlink" title="1. What?"></a>1. What?</h2><p>正如Jack Reecves所发表的《源码就是设计》：源码就是最好软件设计文档，而其他非代码性的文档只是源码的辅助。本文并非为了讨论编程与软件设计的关系，只想借以说明源码的重要性。</p>
+<p>简单讲，整洁代码行云流水如同阅读精美好文，代码能够尽可能的自解释；具体讲，整洁代码具备如下特性：</p>
+<ul>
+<li>变量、函数、类、包、模块命名合理有意义</li>
+<li>代码结构（格式）清晰</li>
+<li>必要的合理的注释信息：代码能自解释只是理想，该注释的地方还是免不了</li>
+<li>合理的异常处理机制</li>
+<li>有效的日志信息</li>
+<li>遵循面向对象设计原则</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/02/28/《代码整洁之道》学习笔记/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2017/09/11/基于Spring的动态多数据源组件使用文档/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="simiam">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/simiam.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Simiam">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/11/基于Spring的动态多数据源组件使用文档/" itemprop="url">
+                  基于Spring的动态多数据源组件使用文档
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-10T23:35:26Z">
+                2017-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/11/基于Spring的动态多数据源组件使用文档/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/11/基于Spring的动态多数据源组件使用文档/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="项目源码"><a href="#项目源码" class="headerlink" title="项目源码"></a>项目源码</h2><p><a href="https://github.com/monkeychen/xspring" target="_blank" rel="noopener">https://github.com/monkeychen/xspring</a></p>
+<blockquote>
+<p>xspring是个组件集，后续会不断增加新的通用组件，本文所介绍的动态多数据源组件位于xspring项目的xspring-data模块中，其maven坐标如下(尚未上传至maven中央库)：</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.xspring<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>xspring-data<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="设计目标"><a href="#设计目标" class="headerlink" title="设计目标"></a>设计目标</h2><ul>
+<li>无须定义繁琐的配置信息，使用方只需要提供基本的JDBC连接参数即可</li>
+<li>与spring框架无缝集成</li>
+<li>默认使用Druid数据库连接池，但支持自定义扩展（可以使用其他数据库连接池）</li>
+</ul>
+<h2 id="技术原理"><a href="#技术原理" class="headerlink" title="技术原理"></a>技术原理</h2><p>本框架是在spring框架提供的各种特性的基础上进行开发的，具体如下：</p>
+<ul>
+<li>抽象的数据源路由类：<code>AbstractRoutingDataSource</code></li>
+<li>基于AOP及注解实现数据源动态切换</li>
+</ul>
+<h3 id="xspring-core组件"><a href="#xspring-core组件" class="headerlink" title="xspring-core组件"></a>xspring-core组件</h3><p>core组件是所有其他组件的基础，其提供了通用的事件总线、日志管理等功能。其中<code>XspringApplication</code>是整个框架的启动类，通过调用这个启动类的startup静态方法，并提供您打上<code>@org.springframework.context.annotation.Configuration</code>注解的启动类来启动您的应用。</p>
+<blockquote>
+<p>框架启动时按如下顺序加载配置文件</p>
+<ul>
+<li>file:./config/env.properties</li>
+<li>classpath:/config/env.properties</li>
+<li>file:./config/xspring.properties</li>
+<li>file:./xspring.properties</li>
+<li>classpath:./config/xspring.properties</li>
+<li>classpath:./xspring.properties</li>
+</ul>
+</blockquote>
+<p>上述配置文件中<code>env.properties</code>文件中的属性信息支持热加载（即每隔指定时间框架都会读取该文件并更新至SystemProperties），相关源码请参考类<code>EnvironmentInitializer</code>.</p>
+<p>基于Xspring框架的应用启动示例代码如下：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ImportResource</span>(<span class="string">"classpath:/config/customized-beans.xml"</span>)   <span class="comment">// 可以通过ImportResource方式加载定义在XML中的bean信息。</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DemoApplication</span> &#123;</span></span><br><span class="line">    <span class="keyword">private</span> ApplicationContext applicationContext;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> DemoService demoService;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        applicationContext = XspringApplication.startup(DemoApplication.<span class="keyword">class</span>, args);</span><br><span class="line">        demoService = applicationContext.getBean(<span class="string">"demoService"</span>, DemoService.<span class="keyword">class</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>XspringApplication</code>类的<code>startup</code>方法会创建<code>XspringApplication</code>实例并调用其<code>run</code>方法：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> ConfigurableApplicationContext startup(Class&lt;?&gt; annotatedClass, <span class="keyword">String</span>[] args) &#123;</span><br><span class="line">    <span class="built_in">return</span> <span class="keyword">new</span> XspringApplication().<span class="built_in">run</span>(annotatedClass, args);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在<code>run</code>方法中，框架会通过SPI方式加载其他组件提供的标注有<code>@Configuration</code>注解的<code>org.xspring.core.extension.ModuleConfiguration</code>接口实现类，从而启动其他组件。</p>
+<p>SPI声明统一存放在各个组件的<code>classpath:/META-INF/spring.factories</code>文件中，整个加载过程源码如下：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ConfigurableApplicationContext run(<span class="keyword">Class</span>&lt;?&gt; annotatedClass, String[] args) &#123;</span><br><span class="line">    logger.debug(<span class="string">"The input arguments is:&#123;&#125;, &#123;&#125;"</span>, annotatedClass, args);</span><br><span class="line">    AnnotationConfigApplicationContext context = <span class="keyword">null</span>;</span><br><span class="line">    <span class="comment">// Load other configurations in spring.factories file</span></span><br><span class="line">    ClassLoader classLoader = ClassUtils.getDefaultClassLoader();</span><br><span class="line">    List&lt;String&gt; factoryNames = SpringFactoriesLoader.loadFactoryNames(ModuleConfiguration.<span class="keyword">class</span>, classLoader);</span><br><span class="line">    List&lt;<span class="keyword">Class</span>&gt; moduleConfigClasses = Lists.newArrayList();</span><br><span class="line">    moduleConfigClasses.add(XspringConfiguration.<span class="keyword">class</span>);</span><br><span class="line">    <span class="keyword">if</span> (CollectionUtils.isNotEmpty(factoryNames)) &#123;</span><br><span class="line">        <span class="keyword">for</span> (String factoryName : factoryNames) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">Class</span> factoryClass = ClassUtils.forName(factoryName, classLoader);</span><br><span class="line">                moduleConfigClasses.add(factoryClass);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">                logger.warn(<span class="string">"Can not find the matched class[&#123;&#125;] in classpath!"</span>, factoryName);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (annotatedClass != <span class="keyword">null</span>) &#123;</span><br><span class="line">        moduleConfigClasses.add(annotatedClass);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">Class</span>[] <span class="keyword">configurations</span> = moduleConfigClasses.toArray(<span class="keyword">new</span> <span class="keyword">Class</span>[moduleConfigClasses.<span class="keyword">size</span>()]);</span><br><span class="line">    context = <span class="keyword">new</span> AnnotationConfigApplicationContext(<span class="keyword">configurations</span>);</span><br><span class="line">    context.start();</span><br><span class="line">    <span class="keyword">return</span> context;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>xspring-core组件还提供了一个基于Google Guava库的事件总线模型，有兴趣的朋友可直接参考<code>org.xspring.core.eventbus</code>包下的相关源码。</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/09/11/基于Spring的动态多数据源组件使用文档/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
@@ -1326,7 +1279,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-count">23</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1337,7 +1290,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">17</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1348,7 +1301,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-count">31</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
