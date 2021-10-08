@@ -331,6 +331,205 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2017/09/11/%E5%9F%BA%E4%BA%8ESpring%E7%9A%84%E5%8A%A8%E6%80%81%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90%E7%BB%84%E4%BB%B6%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/simiam.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Simiam">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/11/%E5%9F%BA%E4%BA%8ESpring%E7%9A%84%E5%8A%A8%E6%80%81%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90%E7%BB%84%E4%BB%B6%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3/" itemprop="url">
+                  基于Spring的动态多数据源组件使用文档
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-10T23:35:26Z">
+                2017-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/11/%E5%9F%BA%E4%BA%8ESpring%E7%9A%84%E5%8A%A8%E6%80%81%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90%E7%BB%84%E4%BB%B6%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/11/基于Spring的动态多数据源组件使用文档/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="项目源码"><a href="#项目源码" class="headerlink" title="项目源码"></a>项目源码</h2><p><a target="_blank" rel="noopener" href="https://github.com/monkeychen/xspring">https://github.com/monkeychen/xspring</a></p>
+<blockquote>
+<p>xspring是个组件集，后续会不断增加新的通用组件，本文所介绍的动态多数据源组件位于xspring项目的xspring-data模块中，其maven坐标如下(尚未上传至maven中央库)：</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.xspring<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>xspring-data<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="设计目标"><a href="#设计目标" class="headerlink" title="设计目标"></a>设计目标</h2><ul>
+<li>无须定义繁琐的配置信息，使用方只需要提供基本的JDBC连接参数即可</li>
+<li>与spring框架无缝集成</li>
+<li>默认使用Druid数据库连接池，但支持自定义扩展（可以使用其他数据库连接池）</li>
+</ul>
+<h2 id="技术原理"><a href="#技术原理" class="headerlink" title="技术原理"></a>技术原理</h2><p>本框架是在spring框架提供的各种特性的基础上进行开发的，具体如下：</p>
+<ul>
+<li>抽象的数据源路由类：<code>AbstractRoutingDataSource</code></li>
+<li>基于AOP及注解实现数据源动态切换</li>
+</ul>
+<h3 id="xspring-core组件"><a href="#xspring-core组件" class="headerlink" title="xspring-core组件"></a>xspring-core组件</h3><p>core组件是所有其他组件的基础，其提供了通用的事件总线、日志管理等功能。其中<code>XspringApplication</code>是整个框架的启动类，通过调用这个启动类的startup静态方法，并提供您打上<code>@org.springframework.context.annotation.Configuration</code>注解的启动类来启动您的应用。</p>
+<blockquote>
+<p>框架启动时按如下顺序加载配置文件</p>
+<ul>
+<li>file:./config/env.properties</li>
+<li>classpath:/config/env.properties</li>
+<li>file:./config/xspring.properties</li>
+<li>file:./xspring.properties</li>
+<li>classpath:./config/xspring.properties</li>
+<li>classpath:./xspring.properties</li>
+</ul>
+</blockquote>
+<p>上述配置文件中<code>env.properties</code>文件中的属性信息支持热加载（即每隔指定时间框架都会读取该文件并更新至SystemProperties），相关源码请参考类<code>EnvironmentInitializer</code>.</p>
+<p>基于Xspring框架的应用启动示例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ImportResource(&quot;classpath:/config/customized-beans.xml&quot;)</span>   <span class="comment">// 可以通过ImportResource方式加载定义在XML中的bean信息。</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DemoApplication</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> ApplicationContext applicationContext;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> DemoService demoService;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        applicationContext = XspringApplication.startup(DemoApplication.class, args);</span><br><span class="line">        demoService = applicationContext.getBean(<span class="string">&quot;demoService&quot;</span>, DemoService.class);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>XspringApplication</code>类的<code>startup</code>方法会创建<code>XspringApplication</code>实例并调用其<code>run</code>方法：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ConfigurableApplicationContext <span class="title">startup</span><span class="params">(Class&lt;?&gt; annotatedClass, <span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">XspringApplication</span>().<span class="built_in">run</span>(annotatedClass, args);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在<code>run</code>方法中，框架会通过SPI方式加载其他组件提供的标注有<code>@Configuration</code>注解的<code>org.xspring.core.extension.ModuleConfiguration</code>接口实现类，从而启动其他组件。</p>
+<p>SPI声明统一存放在各个组件的<code>classpath:/META-INF/spring.factories</code>文件中，整个加载过程源码如下：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">public ConfigurableApplicationContext run(Class&lt;?&gt; annotatedClass, String<span class="literal">[]</span> args) &#123;</span><br><span class="line">    logger.debug(<span class="string">&quot;The input arguments is:&#123;&#125;, &#123;&#125;&quot;</span>, annotatedClass, args);</span><br><span class="line">    AnnotationConfigApplicationContext context = null;</span><br><span class="line">    <span class="comment">// Load other configurations in spring.factories file</span></span><br><span class="line">    ClassLoader classLoader = <span class="module-access"><span class="module"><span class="identifier">ClassUtils</span>.</span></span>get<span class="constructor">DefaultClassLoader()</span>;</span><br><span class="line">    List&lt;String&gt; factoryNames = <span class="module-access"><span class="module"><span class="identifier">SpringFactoriesLoader</span>.</span></span>load<span class="constructor">FactoryNames(ModuleConfiguration.<span class="params">class</span>, <span class="params">classLoader</span>)</span>;</span><br><span class="line">    List&lt;Class&gt; moduleConfigClasses = <span class="module-access"><span class="module"><span class="identifier">Lists</span>.</span></span><span class="keyword">new</span><span class="constructor">ArrayList()</span>;</span><br><span class="line">    moduleConfigClasses.add(<span class="module-access"><span class="module"><span class="identifier">XspringConfiguration</span>.</span></span><span class="keyword">class</span>);</span><br><span class="line">    <span class="keyword">if</span> (<span class="module-access"><span class="module"><span class="identifier">CollectionUtils</span>.</span></span>is<span class="constructor">NotEmpty(<span class="params">factoryNames</span>)</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (String factoryName : factoryNames) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Class factoryClass = <span class="module-access"><span class="module"><span class="identifier">ClassUtils</span>.</span></span><span class="keyword">for</span><span class="constructor">Name(<span class="params">factoryName</span>, <span class="params">classLoader</span>)</span>;</span><br><span class="line">                moduleConfigClasses.add(factoryClass);</span><br><span class="line">            &#125; catch (ClassNotFoundException e) &#123;</span><br><span class="line">                logger.warn(<span class="string">&quot;Can not find the matched class[&#123;&#125;] in classpath!&quot;</span>, factoryName);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (annotatedClass != null) &#123;</span><br><span class="line">        moduleConfigClasses.add(annotatedClass);</span><br><span class="line">    &#125;</span><br><span class="line">    Class<span class="literal">[]</span> configurations = moduleConfigClasses.<span class="keyword">to</span><span class="constructor">Array(<span class="params">new</span> Class[<span class="params">moduleConfigClasses</span>.<span class="params">size</span>()</span>]);</span><br><span class="line">    context = <span class="keyword">new</span> <span class="constructor">AnnotationConfigApplicationContext(<span class="params">configurations</span>)</span>;</span><br><span class="line">    context.start<span class="literal">()</span>;</span><br><span class="line">    return context;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>xspring-core组件还提供了一个基于Google Guava库的事件总线模型，有兴趣的朋友可直接参考<code>org.xspring.core.eventbus</code>包下的相关源码。</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/09/11/%E5%9F%BA%E4%BA%8ESpring%E7%9A%84%E5%8A%A8%E6%80%81%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90%E7%BB%84%E4%BB%B6%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2017/05/16/%E3%80%8A%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E8%B7%B5%E3%80%8B%E7%AC%94%E8%AE%B0-%E5%A5%BD%E7%9A%84%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1073,171 +1272,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2016/11/09/Java%E5%B0%8F%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/simiam.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Simiam">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/11/09/Java%E5%B0%8F%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/" itemprop="url">
-                  Java小问题汇总
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-08T22:09:00Z">
-                2016-11-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/11/09/Java%E5%B0%8F%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2016/11/09/Java小问题汇总/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="1-MySQL5-7下的JSON字段中文乱码问题"><a href="#1-MySQL5-7下的JSON字段中文乱码问题" class="headerlink" title="1. MySQL5.7下的JSON字段中文乱码问题"></a>1. MySQL5.7下的JSON字段中文乱码问题</h2><p>中文乱码问题在Java Web开发中经常碰到，大部分原因是后端与前端的编码不一致造成的（如tomcat的默认编码为ISO-8859-1，而前端为GBK），解决办法也简单，只需要加一个<code>CharsetEncodingFilter</code>就行。但本文要讲的不是这一类总是，而是纯粹的后端问题。</p>
-<h3 id="1-1-环境准备"><a href="#1-1-环境准备" class="headerlink" title="1.1 环境准备"></a>1.1 环境准备</h3><blockquote>
-<p>假设MySQL的默认CharSet为UTF-8，应用及部署环境也为UTF-8</p>
-</blockquote>
-<ul>
-<li>创建包含JSON字段的数据库表</li>
-</ul>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> &quot;ipms_device_feature&quot; (</span><br><span class="line">  &quot;ID&quot; <span class="type">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  &quot;DEVICE_SERIAL_NUMBER&quot; <span class="type">varchar</span>(<span class="number">100</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">&#x27;&#x27;</span> <span class="keyword">COMMENT</span> <span class="string">&#x27;设备SN&#x27;</span>,</span><br><span class="line">  &quot;DEVICE_IP&quot; <span class="type">varchar</span>(<span class="number">32</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">&#x27;&#x27;</span> <span class="keyword">COMMENT</span> <span class="string">&#x27;设备IP&#x27;</span>,</span><br><span class="line">  &quot;FEATURES&quot; <span class="type">json</span> <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span> <span class="keyword">COMMENT</span> <span class="string">&#x27;设备巡检指标集&#x27;</span>,</span><br><span class="line">  &quot;UPDATETIME&quot; <span class="type">timestamp</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="keyword">DEFAULT</span> <span class="built_in">CURRENT_TIMESTAMP</span> <span class="keyword">ON</span> <span class="keyword">UPDATE</span> <span class="built_in">CURRENT_TIMESTAMP</span> <span class="keyword">COMMENT</span> <span class="string">&#x27;更新时间&#x27;</span>,</span><br><span class="line">  <span class="keyword">PRIMARY KEY</span> (&quot;ID&quot;)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/11/09/Java%E5%B0%8F%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1287,7 +1321,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1298,7 +1332,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1309,7 +1343,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

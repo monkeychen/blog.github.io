@@ -1,0 +1,1089 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="awesome,python,PYTHONPATH,pip" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Simiam" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/icon.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="转载请注明出处：simiam.com  安利一下：py-awesome-kitpy-awesome-kit是本人最近在折腾的一个python工具箱，它提供了大数据开发与数据分析工作过程中常用的功能，希望后续能慢慢丰富与完善。项目地址：https:&#x2F;&#x2F;github.com&#x2F;monkeychen&#x2F;py-awesome-kit 1. 安装Python3script12345678910# 备份已安装p">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python踩坑点滴">
+<meta property="og:url" content="http://cloudnoter.com/2021/09/17/Python%E8%B8%A9%E5%9D%91%E7%82%B9%E6%BB%B4/index.html">
+<meta property="og:site_name" content="Simiam">
+<meta property="og:description" content="转载请注明出处：simiam.com  安利一下：py-awesome-kitpy-awesome-kit是本人最近在折腾的一个python工具箱，它提供了大数据开发与数据分析工作过程中常用的功能，希望后续能慢慢丰富与完善。项目地址：https:&#x2F;&#x2F;github.com&#x2F;monkeychen&#x2F;py-awesome-kit 1. 安装Python3script12345678910# 备份已安装p">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-09-17T08:52:05.000Z">
+<meta property="article:modified_time" content="2021-10-08T03:45:44.057Z">
+<meta property="article:author" content="simiam">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="awesome">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://cloudnoter.com/2021/09/17/Python踩坑点滴/"/>
+
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-5437280150717848",
+    enable_page_level_ads: true
+  });
+</script>
+
+
+  <title> python踩坑点滴 | Simiam </title>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d08aa5fb4a0152d38b6afc7b4dbade86";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Simiam</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">求知若渴，虚怀若谷</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2021/09/17/Python%E8%B8%A9%E5%9D%91%E7%82%B9%E6%BB%B4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/simiam.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Simiam">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                python踩坑点滴
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-09-17T16:52:05+08:00">
+                2021-09-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/09/17/Python%E8%B8%A9%E5%9D%91%E7%82%B9%E6%BB%B4/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2021/09/17/Python踩坑点滴/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>转载请注明出处：<a target="_blank" rel="noopener" href="http://simiam.com/">simiam.com</a></p>
+</blockquote>
+<h1 id="安利一下：py-awesome-kit"><a href="#安利一下：py-awesome-kit" class="headerlink" title="安利一下：py-awesome-kit"></a>安利一下：py-awesome-kit</h1><p><code>py-awesome-kit</code>是本人最近在折腾的一个python工具箱，它提供了大数据开发与数据分析工作过程中常用的功能，希望后续能慢慢丰富与完善。<br>项目地址：<a target="_blank" rel="noopener" href="https://github.com/monkeychen/py-awesome-kit">https://github.com/monkeychen/py-awesome-kit</a></p>
+<h2 id="1-安装Python3"><a href="#1-安装Python3" class="headerlink" title="1. 安装Python3"></a>1. 安装Python3</h2><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 备份已安装python库</span></span><br><span class="line">pip3 freeze &gt; python3-installed-libs.txt</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除已安装的python</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Linux依赖包下载地址：https://vault.centos.org/7.3.1611/os/x86_64/Packages/</span></span><br><span class="line">mkdir /env/python3.7</span><br><span class="line">cd /env/Python-3.7.9</span><br><span class="line">./configure --prefix=/env/python3.7 --enable-shared --enable-optimizations</span><br><span class="line">make&amp;&amp;make install</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-利用pip下载第三方包及其依赖"><a href="#2-利用pip下载第三方包及其依赖" class="headerlink" title="2. 利用pip下载第三方包及其依赖"></a>2. 利用pip下载第三方包及其依赖</h2><ul>
+<li>以安装jupyterlab为例<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mkdir jupyterlab</span><br><span class="line">cd jupyterlab</span><br><span class="line"><span class="meta">#</span><span class="bash"> 下载</span></span><br><span class="line">pip3 download jupyterlab -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装</span></span><br><span class="line">cd ..</span><br><span class="line">pip3 install jupyterlab/jupyterlab-3.0.1-py3-none-any.whl --no-index --find-links=./jupyterlab</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="3-从源码构建并安装py-awesome-kit"><a href="#3-从源码构建并安装py-awesome-kit" class="headerlink" title="3. 从源码构建并安装py-awesome-kit"></a>3. 从源码构建并安装py-awesome-kit</h2><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 进入项目根目录</span></span><br><span class="line">cd &lt;project_root&gt;</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 构建/打包</span></span><br><span class="line">python3 setup.py bdist_wheel</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装至python库</span></span><br><span class="line">pip install dist/py-awesome-kit-&lt;version&gt;-py3-none-any.whl</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 应用开发过程中会频繁变更，每次安装都需要先卸载旧版本很麻烦。</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 使用 develop 开发模式安装的话，实际代码不会拷贝到 site-packages 下，而是除一个指向当前应用的链接（*.egg-link）。</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 这样当前位置的源码改动就会马上反映到 site-packages。使用如下：</span></span><br><span class="line">pip install -e .  # 或者 python setup.py develop</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如需卸载，使用如下命令：</span></span><br><span class="line">pip uninstall fmcc-awesome-kit</span><br></pre></td></tr></table></figure>
+
+<h2 id="附录：Linux常用命令"><a href="#附录：Linux常用命令" class="headerlink" title="附录：Linux常用命令"></a>附录：Linux常用命令</h2><h3 id="yum安装rpm包及依赖包相关命令"><a href="#yum安装rpm包及依赖包相关命令" class="headerlink" title="yum安装rpm包及依赖包相关命令"></a>yum安装rpm包及依赖包相关命令</h3><ul>
+<li><p>查看依赖包: 可以使用<code>yum deplist</code>命令来查找rpm包的依赖列表。例如，要查找<code>git</code>的rpm依赖包：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum deplist git</span><br></pre></td></tr></table></figure></li>
+<li><p>方案一（推荐）：<code>repotrack</code>命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装yum-utils</span></span><br><span class="line">yum -y install yum-utils</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 下载 git 全量依赖包</span></span><br><span class="line">repotrack git</span><br></pre></td></tr></table></figure></li>
+<li><p>方案二：<code>yumdownloader</code>命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装yum-utils</span></span><br><span class="line">yum -y install yum-utils</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 下载 git 依赖包</span></span><br><span class="line">yumdownloader --resolve --destdir=/tmp git</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>参数说明：</p>
+<p>–destdir：指定 rpm 包下载目录（不指定时，默认为当前目录）</p>
+<p>–resolve：下载依赖的 rpm 包。</p>
+<p>注意：仅会将主软件包和基于你现在的操作系统所缺少的依赖关系包一并下载。</p>
+</blockquote>
+</li>
+<li><p>方案三：yum 的<code>downloadonly</code>插件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 下载 git 依赖包</span></span><br><span class="line">yum -y install git --downloadonly --downloaddir=/tmp</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：与 yumdownloader 命令一样，也是仅会将主软件包和基于你现在的操作系统所缺少的依赖关系包一并下载。</p>
+</blockquote>
+</li>
+<li><p>离线安装所有下载的rpm包</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -Uvh --force --nodeps *.rpm</span><br></pre></td></tr></table></figure></li>
+<li><p>其他命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">repoquery git</span><br><span class="line"></span><br><span class="line">yum provides git</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="git使用相关"><a href="#git使用相关" class="headerlink" title="git使用相关"></a>git使用相关</h3><ul>
+<li>项目之前是基于https克隆，现在通过配置SSH-KEY后想变更为用ssh方式提交<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">之前已经是https的链接，现在想要用SSH提交怎么办？</span><br><span class="line">直接修改项目目录下 .git文件夹下的config文件，将地址修改一下就好了。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="常见系统配置问题"><a href="#常见系统配置问题" class="headerlink" title="常见系统配置问题"></a>常见系统配置问题</h3><h4 id="1-编写shell脚本后，在bash下单独执行没有问题，但在crontab中无法执行后报错"><a href="#1-编写shell脚本后，在bash下单独执行没有问题，但在crontab中无法执行后报错" class="headerlink" title="1. 编写shell脚本后，在bash下单独执行没有问题，但在crontab中无法执行后报错"></a>1. 编写shell脚本后，在bash下单独执行没有问题，但在crontab中无法执行后报错</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 问题：编写shell脚本后，在bash下单独执行没有问题，但在crontab中无法执行后报如下错误信息：</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> [psql: error <span class="keyword">while</span> loading shared libraries: libpq.so.5: cannot open shared object file: No such file or directory]</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 原因剖析：</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> crontab有一个坏毛病，就是它总是不会缺省的从用户profile文件中读取环境变量参数，经常导致在手工执行某个 脚本时是成功的，但是到crontab中试图让它定期执行时就是会出错。</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 解决方案一（推荐）：</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> ------------------------------</span></span><br><span class="line">sudo cp ./bin/greenplum-x86_64.conf /etc/ld.so.conf.d/greenplum-x86_64.conf</span><br><span class="line">sudo ldconfig</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 用以下命令检查是否生效</span></span><br><span class="line">ldconfig -p | grep green</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> ------------------------------</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 解决方案二：通过在每个被crontab调用的shell文件前手动设置LD_LIBRARY_PATH环境变量。</span></span><br><span class="line">export PATH=&quot;$PATH:/opt/mssql-tools/bin&quot;</span><br><span class="line">source /env/greenplum/clients/greenplum_clients_path.sh</span><br><span class="line">source /env/greenplum/loaders/greenplum_loaders_path.sh</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-未设置PYTHONPATH环境变量导致的问题"><a href="#2-未设置PYTHONPATH环境变量导致的问题" class="headerlink" title="2. 未设置PYTHONPATH环境变量导致的问题"></a>2. 未设置<code>PYTHONPATH</code>环境变量导致的问题</h4><p>如果系统中未设置<code>PYTHONPATH</code>环境变量，将导致<code>python some_module.py</code> 启动时会无法当前目录添加到<code>sys.path</code>中，<br>最终导致<code>import</code>项目中其他目录下的模块报错：未发现指定模块。</p>
+<p>解决办法如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> vim ~/.bashrc  或 vim ~/.bash_profile 或 sudo vim /etc/profile</span></span><br><span class="line">export PYTHONPATH=&quot;:$PYTHONPATH&quot;</span><br></pre></td></tr></table></figure>
+<p>PS：就算已设置<code>PYTHONPATH</code>，如果在crontab中通过shell调用python脚本，仍然会发现当前目录未添加进<code>sys.path</code>中，导致模块加载报错。</p>
+<p>原因为：crontab启动时是不会执行<code>~/.bashrc 或 ~/.bash_profile 或 /etc/profile</code>三个文件中的任何一个文件的，<br>这将导致crontab的执行上下文中并不存在中<code>PYTHONPATH</code>，即本质原因仍然是<code>PYTHONPATH</code>未设置问题。<br>解决办法多种：</p>
+<ol>
+<li>在crontab执行的shell中设置<code>PYTHONPATH</code>。</li>
+<li>修改crontab的全局配置文件（不建议）。</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+            <a href="/tags/awesome/" rel="tag"># awesome</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/15/VUE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9A%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/" rel="next" title="VUE学习笔记：环境准备">
+                <i class="fa fa-chevron-left"></i> VUE学习笔记：环境准备
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/simiam.jpg"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/monkeychen" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/cza55007" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              我的收藏
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://simiam.com" title="Simiam" target="_blank">Simiam</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://ifeve.com" title="并发编程网" target="_blank">并发编程网</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://readhub.me" title="Readhub" target="_blank">Readhub</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E5%88%A9%E4%B8%80%E4%B8%8B%EF%BC%9Apy-awesome-kit"><span class="nav-number">1.</span> <span class="nav-text">安利一下：py-awesome-kit</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85Python3"><span class="nav-number">1.1.</span> <span class="nav-text">1. 安装Python3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%88%A9%E7%94%A8pip%E4%B8%8B%E8%BD%BD%E7%AC%AC%E4%B8%89%E6%96%B9%E5%8C%85%E5%8F%8A%E5%85%B6%E4%BE%9D%E8%B5%96"><span class="nav-number">1.2.</span> <span class="nav-text">2. 利用pip下载第三方包及其依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E4%BB%8E%E6%BA%90%E7%A0%81%E6%9E%84%E5%BB%BA%E5%B9%B6%E5%AE%89%E8%A3%85py-awesome-kit"><span class="nav-number">1.3.</span> <span class="nav-text">3. 从源码构建并安装py-awesome-kit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%84%E5%BD%95%EF%BC%9ALinux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">1.4.</span> <span class="nav-text">附录：Linux常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#yum%E5%AE%89%E8%A3%85rpm%E5%8C%85%E5%8F%8A%E4%BE%9D%E8%B5%96%E5%8C%85%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4"><span class="nav-number">1.4.1.</span> <span class="nav-text">yum安装rpm包及依赖包相关命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git%E4%BD%BF%E7%94%A8%E7%9B%B8%E5%85%B3"><span class="nav-number">1.4.2.</span> <span class="nav-text">git使用相关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE%E9%97%AE%E9%A2%98"><span class="nav-number">1.4.3.</span> <span class="nav-text">常见系统配置问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E5%90%8E%EF%BC%8C%E5%9C%A8bash%E4%B8%8B%E5%8D%95%E7%8B%AC%E6%89%A7%E8%A1%8C%E6%B2%A1%E6%9C%89%E9%97%AE%E9%A2%98%EF%BC%8C%E4%BD%86%E5%9C%A8crontab%E4%B8%AD%E6%97%A0%E6%B3%95%E6%89%A7%E8%A1%8C%E5%90%8E%E6%8A%A5%E9%94%99"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">1. 编写shell脚本后，在bash下单独执行没有问题，但在crontab中无法执行后报错</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%9C%AA%E8%AE%BE%E7%BD%AEPYTHONPATH%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">2. 未设置PYTHONPATH环境变量导致的问题</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-cloud"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">simiam</span>
+  <span>&nbsp;
+    <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn">
+      <p style="float:left; height:20px;line-height:20px;margin: 7px 0px 0px 5px; color:#939393;">闽ICP备18023112号</p>
+    </a>
+  </span>
+  <span style="width:300px;margin:0 auto; padding:20px 0;">&nbsp;
+		<a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=35012102500070" >
+      <img src="/images/batb.png" style="float:left; padding-top:7px; padding-left:30px;"/>
+      <p style="float:left; height:20px;line-height:20px;margin: 7px 0px 0px 5px; color:#939393; padding-right: 80px;">闽公网安备 35012102500070号</p>
+    </a>
+	</span>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://cloudnoter.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://cloudnoter.com/2021/09/17/Python%E8%B8%A9%E5%9D%91%E7%82%B9%E6%BB%B4/';
+          this.page.identifier = '2021/09/17/Python踩坑点滴/';
+          this.page.title = 'python踩坑点滴';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://cloudnoter.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
