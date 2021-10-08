@@ -92,6 +92,57 @@
       </tags>
   </entry>
   <entry>
+    <title>JNI引起的堆外内存泄漏问题分析</title>
+    <url>/2016/02/27/JNI%E5%BC%95%E8%B5%B7%E7%9A%84%E5%A0%86%E5%A4%96%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>客户现场的监控系统中有一个网络听诊器功能，其每隔1分钟会对全网设备进行ping操作，以此来尽可能快的发现设备及网络是否出现异常。暂且不说通过该功能来对设备及网络作健康检测是否靠谱。由于JAVA对于网络层以下的协议是无能为力的，而ping操作涉及ICMP与ARP协议，因此监控系统只能借助JNI机制来搞定。</p>
+<h1 id="BUG现象"><a href="#BUG现象" class="headerlink" title="BUG现象"></a>BUG现象</h1><p>监控系统的java.exe进程每隔几个小时就异常退出</p>
+<h1 id="问题定位"><a href="#问题定位" class="headerlink" title="问题定位"></a>问题定位</h1><ol>
+<li>通过应用系统的日志看是否为业务相关的异常引起的 –》日志中并无任何异常信息</li>
+<li>打开GC日志，并观察一段时间，看是否存在堆内存回收异常（泄漏或溢出） –》堆内存一切正常</li>
+<li>此时忽然想起，java.exe进程异常退出应该会生成相关的hs_err<pid>.log文件，果然在应用目录下找到了一堆错误文件。该日志也叫crash日志。 </li>
+<li>通过查看hs_err<pid>.log内容得知，原来是jni ping引入的dll调用异常导致java.exe进程异常中止了。<blockquote>
+<p>PS：如果能早点想起步骤3，那就不用浪费步骤2的功夫了。</p>
+</blockquote>
+</li>
+</ol>
+<span id="more"></span>
+
+<h1 id="JNI调用异常分析"><a href="#JNI调用异常分析" class="headerlink" title="JNI调用异常分析"></a>JNI调用异常分析</h1><p>JNI异常导致java进程中止的原因可能为</p>
+<ul>
+<li>JVM自己的BUG：谷歌了一把，网上描述的BUG中，现场的JDK版本都已经修复了。</li>
+<li>JNI DLL的BUG：这个原因范围就大了，至此只能根据经验猜测可能的原因，然后一个一个排除了。</li>
+</ul>
+<p>由于linux环境下有这么一个机制：当内核检测到进程的物理内存不断增加至某一个值时，内核会直接将该进程kill掉。</p>
+<blockquote>
+<p>windows是否也有这样的机制呢？目前尚未查证，还请高手解答。</p>
+</blockquote>
+<p>在没有进一步证据的前提下，只能先猜测是否为进程物理内存出了问题，于是监测了下应用进程的物理内存损耗量，果然是缓慢递增的，但JVM堆内存仍然一切正常，由此大约知道是堆外内存使用上出了问题。</p>
+<p>关于堆外内存的相关知识，可参考下面的文章：</p>
+<ul>
+<li><a href="http://lovestblog.cn/blog/2015/08/21/rssxmx/">进程物理内存远大于Xmx的问题分析</a></li>
+<li><a href="http://lovestblog.cn/blog/2015/05/12/direct-buffer/">JVM源码分析之堆外内存完全解读</a></li>
+</ul>
+<blockquote>
+<p>至此，可以知道该问题与JAVA没啥关系了，但为了彻底搞明白，我还是硬着头皮找来DLL的C源码，想看看是否可以用我helloworld级别的C水平把这个问题搞定。</p>
+</blockquote>
+<h1 id="堆外内存-泄漏、异常-分析"><a href="#堆外内存-泄漏、异常-分析" class="headerlink" title="堆外内存[泄漏、异常]分析"></a>堆外内存[泄漏、异常]分析</h1><p>分析C/C++应用的内存，大伙一般都会想到perftool，可惜windows环境下我始终编译不过。于是谷歌上再搜索一把”windows内存泄漏”，发现知乎上有<a href="https://www.zhihu.com/question/19647750">文章</a>推荐了一堆，但我要么下载不到，要么看不懂。最后是根据《<a href="http://www.cnblogs.com/skynet/archive/2011/02/20/1959162.html">C/C++内存泄漏及检测</a>》介绍的方法定位到是dll中有一段代码使用了缓存导致内存泄漏，当内存达到JVM中设置的MaxDirectMemorySize值时，dll就会出现内存访问异常错误，最终导致java.exe进程异常退出了。</p>
+<blockquote>
+<p>PS：在定位堆外内存异常相关问题时，为了快速重现问题，可以将MaxDirectMemorySize改小，MaxDirectMemorySize的默认值可认为与-Xmx设置的值一样（严格上不是，参见<a href="http://lovestblog.cn/blog/2015/05/12/direct-buffer/">JVM源码分析之堆外内存完全解读</a>）</p>
+</blockquote>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>该问题并非通用性问题，写这篇文章主要是为了记录下当时解决该问题的整个定位过程，文中一些知识点可能表述有误，还请批评指正。</p>
+<blockquote>
+<p>转载请注明出处：<a href="http://cloudnoter.com/">cloudnoter.com</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>JNI</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>HA专题--Pacemaker集群日常管理命令</title>
     <url>/2017/04/29/HA%E4%B8%93%E9%A2%98-Pacemaker%E6%97%A5%E5%B8%B8%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Pacemaker的管理工具主要有两种：crmsh、pcs(Pacemaker/Corosync configuration system)，本文将同时介绍这两种命令行工具。</p>
@@ -267,57 +318,6 @@
       <tags>
         <tag>Java</tag>
         <tag>JVM</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>JNI引起的堆外内存泄漏问题分析</title>
-    <url>/2016/02/27/JNI%E5%BC%95%E8%B5%B7%E7%9A%84%E5%A0%86%E5%A4%96%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/</url>
-    <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>客户现场的监控系统中有一个网络听诊器功能，其每隔1分钟会对全网设备进行ping操作，以此来尽可能快的发现设备及网络是否出现异常。暂且不说通过该功能来对设备及网络作健康检测是否靠谱。由于JAVA对于网络层以下的协议是无能为力的，而ping操作涉及ICMP与ARP协议，因此监控系统只能借助JNI机制来搞定。</p>
-<h1 id="BUG现象"><a href="#BUG现象" class="headerlink" title="BUG现象"></a>BUG现象</h1><p>监控系统的java.exe进程每隔几个小时就异常退出</p>
-<h1 id="问题定位"><a href="#问题定位" class="headerlink" title="问题定位"></a>问题定位</h1><ol>
-<li>通过应用系统的日志看是否为业务相关的异常引起的 –》日志中并无任何异常信息</li>
-<li>打开GC日志，并观察一段时间，看是否存在堆内存回收异常（泄漏或溢出） –》堆内存一切正常</li>
-<li>此时忽然想起，java.exe进程异常退出应该会生成相关的hs_err<pid>.log文件，果然在应用目录下找到了一堆错误文件。该日志也叫crash日志。 </li>
-<li>通过查看hs_err<pid>.log内容得知，原来是jni ping引入的dll调用异常导致java.exe进程异常中止了。<blockquote>
-<p>PS：如果能早点想起步骤3，那就不用浪费步骤2的功夫了。</p>
-</blockquote>
-</li>
-</ol>
-<span id="more"></span>
-
-<h1 id="JNI调用异常分析"><a href="#JNI调用异常分析" class="headerlink" title="JNI调用异常分析"></a>JNI调用异常分析</h1><p>JNI异常导致java进程中止的原因可能为</p>
-<ul>
-<li>JVM自己的BUG：谷歌了一把，网上描述的BUG中，现场的JDK版本都已经修复了。</li>
-<li>JNI DLL的BUG：这个原因范围就大了，至此只能根据经验猜测可能的原因，然后一个一个排除了。</li>
-</ul>
-<p>由于linux环境下有这么一个机制：当内核检测到进程的物理内存不断增加至某一个值时，内核会直接将该进程kill掉。</p>
-<blockquote>
-<p>windows是否也有这样的机制呢？目前尚未查证，还请高手解答。</p>
-</blockquote>
-<p>在没有进一步证据的前提下，只能先猜测是否为进程物理内存出了问题，于是监测了下应用进程的物理内存损耗量，果然是缓慢递增的，但JVM堆内存仍然一切正常，由此大约知道是堆外内存使用上出了问题。</p>
-<p>关于堆外内存的相关知识，可参考下面的文章：</p>
-<ul>
-<li><a href="http://lovestblog.cn/blog/2015/08/21/rssxmx/">进程物理内存远大于Xmx的问题分析</a></li>
-<li><a href="http://lovestblog.cn/blog/2015/05/12/direct-buffer/">JVM源码分析之堆外内存完全解读</a></li>
-</ul>
-<blockquote>
-<p>至此，可以知道该问题与JAVA没啥关系了，但为了彻底搞明白，我还是硬着头皮找来DLL的C源码，想看看是否可以用我helloworld级别的C水平把这个问题搞定。</p>
-</blockquote>
-<h1 id="堆外内存-泄漏、异常-分析"><a href="#堆外内存-泄漏、异常-分析" class="headerlink" title="堆外内存[泄漏、异常]分析"></a>堆外内存[泄漏、异常]分析</h1><p>分析C/C++应用的内存，大伙一般都会想到perftool，可惜windows环境下我始终编译不过。于是谷歌上再搜索一把”windows内存泄漏”，发现知乎上有<a href="https://www.zhihu.com/question/19647750">文章</a>推荐了一堆，但我要么下载不到，要么看不懂。最后是根据《<a href="http://www.cnblogs.com/skynet/archive/2011/02/20/1959162.html">C/C++内存泄漏及检测</a>》介绍的方法定位到是dll中有一段代码使用了缓存导致内存泄漏，当内存达到JVM中设置的MaxDirectMemorySize值时，dll就会出现内存访问异常错误，最终导致java.exe进程异常退出了。</p>
-<blockquote>
-<p>PS：在定位堆外内存异常相关问题时，为了快速重现问题，可以将MaxDirectMemorySize改小，MaxDirectMemorySize的默认值可认为与-Xmx设置的值一样（严格上不是，参见<a href="http://lovestblog.cn/blog/2015/05/12/direct-buffer/">JVM源码分析之堆外内存完全解读</a>）</p>
-</blockquote>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>该问题并非通用性问题，写这篇文章主要是为了记录下当时解决该问题的整个定位过程，文中一些知识点可能表述有误，还请批评指正。</p>
-<blockquote>
-<p>转载请注明出处：<a href="http://cloudnoter.com/">cloudnoter.com</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>JNI</tag>
       </tags>
   </entry>
   <entry>
@@ -725,6 +725,8 @@ $url = route(&#39;profile&#39;, [&#39;id&#39; =&gt; 1]);
 <h1 id="安利一下：py-awesome-kit"><a href="#安利一下：py-awesome-kit" class="headerlink" title="安利一下：py-awesome-kit"></a>安利一下：py-awesome-kit</h1><p><code>py-awesome-kit</code>是本人最近在折腾的一个python工具箱，它提供了大数据开发与数据分析工作过程中常用的功能，希望后续能慢慢丰富与完善。<br>项目地址：<a href="https://github.com/monkeychen/py-awesome-kit">https://github.com/monkeychen/py-awesome-kit</a></p>
 <h2 id="1-安装Python3"><a href="#1-安装Python3" class="headerlink" title="1. 安装Python3"></a>1. 安装Python3</h2><figure class="highlight shell"><figcaption><span>script</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 备份已安装python库</span></span><br><span class="line">pip3 freeze &gt; python3-installed-libs.txt</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除已安装的python</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Linux依赖包下载地址：https://vault.centos.org/7.3.1611/os/x86_64/Packages/</span></span><br><span class="line">mkdir /env/python3.7</span><br><span class="line">cd /env/Python-3.7.9</span><br><span class="line">./configure --prefix=/env/python3.7 --enable-shared --enable-optimizations</span><br><span class="line">make&amp;&amp;make install</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
+<span id="more"></span>
+
 <h2 id="2-利用pip下载第三方包及其依赖"><a href="#2-利用pip下载第三方包及其依赖" class="headerlink" title="2. 利用pip下载第三方包及其依赖"></a>2. 利用pip下载第三方包及其依赖</h2><ul>
 <li>以安装jupyterlab为例<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir jupyterlab</span><br><span class="line">cd jupyterlab</span><br><span class="line"><span class="meta">#</span><span class="bash"> 下载</span></span><br><span class="line">pip3 download jupyterlab -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装</span></span><br><span class="line">cd ..</span><br><span class="line">pip3 install jupyterlab/jupyterlab-3.0.1-py3-none-any.whl --no-index --find-links=./jupyterlab</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
 </ul>
@@ -1101,84 +1103,6 @@ $url = route(&#39;profile&#39;, [&#39;id&#39; =&gt; 1]);
       </tags>
   </entry>
   <entry>
-    <title>《代码整洁之道》学习笔记</title>
-    <url>/2018/02/28/%E3%80%8A%E4%BB%A3%E7%A0%81%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="1-What"><a href="#1-What" class="headerlink" title="1. What?"></a>1. What?</h2><p>正如Jack Reecves所发表的《源码就是设计》：源码就是最好软件设计文档，而其他非代码性的文档只是源码的辅助。本文并非为了讨论编程与软件设计的关系，只想借以说明源码的重要性。</p>
-<p>简单讲，整洁代码行云流水如同阅读精美好文，代码能够尽可能的自解释；具体讲，整洁代码具备如下特性：</p>
-<ul>
-<li>变量、函数、类、包、模块命名合理有意义</li>
-<li>代码结构（格式）清晰</li>
-<li>必要的合理的注释信息：代码能自解释只是理想，该注释的地方还是免不了</li>
-<li>合理的异常处理机制</li>
-<li>有效的日志信息</li>
-<li>遵循面向对象设计原则</li>
-</ul>
-<span id="more"></span>
-
-<h2 id="2-How"><a href="#2-How" class="headerlink" title="2. How?"></a>2. How?</h2><p>我们写文章都是先构思再下笔，但一般不可能一气呵成。都是先出初稿再调整、使用精美词句慢慢打磨。写代码同写文章一样，也是一个不断调整修饰的过程（修改名称、分解函数、消除重复等操作不断重复）。只要你有一颗写出整洁代码的初心。</p>
-<h3 id="2-1-有意义的命名"><a href="#2-1-有意义的命名" class="headerlink" title="2.1. 有意义的命名"></a>2.1. 有意义的命名</h3><ul>
-<li>名副其实，必免误导：在给变量、函数等取个合适名字其实是很花时间的事，对于已有的变量等，如果想到更合适的名字则请记得马上换掉，必免误导其他开发人员。</li>
-<li>遵守编码规范中的命名相关部分。</li>
-</ul>
-<h3 id="2-2-清晰的代码结构"><a href="#2-2-清晰的代码结构" class="headerlink" title="2.2. 清晰的代码结构"></a>2.2. 清晰的代码结构</h3><ul>
-<li>问题分解、模块职责划分</li>
-<li>编码前需要有最基本的设计思路，不管是何种设计粒度（系统、模块、类），其核心骨架、流程都必须成竹于胸。</li>
-<li>函数尽量精简，精简的函数不代表行数就一定是很少；只要保证一个函数只做一件事，这里的“一件事“比较抽象，不同人有不同的解读；我的区分原则为：有利于函数复用与阅读。</li>
-<li>函数参数越少越好，这样能省很多测试用例；参数尽量只用于输入，通过返回值进行函数结果输出，参数尽量不同时承载输入与输出信息（多线程开发时除外）</li>
-<li>函数要么做查询操作，要么做设置操作，不要同时都做。</li>
-</ul>
-<h3 id="2-3-注释"><a href="#2-3-注释" class="headerlink" title="2.3. 注释"></a>2.3. 注释</h3><h4 id="2-3-1-合理的注释"><a href="#2-3-1-合理的注释" class="headerlink" title="2.3.1. 合理的注释"></a>2.3.1. 合理的注释</h4><ul>
-<li>注释是为了弥补代码无力表达程序意图时的一个有效补充。</li>
-<li>代码能自我表达固然是撸码的最高境界，但现实总是残酷的，当有段代码你发现需要写注释时，你需要先反省下是否代码写得太差以致于无法自解释。注释并不能美化糟糕的代码。</li>
-<li>需要明白注释是有维护成本的，如果不及时更新就容易引起混乱</li>
-<li>外部服务接口/API都需要提供必要的注释信息，有一定的维护成本，但一定不能省。</li>
-<li>潜在的坑也需要注释以警告其他开发人员，最常见的是FIXME、为了解决出现线程不安全问题的代码逻辑（不写清楚无经验的同事可能会乱改而引入BUG，如SimpleDateFormat）</li>
-</ul>
-<h4 id="2-3-2-不好的注释"><a href="#2-3-2-不好的注释" class="headerlink" title="2.3.2. 不好的注释"></a>2.3.2. 不好的注释</h4><ul>
-<li>个人觉得JavaBean的Getter/Setter方法是不需要注释的</li>
-<li>对代码的修改不需要写一些日志式的注释、不写废话式注释</li>
-<li>能用函数名或变量名自解释的，尽量不写注释</li>
-<li>不需要在控制语句的花括号结尾加代表语句结束的注释，类似<code>&#125; // while</code></li>
-<li>也不需要写一大段的注释，如果出现这种情况，肯定是功能函数拆解不合理导致。</li>
-</ul>
-<h3 id="2-4-格式"><a href="#2-4-格式" class="headerlink" title="2.4. 格式"></a>2.4. 格式</h3><ul>
-<li>遵行编码规范中的格式部分</li>
-<li>合理使用空行</li>
-<li>联系紧密的代码尽量靠在一起</li>
-<li>一个团队使用同一套格式规则</li>
-</ul>
-<h3 id="2-5-对象与数据结构"><a href="#2-5-对象与数据结构" class="headerlink" title="2.5. 对象与数据结构"></a>2.5. 对象与数据结构</h3><ul>
-<li>认真对待抽象，不是简单的写个接口，加几个方法就算是抽象</li>
-<li>对像隐藏数据，暴露操作；数据结构暴露数据，不提供操作函数</li>
-<li>DTO，DDD中的充血模型，类JavaBean的失血模型，个人项目中我更倾向于使用充血模型，所以书中所谓的混杂我是不太同意的。</li>
-</ul>
-<h3 id="2-6-错误处理"><a href="#2-6-错误处理" class="headerlink" title="2.6. 错误处理"></a>2.6. 错误处理</h3><ul>
-<li>面向对象设计中，严格实行快速抛异常原则，而不是返回错误代码，而不应该吃掉异常。</li>
-<li>对于尽量不抛出Checked类型的异常这一说法，个人持保留态度</li>
-<li>对于外部复杂的异常层次结构可做必要的封装以减少重复代码</li>
-<li>尽量不使用null作为返回值、参数等，因为null可能引起歧义</li>
-</ul>
-<h3 id="2-7-对第三方库的处理方式"><a href="#2-7-对第三方库的处理方式" class="headerlink" title="2.7. 对第三方库的处理方式"></a>2.7. 对第三方库的处理方式</h3><ul>
-<li>建议对第三方接口进行包装，便于后续适配多个提供方</li>
-<li>团队协作中，如果依赖的其他子系统的接口未定义，但我们已明确我方的需求，我们可以先定义接口并提供一个Mock类，这样可以保证我们的模块稳定性及可测试性</li>
-<li>如果依赖的第三方接口在本系统中使用得比较多，也建议统一再包装一层以适应外部接口变化</li>
-<li>包装的目的是屏蔽外部不确定性、增加鲁棒性</li>
-</ul>
-<h3 id="2-8-类与系统的设计"><a href="#2-8-类与系统的设计" class="headerlink" title="2.8. 类与系统的设计"></a>2.8. 类与系统的设计</h3><ul>
-<li>遵循面向对象设计原则</li>
-</ul>
-<blockquote>
-<p>转载请注明出处：<a href="http://cloudnoter.com/">cloudnoter.com</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>读书</category>
-      </categories>
-      <tags>
-        <tag>CleanCode</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ovirt-engine开发环境搭建指南</title>
     <url>/2018/07/10/ovirt-engine%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/</url>
     <content><![CDATA[<h1 id="ovirt-engine开发环境搭建指南"><a href="#ovirt-engine开发环境搭建指南" class="headerlink" title="ovirt-engine开发环境搭建指南"></a>ovirt-engine开发环境搭建指南</h1><h4 id="云管理平台组-陈志安"><a href="#云管理平台组-陈志安" class="headerlink" title="云管理平台组-陈志安"></a>云管理平台组-陈志安</h4><hr>
@@ -1362,6 +1286,84 @@ $url = route(&#39;profile&#39;, [&#39;id&#39; =&gt; 1]);
         <tag>ovirt</tag>
         <tag>engine</tag>
         <tag>虚拟化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>《代码整洁之道》学习笔记</title>
+    <url>/2018/02/28/%E3%80%8A%E4%BB%A3%E7%A0%81%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="1-What"><a href="#1-What" class="headerlink" title="1. What?"></a>1. What?</h2><p>正如Jack Reecves所发表的《源码就是设计》：源码就是最好软件设计文档，而其他非代码性的文档只是源码的辅助。本文并非为了讨论编程与软件设计的关系，只想借以说明源码的重要性。</p>
+<p>简单讲，整洁代码行云流水如同阅读精美好文，代码能够尽可能的自解释；具体讲，整洁代码具备如下特性：</p>
+<ul>
+<li>变量、函数、类、包、模块命名合理有意义</li>
+<li>代码结构（格式）清晰</li>
+<li>必要的合理的注释信息：代码能自解释只是理想，该注释的地方还是免不了</li>
+<li>合理的异常处理机制</li>
+<li>有效的日志信息</li>
+<li>遵循面向对象设计原则</li>
+</ul>
+<span id="more"></span>
+
+<h2 id="2-How"><a href="#2-How" class="headerlink" title="2. How?"></a>2. How?</h2><p>我们写文章都是先构思再下笔，但一般不可能一气呵成。都是先出初稿再调整、使用精美词句慢慢打磨。写代码同写文章一样，也是一个不断调整修饰的过程（修改名称、分解函数、消除重复等操作不断重复）。只要你有一颗写出整洁代码的初心。</p>
+<h3 id="2-1-有意义的命名"><a href="#2-1-有意义的命名" class="headerlink" title="2.1. 有意义的命名"></a>2.1. 有意义的命名</h3><ul>
+<li>名副其实，必免误导：在给变量、函数等取个合适名字其实是很花时间的事，对于已有的变量等，如果想到更合适的名字则请记得马上换掉，必免误导其他开发人员。</li>
+<li>遵守编码规范中的命名相关部分。</li>
+</ul>
+<h3 id="2-2-清晰的代码结构"><a href="#2-2-清晰的代码结构" class="headerlink" title="2.2. 清晰的代码结构"></a>2.2. 清晰的代码结构</h3><ul>
+<li>问题分解、模块职责划分</li>
+<li>编码前需要有最基本的设计思路，不管是何种设计粒度（系统、模块、类），其核心骨架、流程都必须成竹于胸。</li>
+<li>函数尽量精简，精简的函数不代表行数就一定是很少；只要保证一个函数只做一件事，这里的“一件事“比较抽象，不同人有不同的解读；我的区分原则为：有利于函数复用与阅读。</li>
+<li>函数参数越少越好，这样能省很多测试用例；参数尽量只用于输入，通过返回值进行函数结果输出，参数尽量不同时承载输入与输出信息（多线程开发时除外）</li>
+<li>函数要么做查询操作，要么做设置操作，不要同时都做。</li>
+</ul>
+<h3 id="2-3-注释"><a href="#2-3-注释" class="headerlink" title="2.3. 注释"></a>2.3. 注释</h3><h4 id="2-3-1-合理的注释"><a href="#2-3-1-合理的注释" class="headerlink" title="2.3.1. 合理的注释"></a>2.3.1. 合理的注释</h4><ul>
+<li>注释是为了弥补代码无力表达程序意图时的一个有效补充。</li>
+<li>代码能自我表达固然是撸码的最高境界，但现实总是残酷的，当有段代码你发现需要写注释时，你需要先反省下是否代码写得太差以致于无法自解释。注释并不能美化糟糕的代码。</li>
+<li>需要明白注释是有维护成本的，如果不及时更新就容易引起混乱</li>
+<li>外部服务接口/API都需要提供必要的注释信息，有一定的维护成本，但一定不能省。</li>
+<li>潜在的坑也需要注释以警告其他开发人员，最常见的是FIXME、为了解决出现线程不安全问题的代码逻辑（不写清楚无经验的同事可能会乱改而引入BUG，如SimpleDateFormat）</li>
+</ul>
+<h4 id="2-3-2-不好的注释"><a href="#2-3-2-不好的注释" class="headerlink" title="2.3.2. 不好的注释"></a>2.3.2. 不好的注释</h4><ul>
+<li>个人觉得JavaBean的Getter/Setter方法是不需要注释的</li>
+<li>对代码的修改不需要写一些日志式的注释、不写废话式注释</li>
+<li>能用函数名或变量名自解释的，尽量不写注释</li>
+<li>不需要在控制语句的花括号结尾加代表语句结束的注释，类似<code>&#125; // while</code></li>
+<li>也不需要写一大段的注释，如果出现这种情况，肯定是功能函数拆解不合理导致。</li>
+</ul>
+<h3 id="2-4-格式"><a href="#2-4-格式" class="headerlink" title="2.4. 格式"></a>2.4. 格式</h3><ul>
+<li>遵行编码规范中的格式部分</li>
+<li>合理使用空行</li>
+<li>联系紧密的代码尽量靠在一起</li>
+<li>一个团队使用同一套格式规则</li>
+</ul>
+<h3 id="2-5-对象与数据结构"><a href="#2-5-对象与数据结构" class="headerlink" title="2.5. 对象与数据结构"></a>2.5. 对象与数据结构</h3><ul>
+<li>认真对待抽象，不是简单的写个接口，加几个方法就算是抽象</li>
+<li>对像隐藏数据，暴露操作；数据结构暴露数据，不提供操作函数</li>
+<li>DTO，DDD中的充血模型，类JavaBean的失血模型，个人项目中我更倾向于使用充血模型，所以书中所谓的混杂我是不太同意的。</li>
+</ul>
+<h3 id="2-6-错误处理"><a href="#2-6-错误处理" class="headerlink" title="2.6. 错误处理"></a>2.6. 错误处理</h3><ul>
+<li>面向对象设计中，严格实行快速抛异常原则，而不是返回错误代码，而不应该吃掉异常。</li>
+<li>对于尽量不抛出Checked类型的异常这一说法，个人持保留态度</li>
+<li>对于外部复杂的异常层次结构可做必要的封装以减少重复代码</li>
+<li>尽量不使用null作为返回值、参数等，因为null可能引起歧义</li>
+</ul>
+<h3 id="2-7-对第三方库的处理方式"><a href="#2-7-对第三方库的处理方式" class="headerlink" title="2.7. 对第三方库的处理方式"></a>2.7. 对第三方库的处理方式</h3><ul>
+<li>建议对第三方接口进行包装，便于后续适配多个提供方</li>
+<li>团队协作中，如果依赖的其他子系统的接口未定义，但我们已明确我方的需求，我们可以先定义接口并提供一个Mock类，这样可以保证我们的模块稳定性及可测试性</li>
+<li>如果依赖的第三方接口在本系统中使用得比较多，也建议统一再包装一层以适应外部接口变化</li>
+<li>包装的目的是屏蔽外部不确定性、增加鲁棒性</li>
+</ul>
+<h3 id="2-8-类与系统的设计"><a href="#2-8-类与系统的设计" class="headerlink" title="2.8. 类与系统的设计"></a>2.8. 类与系统的设计</h3><ul>
+<li>遵循面向对象设计原则</li>
+</ul>
+<blockquote>
+<p>转载请注明出处：<a href="http://cloudnoter.com/">cloudnoter.com</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>读书</category>
+      </categories>
+      <tags>
+        <tag>CleanCode</tag>
       </tags>
   </entry>
   <entry>

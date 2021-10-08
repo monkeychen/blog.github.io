@@ -214,6 +214,20 @@
   </url>
   
   <url>
+    <loc>http://cloudnoter.com/tags/Java/</loc>
+    <lastmod>2021-10-08</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://cloudnoter.com/tags/JNI/</loc>
+    <lastmod>2021-10-08</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://cloudnoter.com/tags/HA/</loc>
     <lastmod>2021-10-08</lastmod>
     <changefreq>daily</changefreq>
@@ -242,21 +256,7 @@
   </url>
   
   <url>
-    <loc>http://cloudnoter.com/tags/Java/</loc>
-    <lastmod>2021-10-08</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://cloudnoter.com/tags/JVM/</loc>
-    <lastmod>2021-10-08</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://cloudnoter.com/tags/JNI/</loc>
     <lastmod>2021-10-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -447,14 +447,14 @@
   </url>
   
   <url>
-    <loc>http://cloudnoter.com/categories/HA/</loc>
+    <loc>http://cloudnoter.com/categories/Java/</loc>
     <lastmod>2021-10-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://cloudnoter.com/categories/Java/</loc>
+    <loc>http://cloudnoter.com/categories/HA/</loc>
     <lastmod>2021-10-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
