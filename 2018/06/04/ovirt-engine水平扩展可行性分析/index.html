@@ -1,0 +1,1125 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ovirt,engine,虚拟化" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Simiam" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/icon.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="1. 基础概念本文先简单介绍下与分布式系统相关的几个概念。 1.1. 分布式锁所谓分布式锁是指在一个分布式集群中，同一个方法在同一时间只能被一台机器上的一个线程执行，也就是所谓的分布式互斥。就像单机系统上的多线程程序需要用操作系统锁或数据库锁来互斥对共享资源的访问一样，分布式程序也需要通过分布式锁来互斥对共享资源的访问。分布式锁是保障数据一致性的手段之一。一般情况下，我们可以使用数据库、Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ovirt-engine水平扩展可行性分析">
+<meta property="og:url" content="http://cloudnoter.com/2018/06/04/ovirt-engine%E6%B0%B4%E5%B9%B3%E6%89%A9%E5%B1%95%E5%8F%AF%E8%A1%8C%E6%80%A7%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Simiam">
+<meta property="og:description" content="1. 基础概念本文先简单介绍下与分布式系统相关的几个概念。 1.1. 分布式锁所谓分布式锁是指在一个分布式集群中，同一个方法在同一时间只能被一台机器上的一个线程执行，也就是所谓的分布式互斥。就像单机系统上的多线程程序需要用操作系统锁或数据库锁来互斥对共享资源的访问一样，分布式程序也需要通过分布式锁来互斥对共享资源的访问。分布式锁是保障数据一致性的手段之一。一般情况下，我们可以使用数据库、Redis">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-06-03T22:44:40.000Z">
+<meta property="article:modified_time" content="2018-06-03T14:49:48.307Z">
+<meta property="article:author" content="simiam">
+<meta property="article:tag" content="ovirt">
+<meta property="article:tag" content="engine">
+<meta property="article:tag" content="虚拟化">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://cloudnoter.com/2018/06/04/ovirt-engine水平扩展可行性分析/"/>
+
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-5437280150717848",
+    enable_page_level_ads: true
+  });
+</script>
+
+
+  <title> ovirt-engine水平扩展可行性分析 | Simiam </title>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d08aa5fb4a0152d38b6afc7b4dbade86";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Simiam</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">求知若渴，虚怀若谷</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2018/06/04/ovirt-engine%E6%B0%B4%E5%B9%B3%E6%89%A9%E5%B1%95%E5%8F%AF%E8%A1%8C%E6%80%A7%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/simiam.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Simiam">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                ovirt-engine水平扩展可行性分析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-04T06:44:40+08:00">
+                2018-06-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/" itemprop="url" rel="index">
+                    <span itemprop="name">分布式</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/%E8%99%9A%E6%8B%9F%E5%8C%96/" itemprop="url" rel="index">
+                    <span itemprop="name">虚拟化</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/04/ovirt-engine%E6%B0%B4%E5%B9%B3%E6%89%A9%E5%B1%95%E5%8F%AF%E8%A1%8C%E6%80%A7%E5%88%86%E6%9E%90/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/06/04/ovirt-engine水平扩展可行性分析/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-基础概念"><a href="#1-基础概念" class="headerlink" title="1. 基础概念"></a>1. 基础概念</h2><p>本文先简单介绍下与分布式系统相关的几个概念。</p>
+<h3 id="1-1-分布式锁"><a href="#1-1-分布式锁" class="headerlink" title="1.1. 分布式锁"></a>1.1. 分布式锁</h3><p>所谓分布式锁是指在一个分布式集群中，同一个方法在同一时间只能被一台机器上的一个线程执行，也就是所谓的分布式互斥。就像单机系统上的多线程程序需要用操作系统锁或数据库锁来互斥对共享资源的访问一样，分布式程序也需要通过分布式锁来互斥对共享资源的访问。分布式锁是保障数据一致性的手段之一。<br>一般情况下，我们可以使用数据库、Redis或者ZooKeeper来做分布式锁服务。不管怎么样，分布式的锁服务需要有以下几个特点：<br>1）安全性：在任意时刻，只有一个客户端可以获得锁（排他性）<br>2）避免死锁：客户端最终一定可以获得锁，即使锁住某个资源的客户端在释放锁之前崩溃或网络不可达<br>3）容错性：只要锁服务集群中的大部分节点存活，客户端就可以进行加锁解锁的操作</p>
+<p>即分布式锁服务在实现上一般关注如下三个问题：<br>1）锁获取机制：超时释放导致多方获取同一把锁问题（CAS机制）<br>2）锁释放机制：正常释放、超时释放<br>3）客户端如何知道锁被释放：客户端不断重试、服务端主动通知</p>
+<h3 id="1-2-数据一致性"><a href="#1-2-数据一致性" class="headerlink" title="1.2. 数据一致性"></a>1.2. 数据一致性</h3><p>说起数据一致性，简单说有三种类型：<br>1）Weak（弱一致性）：当你写入一个新值后，读操作在数据副本上可能读出来，也可能读不出来。比如：某些cache系统，网络游戏其它玩家的数据和你没什么关系。<br>2）Eventually（最终一致性）：当你写入一个新值后，有可能读不出来，但在某个时间窗口之后保证最终能读出来。比如：DNS，电子邮件、Amazon S3，Google搜索引擎这样的系统。<br>3）Strong（强一致性）：新的数据一旦写入，在任意副本任意时刻都能读到新值。比如：文件系统，RDBMS，Azure Table都是强一致性的。</p>
+<p>从这三种一致型的模型上来说，我们可以看到，Weak和Eventually一般来说是异步冗余的，而Strong一般来说是同步冗余的，异步的通常意味着更好的性能，但也意味着更复杂的状态控制。同步意味着简单，但也意味着性能下降。</p>
+<span id="more"></span>
+
+<h3 id="1-3-分布式事务与数据一致性"><a href="#1-3-分布式事务与数据一致性" class="headerlink" title="1.3. 分布式事务与数据一致性"></a>1.3. 分布式事务与数据一致性</h3><blockquote>
+<p>单纯讲理论比较枯燥，本节我们会结合例子来描述。</p>
+</blockquote>
+<p>让我们用最经典的Use Case：“A帐号向B帐号汇钱”来说明一下，熟悉RDBMS事务的都知道从帐号A到帐号B需要6个操作：</p>
+<p>1）从A帐号中把余额读出来。<br>2）对A帐号做减法操作。<br>3）把结果写回A帐号中。<br>4）从B帐号中把余额读出来。<br>5）对B帐号做加法操作。<br>6）把结果写回B帐号中。</p>
+<p>为了数据的一致性，这6件事，要么都成功做完，要么都不成功，而且这个操作的过程中，对A、B帐号的其它访问必需锁死，所谓锁死就是要排除其它的读写操作，不然会有脏数据的问题，这就是分布式事务。</p>
+<p>目前业界用于实现分布式事务的方案有：<br>1）2PC（两阶段提交）：可以数据强一致性，但存在性能问题、协调过程中TimeOut问题（协调者可用性问题）<br>2）3PC（三阶段提交）：其核心理念是：在询问的时候并不锁定资源，除非所有人都同意了，才开始锁资源。<br>3）事务补偿机制：并行处理一个事务的多个阶段，然后根据不同阶段的执行结果进行相应的业务调整（也称事务补偿），其通常是基于工作流引擎来实现，只保证数据最终一致性，可实现高性能。如电商的秒杀功能经常这么设计：下单成功与订单确认机制。</p>
+<blockquote>
+<p>可进一步学习数据库事务ACID属性的变种：BASE（Basic Availability 基本可用，Soft state 软状态，Eventual Consistency 最终一致性）以及基于BASE的事务补偿。</p>
+</blockquote>
+<h4 id="扩展阅读（加深理解）"><a href="#扩展阅读（加深理解）" class="headerlink" title="扩展阅读（加深理解）"></a>扩展阅读（加深理解）</h4><p>当我们在生产线上用一台服务器来提供数据服务的时候，会遇到如下的两个问题：<br>1）一台服务器的性能不足以提供足够的能力服务于所有的网络请求。<br>2）我们总是害怕我们的这台服务器停机，造成服务不可用或是数据丢失。</p>
+<p>于是我们不得不对我们的服务器进行扩展，加入更多的机器来分担性能上的问题，以及来解决单点故障问题。 通常，我们会通过两种手段来扩展我们的数据服务：<br>1）数据分区：就是把数据分块放在不同的服务器上。<br>2）数据镜像：让所有的服务器都有相同的数据，提供相当的服务。</p>
+<p>对于第一种情况，我们无法解决数据丢失的问题，单台服务器出问题时，会有部分数据丢失。所以，数据服务的高可用性只能通过第二种方法来完成——数据的冗余存储（一般工业界认为比较安全的备份数应该是3份）。 但是，加入更多的机器，会让我们的数据服务变得很复杂，尤其是跨服务器的事务处理，也就是跨服务器的数据一致性。这个是一个很难的问题。 </p>
+<p>那么，我们在加入了更多的机器后，这个事情会变得复杂起来：<br>1）在<strong>数据分区</strong>的方案中：如果A帐号和B帐号的数据不在同一台服务器上怎么办？我们需要一个跨机器的事务处理。也就是说，如果A的扣钱成功了，但B的加钱不成功，我们还要把A的操作给回滚回去。<br>2）在<strong>数据镜像</strong>的方案中：A帐号和B帐号间的汇款是可以在一台机器上完成的，但是别忘了我们有多台机器存在A帐号和B帐号的副本。如果对A帐号的汇钱有两个并发操作（要汇给B和C），这两个操作发生在不同的两台服务器上怎么办？也就是说，在数据镜像中，在不同的服务器上对同一个数据的写操作怎么保证其一致性，保证数据不冲突？此时<strong>分布式锁</strong>也许就可以派上用场了。</p>
+<p>对于分布式系统，除了上面的可用性、数据一致性，我们还要考虑性能的因素，如果不考虑性能的话，事务得到保证并不困难，系统慢一点就行了。除了考虑性能外，我们还要考虑可用性，也就是说，一台机器没了，数据不丢失，服务可由别的机器继续提供。 于是，我们需要重点考虑下面的这么几个情况：</p>
+<p>1）容灾：数据不丢、结点的Failover<br>2）数据的一致性：事务处理（锁）<br>3）性能：吞吐量 、 响应时间</p>
+<p>前面说过，当出现某个节点的数据丢失时可以从副本读到，数据副本是分布式系统解决数据丢失异常的唯一手段。为简单起见，我们只讨论在**数据冗余(数据镜像)**方案下考虑数据的一致性和性能的问题。简单说来：</p>
+<p>1）要想让数据有高可用性，就得写多份数据。<br>2）写多份的问题会导致数据一致性的问题。<br>3）数据一致性的问题又会引发性能问题</p>
+<blockquote>
+<p>我们似乎看到了分布式场景下的CAP理论的影子（有兴趣的自行深入研究，这里不再展开）。</p>
+</blockquote>
+<h3 id="1-4-服务的状态"><a href="#1-4-服务的状态" class="headerlink" title="1.4. 服务的状态"></a>1.4. 服务的状态</h3><p>所谓“状态”，是指程序运行中的一些数据或是程序运行上下文。比如用户每一次请求在服务端所保留下来的数据（记录），像用户登录时的Session，我们需要使用这个Session来判断这个请求的合法性；还有一个业务流程中需要让多个服务组合起来形成一个业务逻辑的运行上下文Context，这些都是状态。</p>
+<h4 id="无状态的服务（Stateless）"><a href="#无状态的服务（Stateless）" class="headerlink" title="无状态的服务（Stateless）"></a>无状态的服务（Stateless）</h4><p>一直以来，无状态的服务被当成分布式服务设计的最佳实践和铁律。因为无状态的服务对于扩展性和运维实在是太方便了，没有状态的服务可以随意地增加和减少节点，可以随意的搬迁，而且可以大幅度降低代码的复杂度。</p>
+<p>但是现实世界是一定会有状态的，这些状态可能表现在如下几个方面：</p>
+<ul>
+<li>程序调用的结果。</li>
+<li>服务组合下的上下文。</li>
+<li>服务的配置。</li>
+</ul>
+<p>为了做出无状态的服务，我们通常需要把状态保存到一个第三方的地方，比如Redis，ZooKeeper/Etcd这样的高可用存储中。从另一角度讲，为了实现无状态服务会导致应用服务依赖于第三方有状态的存储服务，同时也增加了网络开销，会增加服务的响应时间。</p>
+<h4 id="有状态的服务（Stateful）"><a href="#有状态的服务（Stateful）" class="headerlink" title="有状态的服务（Stateful）"></a>有状态的服务（Stateful）</h4><p>在互联网领域，有状态的服务看上去比较“反动”。因为无状态服务需要把状态存放在第三方存储上，这样便增加了网络开销，为了减少网络开销有时就引入本地数据缓存，此时如果未引入Sticky Session机制，用户的每次请求并不一定会路由至同一台机器，结果将导致所有机器上都会创建相同的数据缓存，这也算是一种资源浪费。而如果引入了Sticky Session机制便可解决该资源浪费问题。</p>
+<p>所谓Sticky Session，就是对于客户端传来的请求，都能保证其落在同一台机器上，相当是数据分片。这样我们完全不需要考虑数据会被加载到不同的节点，这样的架构模型就变简单了。通过一致性哈希便可以实现Sticky Session，但只是简单的使用一致性哈希会导致负载与数据不均匀（哈希环平衡又是另一个话题了，本文不深入讨论，有需要的请求参考<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/25874641?utm_source=itdadao&utm_medium=referral">这里</a>）。</p>
+<h3 id="1-5-水平扩展"><a href="#1-5-水平扩展" class="headerlink" title="1.5. 水平扩展"></a>1.5. 水平扩展</h3><p>水平扩展也叫横向扩展，是指为分布式应用集群添加一个新的服务节点来提升该分布式应用的处理能力。一般是在单机节点性能已无法进一步优化的情况下才会进一步考虑水平扩展。</p>
+<p>一个可水平扩展的应用系统，其架构设计一般都要考虑以下几点：</p>
+<ul>
+<li>服务的状态（分布式状态复制 或 集中缓存服务）</li>
+<li>分布式环境下的线程安全机制（分布式锁 或 一致性哈希）</li>
+<li>数据一致性（分布式事务 ）</li>
+</ul>
+<h2 id="2-engine水平扩展关键问题（现状）"><a href="#2-engine水平扩展关键问题（现状）" class="headerlink" title="2. engine水平扩展关键问题（现状）"></a>2. engine水平扩展关键问题（现状）</h2><p>1）使用本地锁：当前Engine代码中大量使用JDK提供的锁机制来保证对同一个VDSM的并发请求，最典型的就是<code>InMemoryLockManager</code>提供的锁操作，其需要扩展成支持分布式锁。</p>
+<blockquote>
+<p>VDSM是否支持并发请求？</p>
+</blockquote>
+<p>2）有状态服务及认证会话：Engine中使用的EJB、部分服务实例（如<code>ResourceManager</code>）是有状态的服务。</p>
+<p>3）定时计划任务：Engine中的定时任务也需要调整，否则会导致每个engine节点在启动后都执行相同的计划任务。</p>
+<p>4）数据库：数据库服务目前未提供HA服务（这部分可独立考虑，个人认为不需要在本方案中考虑）</p>
+<p>5）配置文件：配置文件也需要在集群成员间同步，目前版本的engine也不支持。</p>
+<h2 id="3-备选方案"><a href="#3-备选方案" class="headerlink" title="3. 备选方案"></a>3. 备选方案</h2><h3 id="3-1-本地锁问题"><a href="#3-1-本地锁问题" class="headerlink" title="3.1. 本地锁问题"></a>3.1. 本地锁问题</h3><p>为了在分布式环境下实现VM等资源互斥访问需求，有两种方案：<br>1）基于一致性哈希来保证每次请求都落在同一个engine节点<br>2）引入分布式锁：Redis、ZooKeeper或基于infinispan自行实现</p>
+<p>方案1：实现起来相对简单，只需要在每个engine中实现hash redirect模块，但若出现节点数量变更重建hash环的过程中仍然无法保证资源互斥问题。</p>
+<p>方案2：性能会有所损失，同时改造量比较大，需要找出现有代码中所有本地锁并调整为分布式锁；</p>
+<p>由于我们云管平台的使用场景并非像互联网产品会频繁的变更engine节点，因此重建hash环的概率相当低，同时VDSM本身也有并发保护机制，因此优先考虑使用方案1，后续随着对engine代码的深入研究再进一步考虑方案2。</p>
+<h3 id="3-2-服务状态问题"><a href="#3-2-服务状态问题" class="headerlink" title="3.2. 服务状态问题"></a>3.2. 服务状态问题</h3><p>同样的两种方案：<br>1）基于一致性哈希来保证每次请求都落在同一个engine节点<br>2）分布式缓存</p>
+<p>方案1：与3.1节的需求不同，节点宕机导致哈希环重建会导致缓存数据迁移或丢失，该方案容错性太差，因此不能够用它来保障业务。（我们引入一致性哈希只是为了实现资源互斥而已，这点要搞清楚。）</p>
+<p>方案2：由于engine是运行在wildfly服务器中，而wildfly原生提供了分布式缓存服务<code>infinispan</code>，同时其对Session复制也提供了现成的支持，在技术上不存在障碍。主要还是工作量问题，即需要识别出各个有状态的服务如<code>ResourceManager</code>，没有其他捷径。</p>
+<h3 id="3-3-定时计划任务"><a href="#3-3-定时计划任务" class="headerlink" title="3.3. 定时计划任务"></a>3.3. 定时计划任务</h3><p>由于engine的计划任务是基于quartz，而quartz是支持分布式场景的，因此这部分也不存在技术问题。</p>
+<h3 id="3-4-配置文件"><a href="#3-4-配置文件" class="headerlink" title="3.4. 配置文件"></a>3.4. 配置文件</h3><p>可选择的方案：<br>1）使用基础平台提供的文件同步方案<br>2）基于ZooKeeper或Etcd开源方案实现文件同步（该方法对部署有要求，最少是三个节点）</p>
+<p>优先使用方案1，如果基础平台未提供则采用方案2。</p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><p>总得来说，ovirt-engine的水平扩展方案在技术上是可行的且不存在技术障碍，主要还是源码分析的工作量问题。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/cloudresearch/article/details/23127985">分布式基础通信协议</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ovirt/" rel="tag"># ovirt</a>
+          
+            <a href="/tags/engine/" rel="tag"># engine</a>
+          
+            <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag"># 虚拟化</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/28/%E3%80%8A%E4%BB%A3%E7%A0%81%E6%95%B4%E6%B4%81%E4%B9%8B%E9%81%93%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="next" title="《代码整洁之道》学习笔记">
+                <i class="fa fa-chevron-left"></i> 《代码整洁之道》学习笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/10/ovirt-engine%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/" rel="prev" title="ovirt-engine开发环境搭建指南">
+                ovirt-engine开发环境搭建指南 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/simiam.jpg"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/monkeychen" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/cza55007" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              我的收藏
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://simiam.com" title="Simiam" target="_blank">Simiam</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://ifeve.com" title="并发编程网" target="_blank">并发编程网</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://readhub.me" title="Readhub" target="_blank">Readhub</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">1. 基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. 分布式锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. 数据一致性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E4%B8%8E%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-number">1.3.</span> <span class="nav-text">1.3. 分布式事务与数据一致性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E9%98%85%E8%AF%BB%EF%BC%88%E5%8A%A0%E6%B7%B1%E7%90%86%E8%A7%A3%EF%BC%89"><span class="nav-number">1.3.1.</span> <span class="nav-text">扩展阅读（加深理解）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E6%9C%8D%E5%8A%A1%E7%9A%84%E7%8A%B6%E6%80%81"><span class="nav-number">1.4.</span> <span class="nav-text">1.4. 服务的状态</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%A0%E7%8A%B6%E6%80%81%E7%9A%84%E6%9C%8D%E5%8A%A1%EF%BC%88Stateless%EF%BC%89"><span class="nav-number">1.4.1.</span> <span class="nav-text">无状态的服务（Stateless）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%89%E7%8A%B6%E6%80%81%E7%9A%84%E6%9C%8D%E5%8A%A1%EF%BC%88Stateful%EF%BC%89"><span class="nav-number">1.4.2.</span> <span class="nav-text">有状态的服务（Stateful）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-%E6%B0%B4%E5%B9%B3%E6%89%A9%E5%B1%95"><span class="nav-number">1.5.</span> <span class="nav-text">1.5. 水平扩展</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-engine%E6%B0%B4%E5%B9%B3%E6%89%A9%E5%B1%95%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98%EF%BC%88%E7%8E%B0%E7%8A%B6%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">2. engine水平扩展关键问题（现状）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%A4%87%E9%80%89%E6%96%B9%E6%A1%88"><span class="nav-number">3.</span> <span class="nav-text">3. 备选方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E6%9C%AC%E5%9C%B0%E9%94%81%E9%97%AE%E9%A2%98"><span class="nav-number">3.1.</span> <span class="nav-text">3.1. 本地锁问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E6%9C%8D%E5%8A%A1%E7%8A%B6%E6%80%81%E9%97%AE%E9%A2%98"><span class="nav-number">3.2.</span> <span class="nav-text">3.2. 服务状态问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E5%AE%9A%E6%97%B6%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1"><span class="nav-number">3.3.</span> <span class="nav-text">3.3. 定时计划任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">3.4.</span> <span class="nav-text">3.4. 配置文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">4. 总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-cloud"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">simiam</span>
+  <span>&nbsp;
+    <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn">
+      <p style="float:left; height:20px;line-height:20px;margin: 7px 0px 0px 5px; color:#939393;">闽ICP备18023112号</p>
+    </a>
+  </span>
+  <span style="width:300px;margin:0 auto; padding:20px 0;">&nbsp;
+		<a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=35012102500070" >
+      <img src="/images/batb.png" style="float:left; padding-top:7px; padding-left:30px;"/>
+      <p style="float:left; height:20px;line-height:20px;margin: 7px 0px 0px 5px; color:#939393; padding-right: 80px;">闽公网安备 35012102500070号</p>
+    </a>
+	</span>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://cloudnoter.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://cloudnoter.com/2018/06/04/ovirt-engine%E6%B0%B4%E5%B9%B3%E6%89%A9%E5%B1%95%E5%8F%AF%E8%A1%8C%E6%80%A7%E5%88%86%E6%9E%90/';
+          this.page.identifier = '2018/06/04/ovirt-engine水平扩展可行性分析/';
+          this.page.title = 'ovirt-engine水平扩展可行性分析';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://cloudnoter.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

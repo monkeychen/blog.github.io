@@ -1,0 +1,1148 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="php,laravel,laravel中文文档" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Simiam" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/icon.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="基本路由所有的Laravel路由规则都定义在app&#x2F;Http&#x2F;routes.php文件中，Laravel框架在初始化时将自动加载该文件。Laravel中最基本的路由规则如下： Route::get(&#39;foo&#39;, function () &amp;#123;     return &#39;Hello World&#39;; &amp;#125;);  其接受两个参数：匹配该路由的URI、路由处理闭">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Laravel 5.2中文文档：HTTP路由">
+<meta property="og:url" content="http://cloudnoter.com/2016/01/21/Laravel-5-2%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3%EF%BC%9AHTTP%E8%B7%AF%E7%94%B1/index.html">
+<meta property="og:site_name" content="Simiam">
+<meta property="og:description" content="基本路由所有的Laravel路由规则都定义在app&#x2F;Http&#x2F;routes.php文件中，Laravel框架在初始化时将自动加载该文件。Laravel中最基本的路由规则如下： Route::get(&#39;foo&#39;, function () &amp;#123;     return &#39;Hello World&#39;; &amp;#125;);  其接受两个参数：匹配该路由的URI、路由处理闭">
+<meta property="og:locale">
+<meta property="article:published_time" content="2016-01-20T21:31:08.000Z">
+<meta property="article:modified_time" content="2017-05-07T13:38:03.000Z">
+<meta property="article:author" content="simiam">
+<meta property="article:tag" content="php">
+<meta property="article:tag" content="laravel">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://cloudnoter.com/2016/01/21/Laravel-5-2中文文档：HTTP路由/"/>
+
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-5437280150717848",
+    enable_page_level_ads: true
+  });
+</script>
+
+
+  <title> Laravel 5.2中文文档：HTTP路由 | Simiam </title>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d08aa5fb4a0152d38b6afc7b4dbade86";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Simiam</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">求知若渴，虚怀若谷</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2016/01/21/Laravel-5-2%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3%EF%BC%9AHTTP%E8%B7%AF%E7%94%B1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/simiam.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Simiam">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Laravel 5.2中文文档：HTTP路由
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-21T05:31:08+08:00">
+                2016-01-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Translation/" itemprop="url" rel="index">
+                    <span itemprop="name">Translation</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/01/21/Laravel-5-2%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3%EF%BC%9AHTTP%E8%B7%AF%E7%94%B1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/01/21/Laravel-5-2中文文档：HTTP路由/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="基本路由"><a href="#基本路由" class="headerlink" title="基本路由"></a>基本路由</h1><p>所有的Laravel路由规则都定义在<code>app/Http/routes.php</code>文件中，Laravel框架在初始化时将自动加载该文件。Laravel中最基本的路由规则如下：</p>
+<pre><code>Route::get(&#39;foo&#39;, function () &#123;
+    return &#39;Hello World&#39;;
+&#125;);
+</code></pre>
+<p>其接受两个参数：匹配该路由的URI、路由处理闭包<code>Closure</code>；该闭包定义了具体的路由规则。</p>
+<p><strong>默认路由文件</strong></p>
+<p>默认情况下，<code>routes.php</code>中可以定义简单的路由，或者将这些路由定义在路由组中。路由组将利用<code>web</code>中间件为定义在其中的路由规则提供’会话状态’与<code>CSRF</code>保存等功能。</p>
+<span id="more"></span>
+
+<p>任何未放在路由组中的路由规则将无权访问会话，也无法享受web中间件提供的<code>CSRF</code>保护等特性，因此如果您定义的路由规则需要web中间件提供的这些特性时，你需要确保将这些路由规则放入路由组中；通过情况下，我们会将大部分的路由规则都放在路由组中。</p>
+<pre><code>Route::group([&#39;middleware&#39; =&gt; [&#39;web&#39;]], function () &#123;
+    //
+&#125;);
+</code></pre>
+<p><strong>Route类中可用的路由方法</strong></p>
+<p>框架路由引擎允许你注册如下的路由规则来响应相应的HTTP请求动作：</p>
+<pre><code>Route::get($uri, $callback);
+Route::post($uri, $callback);
+Route::put($uri, $callback);
+Route::patch($uri, $callback);
+Route::delete($uri, $callback);
+Route::options($uri, $callback);
+</code></pre>
+<p>有时你需要注册一个路由规则来响应多个HTTP请求动作，因此你可以使用<code>Route</code>类的<code>match</code>方法来满足该需求。甚至你可以使用<code>Route</code>类的<code>any</code>方法来响应所有的HTTP请求动作。</p>
+<pre><code>Route::match([&#39;get&#39;, &#39;post&#39;], &#39;/&#39;, function () &#123;
+    //
+&#125;);
+
+Route::any(&#39;foo&#39;, function () &#123;
+    //
+&#125;);
+</code></pre>
+<h1 id="路由参数-占位符"><a href="#路由参数-占位符" class="headerlink" title="路由参数(占位符)"></a>路由参数(占位符)</h1><p>Laravel中路由规则配置中的URL中允许设置参数(占位符)，便于闭包或控制器方法提取与引用。Laravel的路由URL中参数占位符配置方式分两种：必选与可选。</p>
+<blockquote>
+<p>这种机制蛮适合开发符合RESTful规范的应用，这里有一篇由《黑客与画家》、《软件随想录》译者阮一峰写的介绍RESTful概念的文章： <a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2011/09/restful">理解RESTful架构</a></p>
+</blockquote>
+<p><strong>必选参数占位符</strong></p>
+<p>所谓必选，即HTTP请求的URL中参数占位符的部分必需有具体的数据，否则该路由规则不会被匹配到。比如，你可能需要从请求URL中获取用户的ID时，你就可以定义如下的路由规则：</p>
+<pre><code>Route::get(&#39;user/&#123;id&#125;&#39;, function ($id) &#123;
+    return &#39;User &#39;.$id;
+&#125;);
+// 当请求URL为http://somesite/user/2时，2将被提取出来并赋值给闭包函数中的变量id
+</code></pre>
+<p>由上面的例子可知，路由参数占位符是由一对花括号来定义的。当然，我们也可以在URL中定义多个参数占位符，如下：</p>
+<pre><code>Route::get(&#39;posts/&#123;post&#125;/comments/&#123;comment&#125;&#39;, function ($postId, $commentId) &#123;
+     //
+&#125;);
+</code></pre>
+<blockquote>
+<p>注意：路由参数占位符的定义需要符合PHP变量命名规范，如不能包含”-“符。</p>
+</blockquote>
+<p><strong>可选参数占位符</strong></p>
+<p>如果想让路由参数占位符是可选的（有时请求URL中的占位符部分可能是空的），此时可以在占位符名称的后面加上一个问号”?”即可。</p>
+<pre><code>Route::get(&#39;user/&#123;name?&#125;&#39;, function ($name = null) &#123;
+    return $name;
+&#125;);
+
+Route::get(&#39;user/&#123;name?&#125;&#39;, function ($name = &#39;John&#39;) &#123;
+    return $name;
+&#125;);
+</code></pre>
+<blockquote>
+<p>当URL参数占位符设置为可选时，后面的闭包函数的参数<strong>需要</strong>提供默认值。</p>
+</blockquote>
+<h1 id="命名路由"><a href="#命名路由" class="headerlink" title="命名路由"></a>命名路由</h1><p>命名路由将允许你方便的生成URL或重定向URL，这些生成的URL最终将匹配该路由规则。你可通过如下方式定义命名路由：</p>
+<pre><code>Route::get(&#39;profile&#39;, [&#39;as&#39; =&gt; &#39;profile&#39;, function () &#123;
+    //
+&#125;]);
+</code></pre>
+<p>闭包函数的第二个数组参数的元素键值需要指定为”as”，元素值即为路由规则名。当然，你也可以为控制器的方法来代替上面的闭包函数，如下：</p>
+<pre><code>Route::get(&#39;profile&#39;, [
+    &#39;as&#39; =&gt; &#39;profile&#39;, &#39;uses&#39; =&gt; &#39;UserController@showProfile&#39;
+]);
+</code></pre>
+<p>定义命名路由还有如下方式：</p>
+<pre><code>Route::get(&#39;user/profile&#39;, &#39;UserController@showProfile&#39;)-&gt;name(&#39;profile&#39;);
+</code></pre>
+<p>即先定义一个普通路由，然后再调用该路由规则实例的name方法。</p>
+<p><strong>路由组与命名路由</strong></p>
+<p>如果你正在使用路由规则组时，你可以在路由规则组定义的属性数组中添加一个key为”as”，值为某字符串的元素，该元素的值将作为该路由组中包含的路由名字的前缀。如下：</p>
+<pre><code>Route::group([&#39;as&#39; =&gt; &#39;admin::&#39;], function () &#123;
+    Route::get(&#39;dashboard&#39;, [&#39;as&#39; =&gt; &#39;dashboard&#39;, function () &#123;
+        // Route named &quot;admin::dashboard&quot;
+    &#125;]);
+&#125;);
+</code></pre>
+<p><strong>生成匹配命名路由的URL</strong></p>
+<p>一旦你已经为某一路由起了相应的名字，那么你就可以通过全局函数<code>route</code>来生成相应的URL：</p>
+<pre><code>// Generating URLs...
+$url = route(&#39;profile&#39;);
+
+// Generating Redirects...
+return redirect()-&gt;route(&#39;profile&#39;);
+</code></pre>
+<p>如果命名路由规则的URL部分包含参数占位符，则你可以将参数值作为<code>route</code>函数的第二个数组参数的元素传入，框架将自动用该参数值代替占位符以生成相应的URL。</p>
+<pre><code>Route::get(&#39;user/&#123;id&#125;/profile&#39;, [&#39;as&#39; =&gt; &#39;profile&#39;, function ($id) &#123;
+    //
+&#125;]);
+
+$url = route(&#39;profile&#39;, [&#39;id&#39; =&gt; 1]);
+</code></pre>
+<h1 id="路由组"><a href="#路由组" class="headerlink" title="路由组"></a>路由组</h1><blockquote>
+<p>转载请注明出处：<a href="http://cloudnoter.com/">cloudnoter.com</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/13/Java%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7-JDB/" rel="next" title="Java调试工具:JDB">
+                <i class="fa fa-chevron-left"></i> Java调试工具:JDB
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/27/JNI%E5%BC%95%E8%B5%B7%E7%9A%84%E5%A0%86%E5%A4%96%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/" rel="prev" title="JNI引起的堆外内存泄漏问题分析">
+                JNI引起的堆外内存泄漏问题分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/simiam.jpg"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/monkeychen" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/cza55007" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              我的收藏
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://simiam.com" title="Simiam" target="_blank">Simiam</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://ifeve.com" title="并发编程网" target="_blank">并发编程网</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://readhub.me" title="Readhub" target="_blank">Readhub</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E8%B7%AF%E7%94%B1"><span class="nav-number">1.</span> <span class="nav-text">基本路由</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1%E5%8F%82%E6%95%B0-%E5%8D%A0%E4%BD%8D%E7%AC%A6"><span class="nav-number">2.</span> <span class="nav-text">路由参数(占位符)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%91%BD%E5%90%8D%E8%B7%AF%E7%94%B1"><span class="nav-number">3.</span> <span class="nav-text">命名路由</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1%E7%BB%84"><span class="nav-number">4.</span> <span class="nav-text">路由组</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-cloud"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">simiam</span>
+  <span>&nbsp;
+    <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn">
+      <p style="float:left; height:20px;line-height:20px;margin: 7px 0px 0px 5px; color:#939393;">闽ICP备18023112号</p>
+    </a>
+  </span>
+  <span style="width:300px;margin:0 auto; padding:20px 0;">&nbsp;
+		<a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=35012102500070" >
+      <img src="/images/batb.png" style="float:left; padding-top:7px; padding-left:30px;"/>
+      <p style="float:left; height:20px;line-height:20px;margin: 7px 0px 0px 5px; color:#939393; padding-right: 80px;">闽公网安备 35012102500070号</p>
+    </a>
+	</span>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://cloudnoter.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://cloudnoter.com/2016/01/21/Laravel-5-2%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3%EF%BC%9AHTTP%E8%B7%AF%E7%94%B1/';
+          this.page.identifier = '2016/01/21/Laravel-5-2中文文档：HTTP路由/';
+          this.page.title = 'Laravel 5.2中文文档：HTTP路由';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://cloudnoter.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

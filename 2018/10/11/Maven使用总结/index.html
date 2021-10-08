@@ -1,0 +1,1325 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Maven,SpringBoot" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Simiam" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/icon.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Maven学习笔记 转载请注明出处：simiam.com  本文主要是对Maven学习与使用过程中的一些经验的总结，不是Maven的入门教程，如需要系统学习Maven，您可以看一下《Maven实战》这本书，或看下以下几个在线教程：  InfoQ上与Maven有关的内容 极客学院的Maven教程 Maven生命周期介绍  1. 依赖声明中scope的使用 网络上有太多的文章介绍，但个人还是推荐直接看">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Maven学习笔记">
+<meta property="og:url" content="http://cloudnoter.com/2018/10/11/Maven%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="Simiam">
+<meta property="og:description" content="Maven学习笔记 转载请注明出处：simiam.com  本文主要是对Maven学习与使用过程中的一些经验的总结，不是Maven的入门教程，如需要系统学习Maven，您可以看一下《Maven实战》这本书，或看下以下几个在线教程：  InfoQ上与Maven有关的内容 极客学院的Maven教程 Maven生命周期介绍  1. 依赖声明中scope的使用 网络上有太多的文章介绍，但个人还是推荐直接看">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-10-11T09:51:31.000Z">
+<meta property="article:modified_time" content="2018-10-16T07:32:14.881Z">
+<meta property="article:author" content="simiam">
+<meta property="article:tag" content="SpringBoot">
+<meta property="article:tag" content="Maven">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://cloudnoter.com/2018/10/11/Maven使用总结/"/>
+
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-5437280150717848",
+    enable_page_level_ads: true
+  });
+</script>
+
+
+  <title> Maven学习笔记 | Simiam </title>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d08aa5fb4a0152d38b6afc7b4dbade86";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Simiam</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">求知若渴，虚怀若谷</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2018/10/11/Maven%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/simiam.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Simiam">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Maven学习笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-11T17:51:31+08:00">
+                2018-10-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/11/Maven%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/10/11/Maven使用总结/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Maven学习笔记"><a href="#Maven学习笔记" class="headerlink" title="Maven学习笔记"></a>Maven学习笔记</h1><blockquote>
+<p>转载请注明出处：<a target="_blank" rel="noopener" href="https://simiam.com/">simiam.com</a></p>
+</blockquote>
+<p>本文主要是对Maven学习与使用过程中的一些经验的总结，不是Maven的入门教程，如需要系统学习Maven，您可以看一下<a target="_blank" rel="noopener" href="https://www.amazon.cn/dp/B009WMAZX4">《Maven实战》</a>这本书，或看下以下几个在线教程：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://www.infoq.com/cn/maven-practice">InfoQ上与Maven有关的内容</a></li>
+<li><a target="_blank" rel="noopener" href="http://wiki.jikexueyuan.com/project/maven/">极客学院的Maven教程</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/fd43b3d0fdb0">Maven生命周期介绍</a></li>
+</ul>
+<h2 id="1-依赖声明中scope的使用"><a href="#1-依赖声明中scope的使用" class="headerlink" title="1. 依赖声明中scope的使用"></a>1. 依赖声明中scope的使用</h2><blockquote>
+<p>网络上有太多的文章介绍，但个人还是推荐直接看<a target="_blank" rel="noopener" href="https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html">官方文档</a>，英文不好的朋友可以看<a target="_blank" rel="noopener" href="http://tangyanbo.iteye.com/blog/1503957">这篇有点老的文章</a>。</p>
+</blockquote>
+<p>除了掌握基本内容外，还需要特别关注以下几个内容：</p>
+<ul>
+<li>provided与runtime的区别，system知道下有这个东西就行。</li>
+<li>import这个scope是后面引入的新scope，其只能用于<code>&lt;dependencyManagement&gt;</code>中且类型为pom的依赖项，个人感觉其主要作用在于对依赖版本进行分类管理。</li>
+<li>Maven依赖冲突的解决策略，可以参考<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/f6ca45865025">这里</a></li>
+</ul>
+<span id="more"></span>
+
+<h2 id="2-Maven构建配置"><a href="#2-Maven构建配置" class="headerlink" title="2. Maven构建配置"></a>2. Maven构建配置</h2><h3 id="2-1-Maven项目的标准目录结构"><a href="#2-1-Maven项目的标准目录结构" class="headerlink" title="2.1. Maven项目的标准目录结构"></a>2.1. Maven项目的标准目录结构</h3><ul>
+<li>src<ul>
+<li>main<ul>
+<li>java — 源文件 </li>
+<li>resources — 资源文件</li>
+<li>filters — 资源过滤文件</li>
+<li>config — 配置文件</li>
+<li>scripts — 脚本文件</li>
+<li>webapp — web应用文件</li>
+</ul>
+</li>
+<li>test<ul>
+<li>java — 测试源文件</li>
+<li>resources — 测试资源文件</li>
+<li>filters — 测试资源过滤文件</li>
+</ul>
+</li>
+<li>it — 集成测试</li>
+<li>assembly — assembly descriptors</li>
+<li>site — Site</li>
+</ul>
+</li>
+<li>target<ul>
+<li>generated-sources</li>
+<li>classes</li>
+<li>generated-test-sources</li>
+<li>test-classes</li>
+<li>xxx.jar</li>
+</ul>
+</li>
+<li>pom.xml</li>
+<li>LICENSE.txt</li>
+<li>NOTICE.txt</li>
+<li>README.txt</li>
+</ul>
+<h3 id="2-2-资源处理相关配置"><a href="#2-2-资源处理相关配置" class="headerlink" title="2.2. 资源处理相关配置"></a>2.2. 资源处理相关配置</h3><p>构建Maven项目的时候，如果没有进行特殊的配置，Maven会按照标准的目录结构查找和处理各种类型文件。</p>
+<blockquote>
+<p><strong>src/main/java和src/test/java</strong></p>
+<p>这两个目录中的所有<code>*.java</code>文件会分别在<code>comile</code>和<code>test-comiple</code>阶段被编译，编译结果分别放到了<code>target/classes</code>和<code>targe/test-classes</code>目录中，但是这两个目录中的其他文件都会被忽略掉。</p>
+<p><strong>src/main/resources和src/test/resources</strong></p>
+<p>这两个目录中的文件也会分别被复制到<code>target/classes</code>和<code>target/test-classes</code>目录中。</p>
+<p><strong>target/classes</strong></p>
+<p>打包插件默认会把这个目录中的所有内容打入到<code>jar</code>包或者<code>war</code>包中。</p>
+</blockquote>
+<p>资源文件是Java代码中要使用的文件。代码在执行的时候会到指定位置去查找这些文件。前面已经说了Maven默认的处理方式，但是有时候我们需要进行自定义的配置，比如下面两种情况：</p>
+<ul>
+<li>有的时候有些配置文件通常与<code>.java</code>文件一起放在<code>src/main/java</code>目录（如mybatis或hibernate的表映射文件）。</li>
+<li>有的时候还希望把其他目录中的资源也复制到<code>classes</code>目录中。这些情况下就需要在<code>pom.xml</code>文件中修改配置了。</li>
+</ul>
+<p>目前主要有如下两种方法修改配置：</p>
+<ul>
+<li>一种是在<code>&lt;build&gt;</code>元素下添加<code>&lt;resources&gt;</code>进行配置。</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    ......</span><br><span class="line">      <span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/resources<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">excludes</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">exclude</span>&gt;</span>**/*.properties<span class="tag">&lt;/<span class="name">exclude</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">exclude</span>&gt;</span>**/*.xml<span class="tag">&lt;/<span class="name">exclude</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">excludes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">filtering</span>&gt;</span>false<span class="tag">&lt;/<span class="name">filtering</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/java<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">includes</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.properties<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.xml<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">filtering</span>&gt;</span>false<span class="tag">&lt;/<span class="name">filtering</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br><span class="line">    ......</span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>另一种是在<code>&lt;build&gt;</code>的<code>&lt;plugins&gt;</code>子元素中配置<code>maven-resources-plugin</code>等处理资源文件的插件。</li>
+</ul>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-resources-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.5<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span></span><br><span class="line"><span class="xml">            <span class="tag">&lt;<span class="name">id</span>&gt;</span>copy-xmls<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span></span><br><span class="line"><span class="xml">            <span class="tag">&lt;<span class="name">phase</span>&gt;</span>process-sources<span class="tag">&lt;/<span class="name">phase</span>&gt;</span></span></span><br><span class="line"><span class="xml">            <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span></span><br><span class="line"><span class="xml">                <span class="tag">&lt;<span class="name">goal</span>&gt;</span>copy-resources<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span></span><br><span class="line"><span class="xml">            <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span></span><br><span class="line"><span class="xml">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span></span><br><span class="line"><span class="xml">                <span class="tag">&lt;<span class="name">outputDirectory</span>&gt;</span>$</span><span class="template-variable">&#123;basedir&#125;</span><span class="xml">/target/classes<span class="tag">&lt;/<span class="name">outputDirectory</span>&gt;</span></span></span><br><span class="line"><span class="xml">                <span class="tag">&lt;<span class="name">resources</span>&gt;</span></span></span><br><span class="line"><span class="xml">                    <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span></span><br><span class="line"><span class="xml">                        <span class="tag">&lt;<span class="name">directory</span>&gt;</span>$</span><span class="template-variable">&#123;basedir&#125;</span><span class="xml">/src/main/java<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span></span><br><span class="line"><span class="xml">                        <span class="tag">&lt;<span class="name">includes</span>&gt;</span></span></span><br><span class="line"><span class="xml">                            <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.xml<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span></span><br><span class="line"><span class="xml">                        <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></span></span><br><span class="line"><span class="xml">                    <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span></span><br><span class="line"><span class="xml">                <span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span></span><br><span class="line"><span class="xml">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p><code>resources</code>元素与<code>maven-resources-plugin</code>插件一般都是搭配在一起使用实现复杂的资源文件处理逻辑。</p>
+<p>默认情况下，Maven会从项目的<code>src/main/resources</code>目录下查找资源。如果你的资源不在此目录下，可以用<code>&lt;resources&gt;</code>标签指定，同时也支持多个目录，也支持<code>&lt;include&gt;,&lt;exclude&gt;</code>之类的精细化配置。</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="params">&lt;resources&gt;</span></span><br><span class="line">	<span class="params">&lt;resource&gt;</span></span><br><span class="line">		<span class="params">&lt;directory&gt;</span>src<span class="meta-keyword">/main/</span>resources1<span class="params">&lt;/directory&gt;</span></span><br><span class="line">	<span class="params">&lt;/resource&gt;</span></span><br><span class="line">	<span class="params">&lt;resource&gt;</span></span><br><span class="line">		<span class="params">&lt;directory&gt;</span>src<span class="meta-keyword">/main/</span>resources2<span class="params">&lt;/directory&gt;</span></span><br><span class="line">	<span class="params">&lt;/resource&gt;</span></span><br><span class="line"><span class="params">&lt;/resources&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>有的时候，资源文件中存在变量引用，可以使用<code>&lt;filtering&gt;</code>标签指定是否替换资源中的变量。变量的来源默认为pom文件中的<code>&lt;project&gt;根元素下的&lt;properties&gt;</code>标签或<code>&lt;profile&gt;下的&lt;properties&gt;</code>标签中定义的变量；当然也可以在<code>&lt;build&gt;</code>中定义过滤器资源。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">project</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">     ......</span><br><span class="line">    <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 自定义过滤器资源文件 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filters</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">filter</span>&gt;</span>filter-values.properties<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">    	   <span class="tag">&lt;/<span class="name">filters</span>&gt;</span></span><br><span class="line">    	   <span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/resources<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">filtering</span>&gt;</span>true<span class="tag">&lt;/<span class="name">filtering</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">profiles</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">profile</span>&gt;</span></span><br><span class="line">            ......</span><br><span class="line">        <span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">profiles</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果资源中本来存在不需要被替换的<code>$&#123;&#125;</code>字符，则可以在<code>$</code>前加<code>\</code>，同时在<code>maven-resources-plugin</code>插件配置的<code>&lt;configuration&gt;</code>中使用<code>&lt;escapeString&gt;</code>；若目录下存在二进制文件，则需要通过以下的后缀名来排除。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-resources-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">version</span>&gt;</span>3.0.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">	   <span class="comment">&lt;!-- 配置资源文件中的转义字符 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">escapeString</span>&gt;</span>\<span class="tag">&lt;/<span class="name">escapeString</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">encoding</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">encoding</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 如目录下存在二进制文件，则需要通过以下的后缀名来排除 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">nonFilteredFileExtensions</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">nonFilteredFileExtension</span>&gt;</span>pdf<span class="tag">&lt;/<span class="name">nonFilteredFileExtension</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">nonFilteredFileExtension</span>&gt;</span>swf<span class="tag">&lt;/<span class="name">nonFilteredFileExtension</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">nonFilteredFileExtensions</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果你需要在其他阶段拷贝资源文件，可以使用插件目标copy-resources，类似配置如下：</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="params">&lt;plugin&gt;</span></span><br><span class="line">    <span class="params">&lt;artifactId&gt;</span>maven-resources-plugin<span class="params">&lt;/artifactId&gt;</span></span><br><span class="line">    <span class="params">&lt;version&gt;</span><span class="number">3.0</span><span class="number">.2</span><span class="params">&lt;/version&gt;</span></span><br><span class="line">    <span class="params">&lt;executions&gt;</span></span><br><span class="line">      <span class="params">&lt;execution&gt;</span></span><br><span class="line">        <span class="params">&lt;id&gt;</span>copy-resources<span class="params">&lt;/id&gt;</span></span><br><span class="line">        <span class="params">&lt;phase&gt;</span>validate<span class="params">&lt;/phase&gt;</span></span><br><span class="line">        <span class="params">&lt;goals&gt;</span></span><br><span class="line">            <span class="params">&lt;goal&gt;</span>copy-resources<span class="params">&lt;/goal&gt;</span></span><br><span class="line">        <span class="params">&lt;/goals&gt;</span></span><br><span class="line">        <span class="params">&lt;configuration&gt;</span></span><br><span class="line">            <span class="params">&lt;outputDirectory&gt;</span>$&#123;basedir&#125;<span class="meta-keyword">/target/</span>extra-resources<span class="params">&lt;/outputDirectory&gt;</span></span><br><span class="line">            <span class="params">&lt;resources&gt;</span>          </span><br><span class="line">                <span class="params">&lt;resource&gt;</span></span><br><span class="line">                    <span class="params">&lt;directory&gt;</span>src/non-packaged-resources<span class="params">&lt;/directory&gt;</span></span><br><span class="line">                    <span class="params">&lt;filtering&gt;</span>true<span class="params">&lt;/filtering&gt;</span></span><br><span class="line">                <span class="params">&lt;/resource&gt;</span></span><br><span class="line">            <span class="params">&lt;/resources&gt;</span>              </span><br><span class="line">        <span class="params">&lt;/configuration&gt;</span>            </span><br><span class="line">      <span class="params">&lt;/execution&gt;</span></span><br><span class="line">    <span class="params">&lt;/executions&gt;</span></span><br><span class="line"><span class="params">&lt;/plugin&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>更详细的配置请参考<a target="_blank" rel="noopener" href="http://maven.apache.org/plugins/maven-resources-plugin/"><code>maven-resources-plugin</code>插件官网</a></p>
+</blockquote>
+<p>简单总结：resources及其对应的插件的作用就是用于资源文件的处理（变量替换、编译时资源文件复制等），为后续的项目打包阶段作准备。</p>
+<blockquote>
+<p>一定要注意与<code>maven-assemble-plugin</code>插件区别开来，因为<code>assemble</code>也涉及到配置文件的拷贝。</p>
+</blockquote>
+<h3 id="2-3-测试相关插件配置"><a href="#2-3-测试相关插件配置" class="headerlink" title="2.3. 测试相关插件配置"></a>2.3. 测试相关插件配置</h3><p>本文章所讲的测试主要是指单元测试与集成测试：</p>
+<ul>
+<li>Maven通过<code>maven-surefire-plugin</code>插件执行单元测试</li>
+<li>Maven通过<code>maven-failsafe-plugin</code>插件执行集成测试</li>
+</ul>
+<h4 id="2-3-1-单元测试配置"><a href="#2-3-1-单元测试配置" class="headerlink" title="2.3.1. 单元测试配置"></a>2.3.1. 单元测试配置</h4><p>在pom.xml中配置JUnit，TestNG测试框架的依赖，即可自动识别和运行<code>src/test/Java</code>目录下利用该框架编写的测试用例。常用配置如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-surefire-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.18.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 在构建过程中如需要跳过单元测试阶段，则将skipTests节点值设置为true --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">skipTests</span>&gt;</span>true<span class="tag">&lt;/<span class="name">skipTests</span>&gt;</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">&lt;!-- 忽略测试失败以继续构建项目，不推荐 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">testFailureIgnore</span>&gt;</span>true<span class="tag">&lt;/<span class="name">testFailureIgnore</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>想跳过单元测试还可以使用如下方式：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方式一：不执行测试用例，但编译测试用例类生成相应的class文件至target/test-classes下</span></span><br><span class="line">mvn <span class="keyword">install</span> -DskipTests</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方式二：不执行测试用例，也不编译测试用例类</span></span><br><span class="line">mvn <span class="keyword">install</span> -Dmaven.<span class="keyword">test</span>.skip=<span class="keyword">true</span></span><br></pre></td></tr></table></figure>
+
+<p>当然，如果你明确用的是<code>JUnit4.7</code>及以上版本，可以明确声明：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-surefire-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.19<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.surefire<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>surefire-junit47<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.19<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>surefire默认的查找测试类的模式如下：</p>
+<ul>
+<li><code>**/Test*.java</code></li>
+<li><code>**/*Test.java</code></li>
+<li><code>**/*TestCase.java</code></li>
+</ul>
+<p>如果由于历史原因，测试类不符合默认的三种命名模式，可以通过pom.xml设置<code>maven-surefire-plugin</code>插件添加命名模式或排除一些命名模式。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-surefire-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.5<span class="tag">&lt;/<span class="name">version</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">configuration</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">includes</span>&gt;</span>  </span><br><span class="line">            <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*Tests.java<span class="tag">&lt;/<span class="name">include</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;/<span class="name">includes</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">excludes</span>&gt;</span>  </span><br><span class="line">            <span class="tag">&lt;<span class="name">exclude</span>&gt;</span>**/*ServiceTest.java<span class="tag">&lt;/<span class="name">exclude</span>&gt;</span>  </span><br><span class="line">            <span class="tag">&lt;<span class="name">exclude</span>&gt;</span>**/TempDaoTest.java<span class="tag">&lt;/<span class="name">exclude</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;/<span class="name">excludes</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>更详细的配置可直接参考<a target="_blank" rel="noopener" href="http://maven.apache.org/surefire/maven-surefire-plugin/">surefire插件官网</a></p>
+</blockquote>
+<h4 id="2-3-2-集成测试配置"><a href="#2-3-2-集成测试配置" class="headerlink" title="2.3.2. 集成测试配置"></a>2.3.2. 集成测试配置</h4><p>集成测试过程涉及运行环境准备，如启动tomcat容器等。而单元测试插件有一个特征是如果有一个单元测试用例失败，则会中止整个Maven构建过程，此时会导致之前创建的集成测试环境如tomcat容器未能及时关闭，因此便有了failsafe的用武之地。</p>
+<p>Maven构建生命周期中有四个阶段与集成测试有关:</p>
+<ul>
+<li>pre-integration-test：准备集成测试环境</li>
+<li>integration-test：进行正式的集成测试</li>
+<li>post-integration-test：清理集成测试环境</li>
+<li>verify：检查集成测试结果</li>
+</ul>
+<p>当failsafe插件在构建过程的<code>integration-test</code>或<code>verify</code>阶段被调用而进行集成测试时，测试用例执行过程中就算失败也不会中止构建过程，而会继续执行<code>post-integration-test</code>阶段以进行环境清理操作。</p>
+<p><code>maven-failsafe-plugin</code>插件需要与各种容器插件搭配使用，常用的容器类插件有：tomcat，jetty或者更高级的cargo等。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!--指定单元测试不执行 否则先执行单元测试 地址不通--&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-surefire-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.18<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">skip</span>&gt;</span>true<span class="tag">&lt;/<span class="name">skip</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!--集成测试的插件配置--&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-failsafe-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.19.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">suiteXmlFiles</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--指定配置文件--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">suiteXmlFile</span>&gt;</span>testng.xml<span class="tag">&lt;/<span class="name">suiteXmlFile</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">suiteXmlFiles</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>integration-tests<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">goal</span>&gt;</span>integration-test<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">goal</span>&gt;</span>verify<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!--tomcat插件--&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.tomcat.maven<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>tomcat7-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--部署的端口和配置--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">port</span>&gt;</span>8080<span class="tag">&lt;/<span class="name">port</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">path</span>&gt;</span>/<span class="tag">&lt;/<span class="name">path</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!--什么时候启动 什么时候终止--&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>tomcat-run<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">goal</span>&gt;</span>run-war-only<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">phase</span>&gt;</span>pre-integration-test<span class="tag">&lt;/<span class="name">phase</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">fork</span>&gt;</span>true<span class="tag">&lt;/<span class="name">fork</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>tomcat-shutdown<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">goal</span>&gt;</span>shutdown<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">phase</span>&gt;</span>post-integration-test<span class="tag">&lt;/<span class="name">phase</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>更详细的配置可直接参考<a target="_blank" rel="noopener" href="https://maven.apache.org/surefire/maven-failsafe-plugin/index.html">failsafe插件官网</a></p>
+</blockquote>
+<h3 id="2-4-打包相关配置"><a href="#2-4-打包相关配置" class="headerlink" title="2.4. 打包相关配置"></a>2.4. 打包相关配置</h3><p>Maven中的打包类型有：jar包、war包以及zip等方便部署的压缩包。</p>
+<h4 id="2-4-1-打Jar包相关配置"><a href="#2-4-1-打Jar包相关配置" class="headerlink" title="2.4.1. 打Jar包相关配置"></a>2.4.1. 打Jar包相关配置</h4><p>Jar包又可分为普通的jar包、可执行jar包。前者通过<code>maven-jar-plugin</code>插件就能搞定。对于打可执行的jar包有多种方式：</p>
+<ul>
+<li>使用<code>maven-jar-plugin</code>和<code>maven-dependency-plugin</code>插件打包</li>
+</ul>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-jar-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">version</span>&gt;</span>2.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span></span><br><span class="line"><span class="xml">		<span class="tag">&lt;<span class="name">archive</span>&gt;</span></span></span><br><span class="line"><span class="xml">			<span class="tag">&lt;<span class="name">manifest</span>&gt;</span></span></span><br><span class="line"><span class="xml">            <span class="comment">&lt;!-- 在MANIFEST.MF加上Class-Path项并配置依赖包 --&gt;</span></span></span><br><span class="line"><span class="xml">            <span class="tag">&lt;<span class="name">addClasspath</span>&gt;</span>true<span class="tag">&lt;/<span class="name">addClasspath</span>&gt;</span></span></span><br><span class="line"><span class="xml">            <span class="comment">&lt;!-- 指定依赖包所在目录 --&gt;</span></span></span><br><span class="line"><span class="xml">            <span class="tag">&lt;<span class="name">classpathPrefix</span>&gt;</span>lib/<span class="tag">&lt;/<span class="name">classpathPrefix</span>&gt;</span></span></span><br><span class="line"><span class="xml">            <span class="tag">&lt;<span class="name">mainClass</span>&gt;</span>com.simiam.Main<span class="tag">&lt;/<span class="name">mainClass</span>&gt;</span></span></span><br><span class="line"><span class="xml">            <span class="tag">&lt;<span class="name">manifestEntries</span>&gt;</span></span></span><br><span class="line"><span class="xml">                <span class="comment">&lt;!-- 将当前目录也加入到classpath中 --&gt;</span></span></span><br><span class="line"><span class="xml">                <span class="tag">&lt;<span class="name">Class-Path</span>&gt;</span>./<span class="tag">&lt;/<span class="name">Class-Path</span>&gt;</span></span></span><br><span class="line"><span class="xml">            <span class="tag">&lt;/<span class="name">manifestEntries</span>&gt;</span></span></span><br><span class="line"><span class="xml">			<span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span></span><br><span class="line"><span class="xml">		<span class="tag">&lt;/<span class="name">archive</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-dependency-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">version</span>&gt;</span>2.10<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">executions</span>&gt;</span></span></span><br><span class="line"><span class="xml">		<span class="tag">&lt;<span class="name">execution</span>&gt;</span></span></span><br><span class="line"><span class="xml">			<span class="tag">&lt;<span class="name">id</span>&gt;</span>copy-dependencies<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span></span><br><span class="line"><span class="xml">			<span class="tag">&lt;<span class="name">phase</span>&gt;</span>package<span class="tag">&lt;/<span class="name">phase</span>&gt;</span></span></span><br><span class="line"><span class="xml">			<span class="tag">&lt;<span class="name">goals</span>&gt;</span></span></span><br><span class="line"><span class="xml">				<span class="tag">&lt;<span class="name">goal</span>&gt;</span>copy-dependencies<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span></span><br><span class="line"><span class="xml">			<span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span></span><br><span class="line"><span class="xml">			<span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span></span><br><span class="line"><span class="xml">				<span class="tag">&lt;<span class="name">outputDirectory</span>&gt;</span>$</span><span class="template-variable">&#123;project.build.directory&#125;</span><span class="xml">/lib<span class="tag">&lt;/<span class="name">outputDirectory</span>&gt;</span></span></span><br><span class="line"><span class="xml">			<span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span></span><br><span class="line"><span class="xml">		<span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>上述配置所生成的MANIFEST.MF文件中将包含如下内容：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Class</span>-Path: lib/commons-logging-<span class="number">1</span>.<span class="number">2</span>.jar lib/commons-io-<span class="number">2</span>.<span class="number">4</span>.jar</span><br><span class="line"><span class="attribute">Main</span>-Class: com.simiam.Main</span><br></pre></td></tr></table></figure>
+
+<p><code>maven-jar-plugin</code>插件只是生成MANIFEST.MF文件，<code>maven-dependency-plugin</code>插件用于将依赖包拷贝到<code>&lt;outputDirectory&gt;$&#123;project.build.directory&#125;/lib&lt;/outputDirectory&gt;</code>指定的位置，即<code>target/lib</code>目录下。</p>
+<p>这种打包方式可以实现依赖的jar包与自研jar包分开，但配置相关的资源文件也被打进jar包中，后续想修改配置信息将很头痛，同时这种打包方式无法解决部署文件目录结构复杂的场景。</p>
+<blockquote>
+<p>延伸阅读：<code>configuration</code>下的<code>classifier</code>节点的作用是什么？在以前的插件版本中会存在<code>excludes</code>配置项不生效的问题，目前这个问题已不存在；如果出现这个问题，那一般是默认的执行目标不对导致（<code>mvn package的运行日志中maven-jar-plugin会执行两次，但目标不一样，分别为default-jar, default</code>）。</p>
+</blockquote>
+<ul>
+<li>使用<code>maven-assembly-plugin</code>插件打包</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-assembly-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">version</span>&gt;</span>2.5.5<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">phase</span>&gt;</span>package<span class="tag">&lt;/<span class="name">phase</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">goal</span>&gt;</span>single<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">archive</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">manifest</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">mainClass</span>&gt;</span>com.simiam.Main<span class="tag">&lt;/<span class="name">mainClass</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">archive</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">descriptorRefs</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">descriptorRef</span>&gt;</span>jar-with-dependencies<span class="tag">&lt;/<span class="name">descriptorRef</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">descriptorRefs</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这种打包方式会将所有依赖的jar包中的内容抽取出来，并与自研的代码合在一起打在同一个Jar包中。不过，如果项目使用了SPI机制，且多个依赖中都有SPI实现类，则用这种方式打出来的包会因为相互覆盖问题导致运行时的不确定性甚至出错。比如项目中用到了<code>Spring Framework</code>，将依赖打到一个jar包中，运行时会出现读取<code>XML schema</code>文件出错。原因是<code>Spring Framework</code>的多个jar包中包含相同的文件<code>spring.handlers</code>和<code>spring.schemas</code>，如果生成一个jar包会互相覆盖。此时可以借助<code>maven-shade-plugin</code>插件来解决这个问题。</p>
+<p>使用<code>maven-shade-plugin</code>插件解决Spring应用打包覆盖问题的配置如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-shade-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">version</span>&gt;</span>2.4.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">phase</span>&gt;</span>package<span class="tag">&lt;/<span class="name">phase</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">goal</span>&gt;</span>shade<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">transformers</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">transformer</span> <span class="attr">implementation</span>=<span class="string">&quot;org.apache.maven.plugins.shade.resource.ManifestResourceTransformer&quot;</span>&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">mainClass</span>&gt;</span>com.simiam.Main<span class="tag">&lt;/<span class="name">mainClass</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;/<span class="name">transformer</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">transformer</span> <span class="attr">implementation</span>=<span class="string">&quot;org.apache.maven.plugins.shade.resource.AppendingTransformer&quot;</span>&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">resource</span>&gt;</span>META-INF/spring.handlers<span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;/<span class="name">transformer</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">transformer</span> <span class="attr">implementation</span>=<span class="string">&quot;org.apache.maven.plugins.shade.resource.AppendingTransformer&quot;</span>&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">resource</span>&gt;</span>META-INF/spring.schemas<span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;/<span class="name">transformer</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">transformers</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用<code>maven-jar-plugin</code>和<code>maven-assembly-plugin</code>插件打包</li>
+</ul>
+<p>之前有提过，用<code>maven-jar-plugin</code>与<code>maven-dependences-plugin</code>插件打包时，配置相关的资源文件也被打进jar包中，后续想修改配置信息将很头痛，同时这种打包方式无法解决部署文件目录结构复杂的场景。因此就有了使用<code>maven-jar-plugin</code>和<code>maven-assembly-plugin</code>插件打包的方式。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-jar-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">archive</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">manifest</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">mainClass</span>&gt;</span>com.simiam.HttpIpv6StatisticTaskLauncher<span class="tag">&lt;/<span class="name">mainClass</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">addClasspath</span>&gt;</span>true<span class="tag">&lt;/<span class="name">addClasspath</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">classpathPrefix</span>&gt;</span>lib/<span class="tag">&lt;/<span class="name">classpathPrefix</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">Class-Path</span>&gt;</span>.<span class="tag">&lt;/<span class="name">Class-Path</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">archive</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">excludes</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- **表示0到N级目录，即包括conf目录 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">exclude</span>&gt;</span>conf/**/*.properties<span class="tag">&lt;/<span class="name">exclude</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">excludes</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-assembly-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">phase</span>&gt;</span>package<span class="tag">&lt;/<span class="name">phase</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">goal</span>&gt;</span>single<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appendAssemblyId</span>&gt;</span>false<span class="tag">&lt;/<span class="name">appendAssemblyId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">descriptors</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">descriptor</span>&gt;</span>src/main/assembly/package.xml<span class="tag">&lt;/<span class="name">descriptor</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">descriptors</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>里面的关键就是<code>package.xml</code>这个文件了，它告诉插件具体应该如何组织打包等。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">assembly</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3&quot;</span></span></span><br><span class="line"><span class="tag">          <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">          <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3 http://maven.apache.org/xsd/assembly-1.1.3.xsd&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span>&gt;</span>package<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">formats</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">format</span>&gt;</span>zip<span class="tag">&lt;/<span class="name">format</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">formats</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">includeBaseDirectory</span>&gt;</span>true<span class="tag">&lt;/<span class="name">includeBaseDirectory</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">fileSets</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">fileSet</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/resources<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">outputDirectory</span>&gt;</span>/<span class="tag">&lt;/<span class="name">outputDirectory</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">fileSet</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">fileSet</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span>&gt;</span>$&#123;project.build.directory&#125;<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">outputDirectory</span>&gt;</span>/<span class="tag">&lt;/<span class="name">outputDirectory</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">includes</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>*.jar<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">fileSet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">fileSets</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencySets</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependencySet</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">outputDirectory</span>&gt;</span>lib<span class="tag">&lt;/<span class="name">outputDirectory</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">excludes</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!-- &lt;exclude&gt;$&#123;project.name&#125;-$&#123;project.version&#125;&lt;/exclude&gt; --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">exclude</span>&gt;</span>$&#123;groupId&#125;:$&#123;artifactId&#125;<span class="tag">&lt;/<span class="name">exclude</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">excludes</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependencySet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencySets</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">assembly</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>maven-assembly-plugin</code>插件的详细介绍见<a target="_blank" rel="noopener" href="http://maven.apache.org/plugins/maven-assembly-plugin/">官网</a>。</p>
+</blockquote>
+<ul>
+<li>使用<code>maven-assembly-plugin</code>插件和shell脚本打包</li>
+</ul>
+<p>当然借助<code>maven-assembly-plugin</code>插件与shell脚本配合也可以实现上面的功能，但相对复杂一些；能用上一种方式解决的就不要用shell在代替<code>maven-jar-plugin</code>插件的功能。这里简单提供示例的shell脚本与bat脚本。</p>
+<blockquote>
+<p>脚本来源：<code>~/workspace/Java/news-recommend/recommend-sys/news-recommend/recommend-osf</code></p>
+</blockquote>
+<p><strong>shell脚本</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">cd</span> `dirname <span class="variable">$0</span>`</span><br><span class="line">BIN_DIR=`<span class="built_in">pwd</span>`</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line">DEPLOY_DIR=`<span class="built_in">pwd</span>`</span><br><span class="line">LOGS_DIR=<span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">if</span> [ -n <span class="string">&quot;<span class="variable">$LOGS_FILE</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    LOGS_DIR=`dirname <span class="variable">$LOGS_FILE</span>`</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    LOGS_DIR=<span class="variable">$DEPLOY_DIR</span>/logs</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="keyword">if</span> [ ! -d <span class="variable">$LOGS_DIR</span> ]; <span class="keyword">then</span></span><br><span class="line">    mkdir <span class="variable">$LOGS_DIR</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line">STDOUT_FILE=<span class="variable">$LOGS_DIR</span>/stdout.log</span><br><span class="line">JVM_ERR_FILE=<span class="string">&quot; -XX:ErrorFile=<span class="variable">$DEPLOY_DIR</span>/hs_err_pid%p.log &quot;</span></span><br><span class="line"></span><br><span class="line">CONF_DIR=<span class="variable">$DEPLOY_DIR</span>/conf</span><br><span class="line">LIB_DIR=<span class="variable">$DEPLOY_DIR</span>/lib</span><br><span class="line">LIB_JARS=`ls <span class="variable">$LIB_DIR</span>|grep .jar|awk <span class="string">&#x27;&#123;print &quot;&#x27;</span><span class="variable">$LIB_DIR</span><span class="string">&#x27;/&quot;$0&#125;&#x27;</span>|tr <span class="string">&quot;\n&quot;</span> <span class="string">&quot;:&quot;</span>`</span><br><span class="line"></span><br><span class="line">JAVA_DEBUG_OPTS=<span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$1</span>&quot;</span> = <span class="string">&quot;debug&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    JAVA_DEBUG_OPTS=<span class="string">&quot; -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n &quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line">JAVA_JMX_OPTS=<span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$1</span>&quot;</span> = <span class="string">&quot;jmx&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    JAVA_JMX_OPTS=<span class="string">&quot; -Dcom.sun.management.jmxremote -Djava.rmi.server.hostname=localhost -Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false &quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line">JAVA_MEM_OPTS=<span class="string">&quot;&quot;</span></span><br><span class="line">BITS=`java -version 2&gt;&amp;1 | grep -i 64-bit`</span><br><span class="line"><span class="keyword">if</span> [ -n <span class="string">&quot;<span class="variable">$BITS</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    JAVA_MEM_OPTS=<span class="string">&quot; -server -Xmx4g -Xms4g -XX:NewRatio=1 -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=256m -Xss256k -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -XX:+UseCMSCompactAtFullCollection -XX:LargePageSizeInBytes=128m -XX:+UseFastAccessorMethods -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=70 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/data/wwwroot/news-recommend-osf/ &quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    JAVA_MEM_OPTS=<span class="string">&quot; -server -Xms1g -Xmx1g -XX:PermSize=128m -XX:SurvivorRatio=2 -XX:+UseParallelGC &quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$BIN_DIR</span></span><br><span class="line"></span><br><span class="line">nohup java <span class="variable">$JAVA_OPTS</span> <span class="variable">$JAVA_MEM_OPTS</span> <span class="variable">$JVM_ERR_FILE</span> <span class="variable">$JAVA_DEBUG_OPTS</span> <span class="variable">$JAVA_JMX_OPTS</span> -classpath <span class="variable">$BIN_DIR</span>:<span class="variable">$CONF_DIR</span>:<span class="variable">$LIB_JARS</span> com.simiam.recommend.osf.RecommendOsfLauncher &gt; <span class="variable">$STDOUT_FILE</span> 2&gt;&amp;1 &amp;</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;JAVA_JMX_OPTS: <span class="variable">$JAVA_JMX_OPTS</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;OK!&quot;</span></span><br><span class="line">PIDS=`ps -f | grep java | grep <span class="string">&quot;<span class="variable">$DEPLOY_DIR</span>&quot;</span> | awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>`</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;PID: <span class="variable">$PIDS</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;STDOUT: <span class="variable">$STDOUT_FILE</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>bat脚本</strong></p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">@<span class="built_in">echo</span> off &amp; <span class="built_in">setlocal</span> enabledelayedexpansion</span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span> LIB_JARS=&quot;&quot;</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> ..\lib</span><br><span class="line"><span class="keyword">for</span> <span class="variable">%%i</span> <span class="keyword">in</span> (*) <span class="keyword">do</span> <span class="built_in">set</span> LIB_JARS=<span class="variable">!LIB_JARS!</span>;..\lib\<span class="variable">%%i</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> ..\bin</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> &quot;&quot;%<span class="number">1</span>&quot;&quot; == &quot;&quot;debug&quot;&quot; <span class="keyword">goto</span> debug</span><br><span class="line"><span class="keyword">if</span> &quot;&quot;%<span class="number">1</span>&quot;&quot; == &quot;&quot;jmx&quot;&quot; <span class="keyword">goto</span> jmx</span><br><span class="line"></span><br><span class="line">java -Xms64m -Xmx1024m -XX:MaxPermSize=<span class="number">64</span>M -cp ..\conf;<span class="variable">%LIB_JARS%</span> com.simiam.recommend.osf.RecommendOsfLauncher</span><br><span class="line"><span class="keyword">goto</span> end</span><br><span class="line"></span><br><span class="line">:debug</span><br><span class="line">java -Xms64m -Xmx1024m -XX:MaxPermSize=<span class="number">64</span>M -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=<span class="number">8787</span>,server=y,suspend=n -cp ..\conf;<span class="variable">%LIB_JARS%</span> com.simiam.recommend.osf.RecommendOsfLauncher</span><br><span class="line"><span class="keyword">goto</span> end</span><br><span class="line"></span><br><span class="line">:jmx</span><br><span class="line">java -Xms64m -Xmx1024m -XX:MaxPermSize=<span class="number">64</span>M -Dcom.sun.management.jmxremote.port=<span class="number">1099</span> -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -cp ..\conf;<span class="variable">%LIB_JARS%</span> com.simiam.recommend.osf.RecommendOsfLauncher</span><br><span class="line"><span class="keyword">goto</span> end</span><br><span class="line"></span><br><span class="line">:end</span><br><span class="line"><span class="built_in">pause</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-4-2-打War包相关配置"><a href="#2-4-2-打War包相关配置" class="headerlink" title="2.4.2. 打War包相关配置"></a>2.4.2. 打War包相关配置</h4><p>打war包的核心插件为<code>maven-war-plugin</code>，因为war包不涉及配置文件独立配置问题，同时其目录结构需要符合servlet规范，因此其打包方式相对简单，基本上只要参考<a target="_blank" rel="noopener" href="https://maven.apache.org/plugins/maven-war-plugin/">官网</a>即可。如果说非要注意的无非就以下一点：</p>
+<ul>
+<li>由于<code>servlet3.0</code>及以上版本的来说，工程中可以不提供web.xml文件，如果用<code>maven-war-plugin</code>插件的旧版本（3.0.0版本以下）在打包时会报找不到web.xml文件而中止打包，在这种情况下需要在插件配置节点中设置<code>&lt;failOnMissingWebXml&gt;false&lt;/failOnMissingWebXml&gt;</code>，举例如下：</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-war-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">failOnMissingWebXml</span>&gt;</span>false<span class="tag">&lt;/<span class="name">failOnMissingWebXml</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 使用web.xml文件路径 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">webXml</span>&gt;</span>src/config/dev/web.xml<span class="tag">&lt;/<span class="name">webXml</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 将某些需要的文件拷贝到WEB-INF下 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">webResources</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/config/dev<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">targetPath</span>&gt;</span>WEB-INF<span class="tag">&lt;/<span class="name">targetPath</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">includes</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.xml<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">webResources</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-5-依赖分析相关配置"><a href="#2-5-依赖分析相关配置" class="headerlink" title="2.5.. 依赖分析相关配置"></a>2.5.. 依赖分析相关配置</h3><p>我们会经常碰到这样的问题，在pom中引入了一个jar，里面默认依赖了其他的jar包。jar包一多的时候，我们很难确认哪些jar是我们需要的，哪些jar是冲突的。此时会出现很多莫名其妙的问题，什么类找不到啦，方法找不到啦，这种可能的原因就是jar的版本不是我们所设想的版本，但是我们也不知道低版本的jar是从哪里引入的。此时就出现<code>maven-enforcer-plugin</code>插件，其正是用于排查及解决此问题的有力工具。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-enforcer-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.4.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">id</span>&gt;</span>enforce<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">rules</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">dependencyConvergence</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">rules</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">goal</span>&gt;</span>enforce<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在进行mvn clean package的时候，会在console中打印出来冲突的jar版本和其父pom，如下：</p>
+<figure class="highlight profile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Dependency convergence error for org.slf4j:slf4j-api1.6.1 paths to dependency are:</span><br><span class="line"> </span><br><span class="line">[ERROR]</span><br><span class="line">Dependency convergence error for org.slf4j:slf4j-api:<span class="number">1.6</span><span class="number">.1</span> paths to dependency are:</span><br><span class="line">+-org.myorg:my-project:<span class="number">1.0</span><span class="number">.0</span>-SNAPSHOT</span><br><span class="line">  +-org.slf4j:slf4j-jdk14:<span class="number">1.6</span><span class="number">.1</span></span><br><span class="line">    +-org.slf4j:slf4j-api:<span class="number">1.6</span><span class="number">.1</span></span><br><span class="line">and</span><br><span class="line">+-org.myorg:my-project:<span class="number">1.0</span><span class="number">.0</span>-SNAPSHOT</span><br><span class="line">  +-org.slf4j:slf4j-nop:<span class="number">1.6</span><span class="number">.0</span></span><br><span class="line">    +-org.slf4j:slf4j-api:<span class="number">1.6</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
+
+<p>这个时候，我们看一眼就知道应该把哪个<code>dependency</code>中的哪个jar进行<code>exclude</code>。</p>
+<blockquote>
+<p>插件详细配置说明见<a target="_blank" rel="noopener" href="http://maven.apache.org/enforcer/enforcer-rules/index.html">插件官网</a></p>
+</blockquote>
+<h3 id="2-6-SpringBoot插件配置"><a href="#2-6-SpringBoot插件配置" class="headerlink" title="2.6. SpringBoot插件配置"></a>2.6. SpringBoot插件配置</h3><p>因为<code>spring-boot-maven-plugin</code>插件已经为我们准备了一切，如果无特别需求，我们基本只需要简单引入即可：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mainClass</span>&gt;</span>com.simiam.PerfHttpIpv6App<span class="tag">&lt;/<span class="name">mainClass</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 因为spring-boot-maven-plugin未提供源码打包插件，所以我们需要自己添加 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-source-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.0.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">id</span>&gt;</span>attach-sources<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">phase</span>&gt;</span>verify<span class="tag">&lt;/<span class="name">phase</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">goal</span>&gt;</span>jar-no-fork<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-7-小结"><a href="#2-7-小结" class="headerlink" title="2.7. 小结"></a>2.7. 小结</h3><p>还有非常多的插件，就不在这里一一介绍了，各位可以直接看<a target="_blank" rel="noopener" href="https://maven.apache.org/plugins/index.html">官网</a></p>
+<ul>
+<li>maven-shade-plugin</li>
+<li>maven-dependences-plugin</li>
+<li>exec-maven-plugin</li>
+<li>……</li>
+</ul>
+<h2 id="3-profile配置"><a href="#3-profile配置" class="headerlink" title="3. profile配置"></a>3. profile配置</h2><blockquote>
+<p>通过profile中定义的property，基于工程中的properties模板生成最终的properties文件。<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/DERRANTCM/article/details/71600274">利用profile实现多环境配置文件打包问题</a></p>
+</blockquote>
+<h3 id="什么是profile配置？"><a href="#什么是profile配置？" class="headerlink" title="什么是profile配置？"></a>什么是profile配置？</h3><p>profile是一组配置的集合，用来设置或者覆盖Maven构建的默认配置。通过profile配置，可以为不同的环境定制构建过程，例如<code>Producation</code>和<code>Development</code>环境。</p>
+<p>Profile在pom.xml中使用<code>activeProfiles或profiles</code>元素指定，并且可以用很多方式触发。Profile 在构建时修改POM，并且为变量设置不同的目标环境（例如，在开发、测试和产品环境中的数据库服务器路径）。</p>
+<h3 id="Profile目前主要有三种类型："><a href="#Profile目前主要有三种类型：" class="headerlink" title="Profile目前主要有三种类型："></a>Profile目前主要有三种类型：</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>在哪里定义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Per Project</td>
+<td>定义在工程pom.xml中</td>
+</tr>
+<tr>
+<td>Per User</td>
+<td>定义在Maven设置xml文件中（%USER_HOME%/.m2/settings.xml）</td>
+</tr>
+<tr>
+<td>Global</td>
+<td>定义在Maven全局配置xml文件中（%M2_HOME%/conf/settings.xml）</td>
+</tr>
+</tbody></table>
+<h3 id="Profile激活方式"><a href="#Profile激活方式" class="headerlink" title="Profile激活方式"></a>Profile激活方式</h3><p>Maven的Profile能够通过几种不同的方式激活：</p>
+<ul>
+<li>显式使用命令控制台输入</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># dev是profile的ID</span></span><br><span class="line">mvn install -Pdev </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>通过maven设置</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 在setting.xml文件中添加如下信息，setting.xml位于上节介绍的三种profile类型的相应位置下。</span><br><span class="line"><span class="tag">&lt;<span class="name">activeProfiles</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">activeProfile</span>&gt;</span>dev<span class="tag">&lt;/<span class="name">activeProfile</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activeProfiles</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>以下三种激活方式不常用，这里不作进一步介绍，有需要的请直接参考<a target="_blank" rel="noopener" href="http://wiki.jikexueyuan.com/project/maven/build-profiles.html">这里</a>。</p>
+<ul>
+<li>基于环境变量（用户/系统变量）</li>
+<li>操作系统配置（例如，Windows family）</li>
+<li>现存/缺失文件</li>
+</ul>
+<blockquote>
+<p><strong>注意：</strong>profile节点下定义的元素都会覆盖其所在Pom文件中定义的同名的节点，如同名plugin，properties中的同名属性等。</p>
+</blockquote>
+<h3 id="Spring框架的profile机制与Maven的profile机制的区别"><a href="#Spring框架的profile机制与Maven的profile机制的区别" class="headerlink" title="Spring框架的profile机制与Maven的profile机制的区别"></a>Spring框架的profile机制与Maven的profile机制的区别</h3><ul>
+<li>Spring框架提供的profile机制主要作用于运行时，即应用程序在运行时使用spring提供的profile相关机制来决定应用程序的各种动态行为。</li>
+<li>Maven的profile机制则作用于构建时期，其通常用于生成各种环境（开发、测试、生产）下的与配置相关的资源文件，而这些生成的不同环境的配置文件在应用程序在相应环境下运行时所需要的。</li>
+<li>这两个Profile机制是可以配合使用以实现不同环境下从构建到部署的全程控制。</li>
+</ul>
+<p>比如对于springboot项目来说，可通过maven的profile中添加env属性：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">profile</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span>&gt;</span>dev<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span>&gt;</span>dev<span class="tag">&lt;/<span class="name">env</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>当运行<code>mvn install -Pdev</code>时，会复制<code>src/main/resources/application.yml</code>模板文件复制至目标目录下，并将其中的<code>spring.profiles.active: $&#123;env&#125;</code> 配置项的<code>$&#123;env&#125;</code>占位符替换成<code>dev</code>。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8080</span></span><br><span class="line">  <span class="attr">servlet:</span></span><br><span class="line">    <span class="attr">context-path:</span> <span class="string">/perf</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">profiles:</span></span><br><span class="line">    <span class="attr">active:</span> <span class="string">$&#123;env&#125;</span>  <span class="comment"># 将被替换成目标profile的env属性值</span></span><br><span class="line">  <span class="attr">datasource:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">perf-ds</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">com.alibaba.druid.pool.DruidDataSource</span></span><br><span class="line">    <span class="attr">driver-class-name:</span> <span class="string">org.postgresql.Driver</span></span><br><span class="line">    <span class="attr">druid:</span></span><br><span class="line">      <span class="attr">filters:</span> <span class="string">stat</span></span><br><span class="line">      <span class="attr">maxActive:</span> <span class="number">20</span></span><br><span class="line">      <span class="attr">initialSize:</span> <span class="number">1</span></span><br><span class="line">      <span class="attr">maxWait:</span> <span class="number">60000</span></span><br><span class="line">      <span class="attr">minIdle:</span> <span class="number">1</span></span><br><span class="line">      <span class="attr">timeBetweenEvictionRunsMillis:</span> <span class="number">60000</span></span><br><span class="line">      <span class="attr">minEvictableIdleTimeMillis:</span> <span class="number">300000</span></span><br><span class="line">      <span class="attr">testWhileIdle:</span> <span class="literal">true</span></span><br><span class="line">      <span class="attr">testOnBorrow:</span> <span class="literal">false</span></span><br><span class="line">      <span class="attr">testOnReturn:</span> <span class="literal">false</span></span><br><span class="line">      <span class="attr">poolPreparedStatements:</span> <span class="literal">true</span></span><br><span class="line">      <span class="attr">maxOpenPreparedStatements:</span> <span class="number">20</span></span><br><span class="line"></span><br><span class="line"><span class="attr">mybatis:</span></span><br><span class="line">  <span class="attr">mapper-locations:</span> <span class="string">classpath:mapping/*.xml</span></span><br><span class="line">  <span class="attr">type-aliases-package:</span> <span class="string">com.simiam.http.entity</span></span><br><span class="line"></span><br><span class="line"><span class="attr">pagehelper:</span></span><br><span class="line">  <span class="attr">helperDialect:</span> <span class="string">postgresql</span></span><br><span class="line">  <span class="attr">reasonable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">supportMethodsArguments:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">params:</span> <span class="string">count=countSql</span></span><br><span class="line"></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">profiles:</span> <span class="string">dev</span></span><br><span class="line">  <span class="attr">datasource:</span></span><br><span class="line">    <span class="attr">url:</span> <span class="string">jdbc:postgresql://localhost:5432/perf?currentSchema=dev</span></span><br><span class="line">    <span class="attr">username:</span> <span class="string">*****</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">*****</span></span><br><span class="line"></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">profiles:</span> <span class="string">prod</span></span><br><span class="line">  <span class="attr">datasource:</span></span><br><span class="line">    <span class="attr">url:</span> <span class="string">jdbc:postgresql://localhost:5432/perf?currentSchema=prod</span></span><br><span class="line">    <span class="attr">username:</span> <span class="string">*****</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">*****</span></span><br></pre></td></tr></table></figure>
+
+<p>最终生成的<code>application.yml</code>将被springboot应用程序使用，其会根据激活的profile选择对应的配置项，连接对应的数据库实例。</p>
+<h2 id="4-其它常见问题汇总"><a href="#4-其它常见问题汇总" class="headerlink" title="4. 其它常见问题汇总"></a>4. 其它常见问题汇总</h2><blockquote>
+<p>本节主要记录日常开发工作中使用maven所挖过、踩过、填过的坑。（不断更新）</p>
+</blockquote>
+<ul>
+<li>使用<code>import scope</code>引入<code>spring-boot-dependencies</code>时无法引用POM中定义的property、pluginManagement等一系列<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/40606267/how-does-importing-maven-dependencies-impact-plugin-management">问题</a></li>
+</ul>
+<blockquote>
+<p>转载请注明出处：<a target="_blank" rel="noopener" href="https://simiam.com/">simiam.com</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SpringBoot/" rel="tag"># SpringBoot</a>
+          
+            <a href="/tags/Maven/" rel="tag"># Maven</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/17/Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" rel="next" title="学习便签">
+                <i class="fa fa-chevron-left"></i> 学习便签
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/15/VUE%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9A%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/" rel="prev" title="VUE学习笔记：环境准备">
+                VUE学习笔记：环境准备 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/simiam.jpg"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/monkeychen" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/cza55007" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              我的收藏
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://simiam.com" title="Simiam" target="_blank">Simiam</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://ifeve.com" title="并发编程网" target="_blank">并发编程网</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://readhub.me" title="Readhub" target="_blank">Readhub</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Maven%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="nav-number">1.</span> <span class="nav-text">Maven学习笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E4%BE%9D%E8%B5%96%E5%A3%B0%E6%98%8E%E4%B8%ADscope%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">1.1.</span> <span class="nav-text">1. 依赖声明中scope的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Maven%E6%9E%84%E5%BB%BA%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.</span> <span class="nav-text">2. Maven构建配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Maven%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%A0%87%E5%87%86%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1. Maven项目的标准目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E8%B5%84%E6%BA%90%E5%A4%84%E7%90%86%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2. 资源处理相关配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E6%B5%8B%E8%AF%95%E7%9B%B8%E5%85%B3%E6%8F%92%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3. 测试相关插件配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">2.3.1. 单元测试配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-%E9%9B%86%E6%88%90%E6%B5%8B%E8%AF%95%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">2.3.2. 集成测试配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E6%89%93%E5%8C%85%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.4.</span> <span class="nav-text">2.4. 打包相关配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-1-%E6%89%93Jar%E5%8C%85%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">2.4.1. 打Jar包相关配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-%E6%89%93War%E5%8C%85%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">2.4.2. 打War包相关配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-%E4%BE%9D%E8%B5%96%E5%88%86%E6%9E%90%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.5.</span> <span class="nav-text">2.5.. 依赖分析相关配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-SpringBoot%E6%8F%92%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.6.</span> <span class="nav-text">2.6. SpringBoot插件配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7-%E5%B0%8F%E7%BB%93"><span class="nav-number">1.2.7.</span> <span class="nav-text">2.7. 小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-profile%E9%85%8D%E7%BD%AE"><span class="nav-number">1.3.</span> <span class="nav-text">3. profile配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFprofile%E9%85%8D%E7%BD%AE%EF%BC%9F"><span class="nav-number">1.3.1.</span> <span class="nav-text">什么是profile配置？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Profile%E7%9B%AE%E5%89%8D%E4%B8%BB%E8%A6%81%E6%9C%89%E4%B8%89%E7%A7%8D%E7%B1%BB%E5%9E%8B%EF%BC%9A"><span class="nav-number">1.3.2.</span> <span class="nav-text">Profile目前主要有三种类型：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Profile%E6%BF%80%E6%B4%BB%E6%96%B9%E5%BC%8F"><span class="nav-number">1.3.3.</span> <span class="nav-text">Profile激活方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring%E6%A1%86%E6%9E%B6%E7%9A%84profile%E6%9C%BA%E5%88%B6%E4%B8%8EMaven%E7%9A%84profile%E6%9C%BA%E5%88%B6%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.3.4.</span> <span class="nav-text">Spring框架的profile机制与Maven的profile机制的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%85%B6%E5%AE%83%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB"><span class="nav-number">1.4.</span> <span class="nav-text">4. 其它常见问题汇总</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-cloud"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">simiam</span>
+  <span>&nbsp;
+    <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn">
+      <p style="float:left; height:20px;line-height:20px;margin: 7px 0px 0px 5px; color:#939393;">闽ICP备18023112号</p>
+    </a>
+  </span>
+  <span style="width:300px;margin:0 auto; padding:20px 0;">&nbsp;
+		<a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=35012102500070" >
+      <img src="/images/batb.png" style="float:left; padding-top:7px; padding-left:30px;"/>
+      <p style="float:left; height:20px;line-height:20px;margin: 7px 0px 0px 5px; color:#939393; padding-right: 80px;">闽公网安备 35012102500070号</p>
+    </a>
+	</span>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://cloudnoter.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://cloudnoter.com/2018/10/11/Maven%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/';
+          this.page.identifier = '2018/10/11/Maven使用总结/';
+          this.page.title = 'Maven学习笔记';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://cloudnoter.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

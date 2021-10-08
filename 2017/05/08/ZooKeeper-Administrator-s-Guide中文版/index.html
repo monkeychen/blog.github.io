@@ -1,0 +1,1296 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ZooKeeper" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Simiam" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/icon.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="本文档主要介绍ZooKeeper部署及日常管理  安装部署本章节包含与ZooKeeper部署有关的内容，具体来说包含下面三部分内容：  系统软硬件需求 集群部署（安装） 单机开发环境部署（安装）  前两部分主要介绍如何在数据中心等生产环境上安装部署ZooKeeper，第三部分则介绍如何在非生产环境上（如为了评估、测试、开发等目的）安装部署ZooKeeper。 系统软硬件需求支持的OS平台ZooK">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ZooKeeper Administrator&#39;s Guide中文版">
+<meta property="og:url" content="http://cloudnoter.com/2017/05/08/ZooKeeper-Administrator-s-Guide%E4%B8%AD%E6%96%87%E7%89%88/index.html">
+<meta property="og:site_name" content="Simiam">
+<meta property="og:description" content="本文档主要介绍ZooKeeper部署及日常管理  安装部署本章节包含与ZooKeeper部署有关的内容，具体来说包含下面三部分内容：  系统软硬件需求 集群部署（安装） 单机开发环境部署（安装）  前两部分主要介绍如何在数据中心等生产环境上安装部署ZooKeeper，第三部分则介绍如何在非生产环境上（如为了评估、测试、开发等目的）安装部署ZooKeeper。 系统软硬件需求支持的OS平台ZooK">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-05-07T19:03:24.000Z">
+<meta property="article:modified_time" content="2017-05-13T15:28:29.000Z">
+<meta property="article:author" content="simiam">
+<meta property="article:tag" content="ZooKeeper">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://cloudnoter.com/2017/05/08/ZooKeeper-Administrator-s-Guide中文版/"/>
+
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-5437280150717848",
+    enable_page_level_ads: true
+  });
+</script>
+
+
+  <title> ZooKeeper Administrator's Guide中文版 | Simiam </title>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d08aa5fb4a0152d38b6afc7b4dbade86";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Simiam</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">求知若渴，虚怀若谷</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cloudnoter.com/2017/05/08/ZooKeeper-Administrator-s-Guide%E4%B8%AD%E6%96%87%E7%89%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/simiam.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Simiam">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                ZooKeeper Administrator's Guide中文版
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-08T03:03:24+08:00">
+                2017-05-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Translation/" itemprop="url" rel="index">
+                    <span itemprop="name">Translation</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/05/08/ZooKeeper-Administrator-s-Guide%E4%B8%AD%E6%96%87%E7%89%88/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/05/08/ZooKeeper-Administrator-s-Guide中文版/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本文档主要介绍ZooKeeper部署及日常管理</p>
+</blockquote>
+<h2 id="安装部署"><a href="#安装部署" class="headerlink" title="安装部署"></a>安装部署</h2><p>本章节包含与ZooKeeper部署有关的内容，具体来说包含下面三部分内容：</p>
+<ul>
+<li><a href="#1.1">系统软硬件需求</a></li>
+<li><a href="#1.2">集群部署（安装）</a></li>
+<li><a href="#1.3">单机开发环境部署（安装）</a></li>
+</ul>
+<p>前两部分主要介绍如何在数据中心等生产环境上安装部署ZooKeeper，第三部分则介绍如何在非生产环境上（如为了评估、测试、开发等目的）安装部署ZooKeeper。</p>
+<h3 id="系统软硬件需求"><a href="#系统软硬件需求" class="headerlink" title="系统软硬件需求"></a>系统软硬件需求<span id="1.1"></span></h3><h4 id="支持的OS平台"><a href="#支持的OS平台" class="headerlink" title="支持的OS平台"></a>支持的OS平台</h4><p>ZooKeeper框架由多个组件组成，有的组件支持全部平台，而还有一些组件只支持部分平台，详细支持情况如下：</p>
+<ul>
+<li><strong>Client：</strong>它是一个<code>Java</code>客户端连接库，上层应用系统通过它连接至ZooKeeper集群。</li>
+<li><strong>Server：</strong>它是运行在ZooKeeper集群节点上的一个<code>Java</code>后台服务程序。</li>
+<li><strong>Native Client：</strong>它是一个用<code>C</code>语言实现的客户端连接库，其与<code>Java</code>客户端库一样，上层应用（非<code>Java</code>实现）通过它连接至ZooKeeper集群。</li>
+<li><strong>Contrib：</strong>它是指多个可选的扩展组件。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">操作系统</th>
+<th align="center">Client</th>
+<th align="center">Server</th>
+<th align="center">Native Client</th>
+<th align="center">Contrib</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">GNU/Linux</td>
+<td align="center">D + P</td>
+<td align="center">D + P</td>
+<td align="center">D + P</td>
+<td align="center">D + P</td>
+</tr>
+<tr>
+<td align="left">Solaris</td>
+<td align="center">D + P</td>
+<td align="center">D + P</td>
+<td align="center">/</td>
+<td align="center">/</td>
+</tr>
+<tr>
+<td align="left">FreeBSD</td>
+<td align="center">D + P</td>
+<td align="center">D + P</td>
+<td align="center">/</td>
+<td align="center">/</td>
+</tr>
+<tr>
+<td align="left">Windows</td>
+<td align="center">D + P</td>
+<td align="center">D + P</td>
+<td align="center">/</td>
+<td align="center">/</td>
+</tr>
+<tr>
+<td align="left">Mac OS X</td>
+<td align="center">D</td>
+<td align="center">D</td>
+<td align="center">/</td>
+<td align="center">/</td>
+</tr>
+</tbody></table>
+<span id="more"></span>
+
+<blockquote>
+<p><strong>D：支持开发环境， P：支持生成环境， /：不支持任何环境</strong></p>
+</blockquote>
+<p>上表中未显式注明支持的组件在相应平台上可能不能正常运行。虽然ZooKeeper社区会尽量修复在未支持平台上发现的BUG，但并无法保证会修复全部BUG。</p>
+<h4 id="软件要求"><a href="#软件要求" class="headerlink" title="软件要求"></a>软件要求</h4><p>ZooKeeper需要运行在JDK6或以上版本中。若ZooKeeper以集群模式部署，则推荐的节点数至少为3，同时建议部署在独立的服务器上。在Yahoo!，ZooKeeper通常部署在运行RHEL系统的服务器上（服务器配置：双核CPU、2G内存、80G容量IDE硬盘）。</p>
+<h3 id="集群部署（安装）"><a href="#集群部署（安装）" class="headerlink" title="集群部署（安装）"></a>集群部署（安装）<span id="1.2"></span></h3><p>为了保证ZooKeeper服务的可靠性，您应该以集群模式部署ZooKeeper服务。只要半数以上的集群节点在线，服务将是可用的。因为ZooKeeper需要半数以上节点同意才能选举出Leader，所以建议ZooKeeper集群的节点数为奇数个。举个例子，对于有四个节点的集群只能应付一个节点宕机的异常，如果有两个节点宕机，则剩下两个节点未达到法定的半数以上选票，ZooKeeper服务将变为不可用。而如果集群有五个节点，则集群就可以应付二个节点宕机的异常。</p>
+<blockquote>
+<p><strong>提示：</strong><br>正如<a target="_blank" rel="noopener" href="https://zookeeper.apache.org/doc/r3.4.10/zookeeperStarted.html">《ZooKeeper快速入门》</a>文档中所提到的，至少需要三个节点的ZooKeeper集群才具备容灾特性，因此我们强烈建议集群节点数为奇数。<br>通常情况下，生产环境下，集群节点数只需要三个。但如果为了在服务维护场景下也保证最大的可靠性，您也许会部署五个节点的集群。原因很简单，如果集群节点为三个，当你对其中一个节点进行维护操作，将很有可能因维护操作导致集群异常。而如果集群节点为5个，那你可以直接将维护节点下线，此时集群仍然可正常提供服务（就算四个节点中的任意一个突然宕机）。<br>您的冗余措施应该包括生产环境的各个方面。如果你部署三个节点的ZooKeeper集群，但你却将这三个节点都连接至同一个网络交换机，那么当交换机宕掉时，你的集群服务也一样是不可用的。</p>
+</blockquote>
+<p>关于如何配置服务器使其成为集群中的一个成员节点的详细步骤如下（每个节点的操作类似）：</p>
+<ul>
+<li>1.安装JDK，你可以使用本地包管理系统安装，也可以从JDK官网<a target="_blank" rel="noopener" href="http://java.sun.com/javase/downloads/index.jsp">下载</a></li>
+<li>2.设置Java堆相关参数，这对于避免内存swap来说非常重要。因为频繁的swap将严重降低ZooKeeper集群的性能。您可以通过使用压力负载测试来决定一个合适的值，确保该值刚好低于触发swap的阈值。保守的做法是：当节点拥有4G的内存，则设置-xmx=3G。</li>
+<li>3.安装ZooKeeper，您可以从<a target="_blank" rel="noopener" href="http://zookeeper.apache.org/releases.html">官网</a>下载：<a target="_blank" rel="noopener" href="http://zookeeper.apache.org/releases.html">http://zookeeper.apache.org/releases.html</a></li>
+<li>4.创建一个配置文件，这个文件可以随便命名，您可以先使用如下设置参数：</li>
+</ul>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">tickTime</span>=<span class="number">2000</span></span><br><span class="line"><span class="attribute">dataDir</span>=/var/lib/zookeeper/</span><br><span class="line"><span class="attribute">clientPort</span>=<span class="number">2181</span></span><br><span class="line"><span class="attribute">initLimit</span>=<span class="number">5</span></span><br><span class="line"><span class="attribute">syncLimit</span>=<span class="number">2</span></span><br><span class="line"><span class="attribute">server</span>.<span class="number">1</span>=zoo<span class="number">1</span>:<span class="number">2888</span>:<span class="number">3888</span></span><br><span class="line"><span class="attribute">server</span>.<span class="number">2</span>=zoo<span class="number">2</span>:<span class="number">2888</span>:<span class="number">3888</span></span><br><span class="line"><span class="attribute">server</span>.<span class="number">3</span>=zoo<span class="number">3</span>:<span class="number">2888</span>:<span class="number">3888</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>您可以在<a href="#2.10">配置参数</a>章节中找到上面这些参数及其他参数的解释说明。这里简要说一下：集群中的每个节点都需要知道集群中其它节点成员的连接信息。通过上述配置文件中格式为<code>server.id=host:port:port</code>的若干行配置信息您就可以实现这个目标。<code>host</code>与<code>port</code>意思很简单明了，不多作说明。而<code>server.$&#123;id&#125;</code>代表节点ID，你需要为每个节点创建一个名为<code>myid</code>的文件，该文件存放于参数<code>dataDir</code>所指向的目录下。</p>
+</blockquote>
+<ul>
+<li>5.<code>myid</code>文件的内容只有一行，其值为配置参数<code>server.$&#123;id&#125;</code>中<code>$&#123;id&#125;</code>的实际值。即服务器1对应的<code>myid</code>文件的内容为1，这个值在集群中必须保证其唯一性，同时必须处于[1, 255]之间。</li>
+<li>6.如果你已经创建好配置文件（如zoo.cfg），你就可以启动ZooKeeper服务：</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ java -cp zookeeper<span class="selector-class">.jar</span>:lib/slf4j-api-<span class="number">1.6</span>.<span class="number">1</span><span class="selector-class">.jar</span>:lib/</span><br><span class="line">slf4j-log4j12-<span class="number">1.6</span>.<span class="number">1</span><span class="selector-class">.jar</span>:lib/log4j-<span class="number">1.2</span>.<span class="number">15</span><span class="selector-class">.jar</span>:conf \</span><br><span class="line">org<span class="selector-class">.apache</span><span class="selector-class">.zookeeper</span><span class="selector-class">.server</span><span class="selector-class">.quorum</span><span class="selector-class">.QuorumPeerMain</span> zoo.cfg</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>QuorumPeerMain启动一个ZooKeeper服务，JMX管理bean也同时被注册，通过这些JMX管理bean，你就可以在JMX管理控制台上对ZooKeeper服务进行监控管理。ZooKeeper的<a target="_blank" rel="noopener" href="https://zookeeper.apache.org/doc/r3.4.10/zookeeperJMX.html">JMX文档</a>有更详细的介绍信息。同时，你也可以在<code>$ZOOKEEPER_HOME/bin</code>目录下找到ZooKeeper的启动脚本<code>zkServer.sh</code>。</p>
+</blockquote>
+<ul>
+<li>7.接下来你就可以连接至ZooKeeper节点来测试部署是否成功。<br>在<code>Java</code>环境下，你可以运行下面的命令连接至已启动的ZooKeeper服务节点并执行一些简单的操作</li>
+</ul>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ bin/zkCli.sh -<span class="keyword">server</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">2181</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="单机开发环境部署介绍"><a href="#单机开发环境部署介绍" class="headerlink" title="单机开发环境部署介绍"></a>单机开发环境部署介绍<span id="1.3"></span></h3><p>如果你想部署ZooKeeper以便于开发测试，那你可以使用单机部署模式。然后安装Java或C客户端连接库，同时在配置文件中将服务器信息与开发机绑定。<br>具体安装部署步骤也集群部署模式类似，唯一不同的是zoo.cfg配置文件更简单一些。你可以从<a target="_blank" rel="noopener" href="https://zookeeper.apache.org/doc/r3.4.10/zookeeperStarted.html">《ZooKeeper快速入门》</a>文档中的相关章节获取详细的操作步骤。<br>关于安装客户端连接库的相关信息，你可以从<a target="_blank" rel="noopener" href="https://zookeeper.apache.org/doc/r3.4.10/zookeeperProgrammers.html">ZooKeeper Programmer’s Guide</a>文件的Bindings章节中获取。</p>
+<h2 id="维护管理"><a href="#维护管理" class="headerlink" title="维护管理"></a>维护管理</h2><p>这部分包含ZooKeeper运行与维护相关的信息，其包含如下几个主题：</p>
+<ul>
+<li><a href="#2.1">ZooKeeper集群部署规划</a></li>
+<li><a href="#2.2">Provisioning</a></li>
+<li><a href="#2.3">ZooKeeper的强项与使用限制</a></li>
+<li><a href="#2.4">管理</a></li>
+<li><a href="#2.5">维护</a></li>
+<li><a href="#2.6">Supervision</a></li>
+<li><a href="#2.7">Monitoring</a></li>
+<li><a href="#2.8">日志</a></li>
+<li><a href="#2.9">疑难解答</a></li>
+<li><a href="#2.10">配置参数（高级配置）</a></li>
+<li><a href="#2.11">ZooKeeper命令: 4字符命令</a></li>
+<li><a href="#2.12">数据文件管理</a></li>
+<li><a href="#2.13">避免踩坑</a></li>
+<li><a href="#2.14">最佳实践</a></li>
+</ul>
+<h3 id="ZooKeeper集群部署规划"><a href="#ZooKeeper集群部署规划" class="headerlink" title="ZooKeeper集群部署规划"></a>ZooKeeper集群部署规划<span id="2.1"></span></h3><p>ZooKeeper可靠性依赖于两个基本的假设：</p>
+<ul>
+<li>一个集群中只会有少数服务器会出错，这里的出错是指宕机或网络异常而使得服务与集群中的多数服务器失去联系。</li>
+<li>已部署的机器可以正常运行，所谓正常运行是指所有代码可以正确的执行，有适当且一致的工作时钟、存储、网络。</li>
+</ul>
+<p>为了最大可能的保证上述两个前提假设能够成立，这里有几个点需要考虑。一些是关于跨服务器（节点之间）需求的，而另一些是关于集群中每个节点服务器的考虑。</p>
+<h4 id="跨机器要求"><a href="#跨机器要求" class="headerlink" title="跨机器要求"></a>跨机器要求</h4><p>为了启用ZooKeeper服务，集群中半数以上的节点需要能够相互通信。为了创建一个可以支撑F个节点异常的集群，你需要部署2xF+1个节点。即一个包含三个节点的集群可以应对一个节点异常的情况，一个包含五个节点的集群则可以应对二个节点异常的情况，依此类推。需要注意的是，一个包含六个节点的集群也只能应对二个节点失败的情况，因为三个节点并未超过半数。因此，ZooKeeper集群中的节点数通常为奇数。</p>
+<p>为了实现最大限度的容灾能力，你应该尽力使集群节点发生异常时不影响其它节点（即保持节点部署上尽可能的独立）。举个例子，当大部分的机器共享同一个交换机，若这个交换机挂了将使关联的服务都下线。共享电源电路、冷却系统等也是同样的道理（有同样的单点问题）。</p>
+<h4 id="单机要求"><a href="#单机要求" class="headerlink" title="单机要求"></a>单机要求</h4><p>如果ZooKeeper服务需要与其它应用竞争存储、CPU、网络、内存等资源时，其性能将显著下降。机器必须为ZooKeeper服务提供持久化保障，因为ZooKeeper需要先使用存储设备来保存变更日志，然后才允许变更操作提交。如果你想确保ZooKeeper操作不会因存储而挂起，那你应该意识到这个依赖关系并重视起来。这里有几个事情可以最小化这类问题所带来的消极影响。</p>
+<ul>
+<li>ZooKeeper的事务日志必须存储在专用的设备上（一个专用分区是不够的）ZooKeeper以串行的方式写入日志。如果与其它进程共享日志存储设备将导致磁盘寻址与IO竞争，这最终将导致几秒的时延。</li>
+<li>不要将Zookeeper放置在可能引起swap的环境。为了保证Zookeeper的实时性，它几乎不允许swap。因此，请确保分配给ZooKeeper的最大堆内存大小不能大于ZooKeeper可用的真实的内存大小。关于这一点的更多信息，请参数后续章节 <a href="#2.13">Things to Avoid</a>。</li>
+</ul>
+<h3 id="Provisioning"><a href="#Provisioning" class="headerlink" title="Provisioning"></a><span id="2.2"></span>Provisioning</h3><p>无</p>
+<h3 id="ZooKeeper的优势与局限"><a href="#ZooKeeper的优势与局限" class="headerlink" title="ZooKeeper的优势与局限"></a><span id="2.3"></span>ZooKeeper的优势与局限</h3><p>无</p>
+<h3 id="管理"><a href="#管理" class="headerlink" title="管理"></a><span id="2.4"></span>管理</h3><p>无</p>
+<h3 id="维护"><a href="#维护" class="headerlink" title="维护"></a><span id="2.5"></span>维护</h3><p>ZooKeeper的长期维护需求几乎没有，然而你仍然需要注意如下几件事情：</p>
+<h4 id="持续的数据目录清理"><a href="#持续的数据目录清理" class="headerlink" title="持续的数据目录清理"></a>持续的数据目录清理</h4><p>ZooKeeper的数据目录包含集群上特殊存储结点znode数据的持久化拷贝文件。文件中包含快照与事务日志文件。znode上数据的变更将同时会被追加至事务日志中。当这些日志不断增长时，所有znode的当前状态的快照文件将被写回文件系统。这个快照将取代之前的日志。</p>
+<p>ZooKeeper服务器默认情况下不会移除旧的快照与日志文件，删除快照与日志这项工作是管理员的责任。因为每个服务环境是不一样的，所以管理这些快照与文件的需求也是不同一。<code>PurgeTxnLog</code>工具实现了一个简单的保留策略，管理员可以使用这个工具，<a target="_blank" rel="noopener" href="https://zookeeper.apache.org/doc/r3.4.10/api/index.html">API docs</a> 中包含有详细的使用说明。<br>下面的例子的作用为：保留最近<code>&lt;count&gt;</code>个快照及相关的日志，其它的快照及相关日志则删除。<code> &lt;count&gt;</code>的值通常要大于3（虽然不是必须的，但提供3个备份时将极大降低日志损坏的可能性）。您可以在ZooKeeper服务器上运行<code>cron</code>脚本来每天清除过期日志。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ java -cp zookeeper<span class="selector-class">.jar</span>:lib/slf4j-api-<span class="number">1.6</span>.<span class="number">1</span><span class="selector-class">.jar</span>:lib/slf4j-log4j12-<span class="number">1.6</span>.<span class="number">1</span><span class="selector-class">.jar</span>:lib/</span><br><span class="line">log4j-<span class="number">1.2</span>.<span class="number">15</span><span class="selector-class">.jar</span>:conf org<span class="selector-class">.apache</span><span class="selector-class">.zookeeper</span><span class="selector-class">.server</span><span class="selector-class">.PurgeTxnLog</span> &lt;dataDir&gt; &lt;snapDir&gt; -n &lt;count&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在V3.4.0版本中引入的自动清除快照及相关事务日志的特性可以通过配置参数<code>autopurge.snapRetainCount</code> 与 <code>autopurge.purgeInterval</code>来启用。更多的使用见后续的<a href="#2.10">配置参数（高级配置）</a>章节。</p>
+<h4 id="调试日志清理-log4j"><a href="#调试日志清理-log4j" class="headerlink" title="调试日志清理 (log4j)"></a>调试日志清理 (log4j)</h4><p>通过本文档的<a href="#2.8">日志</a>章节可知，ZooKeeper将使用Log4j内置的日志滚动覆盖功能最多生成N个日志文件。Log4j的配置示例可在发行版本tar包的<code>conf/log4j.properties</code>文件中找到。</p>
+<h3 id="Supervision"><a href="#Supervision" class="headerlink" title="Supervision"></a><span id="2.6"></span>Supervision</h3><p>你需要一个监督进程来管理ZooKeeper服务进程（本质上为一个Java进程）。ZooKeeper服务具有“快速失败”的特性，即只要服务发生不可恢复的错误，则ZK进程直接退出。因为ZK集群是高可用的，所有集群中的一个ZK服务虽然异常退出了，但整个集群仍然是可用的，仍然可对外提供服务。同时由于集群可以自行恢复特性，一旦此前异常退出的服务器重启后，它将自动重新加入集群中而不需要任何的人工干预。</p>
+<p>因此，我们就需要一个类似<code>daemontools或SMF</code>的工具来管理ZK服务，确保进程异常退出后可以自动被重启并快速重新加入集群。</p>
+<h3 id="Monitoring"><a href="#Monitoring" class="headerlink" title="Monitoring"></a><span id="2.7"></span>Monitoring</h3><p>ZK服务可以使用如下两种方式进行监控：</p>
+<ul>
+<li>ZK提供的4个字母的命令工具</li>
+<li>JMX（详见ZK官网提供的JMX相关文档）</li>
+</ul>
+<h3 id="日志"><a href="#日志" class="headerlink" title="日志"></a><span id="2.8"></span>日志</h3><p>ZK使用V1.2版本的Log4j作为其日志组件。ZK默认的日志配置文件位于发行版本的conf目录下。Log4j需要<code>log4j.properties</code>文件，这个文件要么位于ZK运行时所在的目录，要么位于classpath目录。</p>
+<p>更多的信息见 <a target="_blank" rel="noopener" href="http://logging.apache.org/log4j/1.2/manual.html#defaultInit">Log4j Default Initialization Procedure</a> 。</p>
+<h3 id="疑难解答"><a href="#疑难解答" class="headerlink" title="疑难解答"></a><span id="2.9"></span>疑难解答</h3><p><strong>文件损坏导致服务器无法启动问题</strong><br>ZK服务器可能会因无法正常读取数据导致启动失败。出现这个问题可能是因为ZK服务器上的事务日志文件损坏了。你可以从ZK的log4j日志中看到一些与ZK数据加载相关的<code>IOException</code>异常。在这种情况下，首先确保集群中的其他服务器能正常工作。可以使用<code>stat</code>命令查看它们是否处于健康状态。当你已经确认集群中其它服务器都在运行中，你可以进一步清理异常中断的服务器上的数据库：删除<code>$data_dir/version-2</code>目录与<code>$data_log_dir/version-2</code>目录下的内容，然后重启服务即可。</p>
+<h3 id="配置参数（高级配置）"><a href="#配置参数（高级配置）" class="headerlink" title="配置参数（高级配置）"></a><span id="2.10"></span>配置参数（高级配置）</h3><p>ZooKeeper的行为是由其配置文件<code>$ZK_HOME\conf\zoo.cfg</code>来控制的。由于这个配置文件是设计好的，因此当ZK集群中每个成员的部署结构（磁盘路径等）都一样时，这个配置文件可以被所有成员共用。如果成员服务器使用不同的配置文件，一定要注意保证各个服务器的配置文件的服务器列表信息是匹配的。</p>
+<h4 id="最简（小）配置"><a href="#最简（小）配置" class="headerlink" title="最简（小）配置"></a>最简（小）配置</h4><p>下面是部署一个ZK集群时，配置文件必须要设置的参数信息（最简配置）：<br><strong>clientPort</strong><br>客户端连接监听端口，即客户端发起连接请求时，都会尝试连接至ZK服务器的该端口。<br><strong>dataDir</strong><br>ZK内存数据库快照的保存位置，除非另有规定，否则事务日志也会保存至该位置。</p>
+<blockquote>
+<p>一定要注意事务日志的存储位置。一个专用的事务日志设备是保证高性能的关键。如果将事务日志存放于IO比较频繁的设备将产生不利的性能效果。</p>
+</blockquote>
+<p><strong>tickTime</strong></p>
+<p>计时时间片长度（单位：毫秒），它是ZK中所有与时间有关参数的基本时间单元（即当某参数的值为X，则其语义可这样理解：某参数的值为tickTime的X倍）。它通常用于日常的心跳发送周期、超时时间等。<br>比如，当<code>tickTime=2000,minSessionTimeout=2</code>，<br>则会话超时的最小值为：<code>tickTime*minSessionTimeout=4000ms</code>。</p>
+<h4 id="高级配置"><a href="#高级配置" class="headerlink" title="高级配置"></a>高级配置</h4><p>本节所介绍的配置参数是可选的。你可以使用它们进一步调整ZK集群的行为。有些参数也可以通过形如<code>zookeeper.keyword</code>之类的Java系统属性的方式来配置。下面的参数详细介绍中有标明哪些参数可以通过Java系统属性方式配置。</p>
+<p><strong>dataLogDir</strong></p>
+<p>这个选项会让机器将事务日志直接写到dataLogDir所指定的位置，而不再是默认的dataDir。这将允许使用专用的日志设备，同时可有效避免快照操作与日志操作所带来的IO竞争。</p>
+<blockquote>
+<p>使用专用的日志设备将极大的影响系统吞吐量与系统时延。强烈推荐使用专用的日志设备，并将dataLogDir指向该专用设备的一个目录，然后也要确保dataDir参数所指向的目录未指向专用的日志设备。</p>
+</blockquote>
+<p><strong>globalOutstandingLimit</strong><br>(Java系统属性: zookeeper.globalOutstandingLimit)</p>
+<p>客户端提交的请求数通过会比ZK的处理速度快，特别是存在大量客户端连接的情况。为了防止因队列中的请求数多过导致ZK运行过程中出现内存溢出问题，ZK将控制客户端的请求数，这样将可以保证系统请求数不会多于<code>globalOutstandingLimit</code>参数所指定的值，系统默认值为1000。</p>
+<p><strong>preAllocSize</strong><br>(Java系统属性: zookeeper.preAllocSize)</p>
+<p>To avoid seeks ZooKeeper allocates space in the transaction log file in blocks of preAllocSize kilobytes. The default block size is 64M. One reason for changing the size of the blocks is to reduce the block size if snapshots are taken more often. (Also, see snapCount).</p>
+<p><strong>snapCount</strong><br>(Java系统属性: zookeeper.snapCount)</p>
+<p>ZK将事务写入事务日志文件中。当<code>snapCount</code>个事务被写入日志文件后，ZK将创建一个快照，然后一个新的事务日志文件会被创建。该参数的默认值为:100000。</p>
+<p><strong>maxClientCnxns</strong></p>
+<p>限制同一个客户端连接（通过IP标识唯一性）至一个ZK集群节点的并发连接数（Socket级别）。这个参数主要是用来防止某些类型的DoS攻击，包括<code>file-descriptor exhaustion</code>。该参数默认值为60，如果设置为0则意味着关闭并发控制限制功能。</p>
+<p><strong>clientPortAddress</strong></p>
+<p><strong>V3.3.0引入</strong>: 客户端连接监听地址（IPv4,IPv6,主机名）， 这个参数是可选的。默认情况下，所有连接至<code>clientPort</code>参数指定端口号的连接都会被接受，不管这些连接是来自于哪个网络接口。</p>
+<p><strong>minSessionTimeout</strong></p>
+<p><strong>V3.3.0引入</strong>: 最小会话超时时间（毫秒），在会话期间服务器将允许来自客户端的协商。该参数默认值为2倍的tickTime。</p>
+<p><strong>maxSessionTimeout</strong></p>
+<p><strong>V3.3.0引入</strong>: 最小会话超时时间（毫秒），在会话期间服务器将允许来自客户端的协商。该参数默认值为20倍的tickTime。</p>
+<p><strong>fsync.warningthresholdms</strong><br>(Java系统属性: zookeeper.fsync.warningthresholdms)</p>
+<p><strong>V3.3.4引入</strong>: 当事务日志(WAL)中的<code>fsync</code>操作时间超过该参数所设置的值时，一个告警信息将被输出到log4j日志中。该参数默认值为1000毫秒，该值只能通过系统属性的方式设置。</p>
+<p><strong>autopurge.snapRetainCount</strong></p>
+<p><strong>V3.4.0引入</strong>: 当启用该参数时，ZK将仅保留dataDir与dataLogDir目录下最近的快照及事务日志数据，保留的数量由该参数设置值决定；然后清除其它过期数据。默认值为3，最小值为3。</p>
+<p><strong>autopurge.purgeInterval</strong></p>
+<p><strong>V3.4.0引入</strong>: 以小时为单位的时间间隔，即每隔N小时将触发一次快照及事务日志清理任务。设置一个正数（大于等于1）即可启用自动清理功能，默认值为0。</p>
+<p><strong>syncEnabled</strong><br>(Java系统属性: zookeeper.observer.syncEnabled)</p>
+<p><strong>V3.4.6, V3.5.0引入</strong>: 集群中角色为observer的成员实时的将事务日志与快照数据写回磁盘，就好像它们是业务的参与者一样。这将减少这些成员的重启恢复时间。如果将这个参数设置为<code>false</code>，将禁用这个特性。默认为<code>true</code>。</p>
+<p><strong>与集群有关的参数选项</strong><br>本节所介绍的参数选项主要用于服务器集群中，也就是说当部署一个集群时可以使用这些参数。</p>
+<p><strong>electionAlg</strong></p>
+<p>配置集群使用的选举算法。0值代表基于UDP的版本，1值代表基于UDP的无认证的快速Leader选举版本，2值代表基于UDP的有认证的快速Leader选举版本，3值代表基于TCP快速Leader选举版本。算法3为默认值。</p>
+<blockquote>
+<p>0，1，2三个leader选举的实现方案现已被废弃。我们计划在下一个版本中移除，也就是说后续只有<code>FastLeaderElection</code>可用。</p>
+</blockquote>
+<p><strong>initLimit</strong></p>
+<p>允许集群中follower节点连接及同步数据至leader节点的时间耗时（以tickTime为单位）。如果由ZK管理的数据量比较大，则可以按需增加这个值。</p>
+<p><strong>leaderServes</strong><br>(Java系统属性: zookeeper.leaderServes)</p>
+<p>配置集群中的leader节点是否接受客户端连接，默认为<code>yes</code>。Leader节点主要负责协调集群节点之间数据的更新。对于与协调更新有关的吞吐量远高于客户端的读请求的吞吐量，则leader节点可设置为不接受客户端的连接请求，而专注于协调集群节点间的数据更新。默认值为<code>yes</code>意味着leader节点默认情况下将会接受客户端的连接请求。</p>
+<blockquote>
+<p>当集群超过3个以上的节点时，推荐打开这个开关。</p>
+</blockquote>
+<p><strong>server.x=[hostname]:nnnnn[:nnnnn]</strong></p>
+<p>ZK集群由多个服务器节点组成。当服务器节点启动时，ZK到$data_dir目录下找到<code>myid</code>文件，并根据里面内容确定其身份编号及连接端口信息。<code>myid</code>文件中包含当前服务器节点的编号（以ASCII格式呈现），这个编号与上述配置参数<code>server.x</code>中的<code>x</code>匹配的则为当前服务器节点的IP与监听端口。</p>
+<p>配置参数中的服务器列表信息必须与ZK集群服务器节点的一一匹配。</p>
+<p>配置参数中有两个端口号，第一个端口用于follower节点与leader节点间的通信，第二个端口用于集群leader选举。只有<code>electionAlg</code>参数值为非0值时，选举用的端口号（第二个）才是必须的。若<code>electionAlg</code>参数值为0值时，则第二个端口号是非必要的。如果你想在单机上测试多个服务器，则可以使用不同的端口号。</p>
+<p><strong>syncLimit</strong></p>
+<p>允许集群follower节点与leader节点进行数据同步的总耗时（以tickTime为单位）。如果follower的数据与leader的数据由于同步不及时导致差异太大，则这些follower节点将被移出集群。</p>
+<p><strong>group.x=nnnnn[:nnnnn]</strong></p>
+<p>Enables a hierarchical quorum construction.”x”是组编号，而”=”右边则是用”:”分隔的服务器编号。每组的服务器成员编号不能有交集，同时所有组的节点成员的并集刚好是集群的所有成员。</p>
+<p> 你可在<a target="_blank" rel="noopener" href="http://zookeeper.apache.org/doc/r3.4.10/zookeeperHierarchicalQuorums.html">这里</a>找到使用的例子。</p>
+<p><strong>weight.x=nnnnn</strong></p>
+<p>与”group”参数搭配使用。它为集群中的每个成员提供一个权值，这个权值在进行进行法定人数选举投票时会用到。There are a few parts of ZooKeeper that require voting such as leader election and the atomic broadcast protocol. By default the weight of server is 1. If the configuration defines groups, but not weights, then a value of 1 will be assigned to all servers.</p>
+<p>你可在<a target="_blank" rel="noopener" href="http://zookeeper.apache.org/doc/r3.4.10/zookeeperHierarchicalQuorums.html">这里</a>找到使用的例子。</p>
+<p><strong>cnxTimeout</strong><br>(Java系统属性: zookeeper.cnxTimeout)</p>
+<p>为leader选举通知消息而打开的连接设置一个超时时间。只有<code>electionAlg</code>值为3时这个参数才有用。默认值为5秒。</p>
+<p><strong>4lw.commands.whitelist</strong><br>(Java系统属性: zookeeper.4lw.commands.whitelist)</p>
+<p><strong>V3.4.10引入</strong>: 这个属性包含了一系统用逗号分隔的由4个字符组成的命令列表。它之所以被引入是为了提供更灵活的粒度控制机制来决定哪些ZK命令可以执行。因此借助这个参数，用于可以根据需要来关闭某些命令。默认情况下，若未指定该参数，则除了<code>wchp</code>与<code>wchc</code>以外的命令都可以执行。如果配置了该参数，则只有参数中列出的命令可以执行（被连接的客户端调用执行）。</p>
+<p>下面是一个只启用了<code>stat,ruok,conf,isro</code>命令的配置：<br><code>4lw.commands.whitelist=stat, ruok, conf, isro</code></p>
+<p>用户也可以使用通配符来进行配置，如：<br><code>4lw.commands.whitelist=*</code></p>
+<p><strong>认证与授权参数选项</strong><br>本节介绍的内容主要是用于配置认证/授权相关功能的。</p>
+<p><strong>zookeeper.DigestAuthenticationProvider.superDigest</strong><br>(Java系统属性: zookeeper.DigestAuthenticationProvider.superDigest)，只能通过Java系统属性方式配置。</p>
+<p>该特性默认是禁用的</p>
+<p><strong>V3.2版引入</strong>: Enables a ZooKeeper ensemble administrator to access the znode hierarchy as a “super” user. In particular no ACL checking occurs for a user authenticated as super.</p>
+<p>org.apache.zookeeper.server.auth.DigestAuthenticationProvider can be used to generate the superDigest, call it with one parameter of <code>super:&lt;password&gt;</code>. Provide the generated <code>super:&lt;data&gt;</code> as the system property value when starting each server of the ensemble.</p>
+<p>When authenticating to a ZooKeeper server (from a ZooKeeper client) pass a scheme of “digest” and authdata of <code>super:&lt;password&gt;</code>. Note that digest auth passes the authdata in plaintext to the server, it would be prudent to use this authentication method only on localhost (not over the network) or over an encrypted connection.</p>
+<h3 id="ZK命令：4字符命令"><a href="#ZK命令：4字符命令" class="headerlink" title="ZK命令：4字符命令"></a><span id="2.11"></span>ZK命令：4字符命令</h3><p>ZooKeeper可以响应一个小规模的命令集。命令集中的每个命令由4个字母组成。<br>你可以通过nc或telnet向ZooKeeper服务器的客户端监听端口发送命令。其中有三个命令是比较令人感兴趣的：<code>stat</code>会输出与服务器、已连接的客户端相关的基本信息；<code>srvr</code>与<code>cons</code>会输出服务器与各个连接的进一步的详细信息。</p>
+<blockquote>
+<p><strong>conf</strong><br>V3.3.0版引入: 打印ZooKeeper配置的详细信息。<br><strong>cons</strong><br>V3.3.0版引入: 列出所有连接至本服务器的客户端连接/会话的详细信息。包括收发数据包数量、会话ID、操作时延（响应时间）、上一次执行的操作等信息。<br><strong>crst</strong><br>V3.3.0版引入: 重置所有连接/会话的统计数据。<br><strong>dump</strong><br>Lists the outstanding sessions and ephemeral nodes. This only works on the leader.<br><strong>envi</strong><br>打印ZK服务环境信息。<br><strong>ruok</strong><br>测试ZK服务器是否处于正常运行状态。若服务器正常运行，则会返回imok响应；反之则压根不会返回任何响应信息。<br><code>imok</code>响应并不意味着该服务器已经加入ZK法定成员中，而仅代表服务器处于活动状态且与某个特定的客户端口建立了绑定关系。你可以使用<code>stat</code>命令查看该服务器是否加入法定投票成员及客户端连接等详细状态信息。<br><strong>srst</strong><br>重置服务器统计数据。<br><strong>srvr</strong><br>V3.3.0版引入: 列出服务器的完整的详细信息。<br><strong>stat</strong><br>列出服务器及已连接至该服务器的客户端的简要信息。<br><strong>wchs</strong><br>V3.3.0版引入: 列出watch该服务器的客户端的简要信息。<br><strong>wchc</strong><br>V3.3.0版引入: 从session视角列出watch该服务器的客户端的详细信息。该命令将输出session(connection)所watch的路径的相关信息。有一点要注意下，执行这个命令的性能损耗与watch的数量有关，请谨慎使用。<br><strong>wchp</strong><br>V3.3.0版引入: 从path视角列出watch该path的相关客户端session。有一点要注意下，执行这个命令的性能损耗与watch的数量有关，请谨慎使用。<br><strong>mntr</strong><br>V3.4.0版引入: 输出可用于监控集群健康状态的参数列表。</p>
+</blockquote>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">$ echo mntr | nc localhost <span class="number">2185</span></span><br><span class="line">zk_version <span class="number">3.4</span><span class="number">.0</span></span><br><span class="line">zk_avg_latency <span class="number">0</span></span><br><span class="line">zk_max_latency <span class="number">0</span></span><br><span class="line">zk_min_latency <span class="number">0</span></span><br><span class="line">zk_packets_received <span class="number">70</span></span><br><span class="line">zk_packets_sent <span class="number">69</span></span><br><span class="line">zk_outstanding_requests <span class="number">0</span></span><br><span class="line">zk_server_state leader</span><br><span class="line">zk_znode_count <span class="number">4</span></span><br><span class="line">zk_watch_count <span class="number">0</span></span><br><span class="line">zk_ephemerals_count <span class="number">0</span></span><br><span class="line">zk_approximate_data_size <span class="number">27</span></span><br><span class="line">zk_followers <span class="number">4</span> - <span class="keyword">only</span> exposed <span class="keyword">by</span> the Leader</span><br><span class="line">zk_synced_followers <span class="number">4</span> - <span class="keyword">only</span> exposed <span class="keyword">by</span> the Leader</span><br><span class="line">zk_pending_syncs <span class="number">0</span> - <span class="keyword">only</span> exposed <span class="keyword">by</span> the Leader</span><br><span class="line">zk_open_file_descriptor_count <span class="number">23</span> - <span class="keyword">only</span> available <span class="keyword">on</span> Unix platforms</span><br><span class="line">zk_max_file_descriptor_count <span class="number">1024</span> - <span class="keyword">only</span> available <span class="keyword">on</span> Unix platforms</span><br></pre></td></tr></table></figure>
+
+<p>The output is compatible with java properties format and the content may change over time (new keys added). Your scripts should expect changes.<br>ATTENTION: Some of the keys are platform specific and some of the keys are only<br>exported by the Leader. The output contains multiple lines with the following format:<br><code>key \t value</code></p>
+<p>Here’s an example of the ruok command:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">echo</span> ruok | nc 127.0.0.1 5111</span></span><br><span class="line">imok</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="数据文件管理"><a href="#数据文件管理" class="headerlink" title="数据文件管理"></a><span id="2.12"></span>数据文件管理</h3><p>ZK将其业务数据保存在数据目录，将其事务日志保存在事务日志目录。默认情况下数据目录与事务日志目录是相同的。服务器可以（应该）将事务日志目录与数据目录分开存储。如果将事务日志存储在专用的日志设备上，则吞吐量上升的同时，时延还会下降。</p>
+<h4 id="数据目录"><a href="#数据目录" class="headerlink" title="数据目录"></a>数据目录</h4><p>这个目录下包含两个文件:</p>
+<ul>
+<li>myid - 包含一个单独的以ASCII形式存储的整数值，这个值代表其所在服务器的ID。</li>
+<li><code>snapshot.&lt;zxid&gt;</code> - 这个文件保存有数据树结构的模糊快照。</li>
+</ul>
+<p>每个ZooKeeper服务器都有一个唯一标识ID，这个ID用于两个地方：<code>myid</code>文件与配置文件。位于数据目录下的<code>myid</code>文件用于标识ZK服务器。配置文件<code>zoo.cfg</code>中列出了集群节点间相互通信的配置信息（IP或主机名、监听端口等），每行配置信息通过Server ID来标识。当ZooKeeper服务实例启动时，其会从<code>myid</code>文件中获取它的标识ID，然后再从配置文件<code>zoo.cfg</code>中读取匹配该ID的服务器配置信息，根据配置信息启动相关端口的监听服务。</p>
+<p>The snapshot files stored in the data directory are fuzzy snapshots in the sense that during the time the ZooKeeper server is taking the snapshot, updates are occurring to the data tree. The suffix of the snapshot file names is the zxid, the ZooKeeper transaction id, of the last committed transaction at the start of the snapshot. Thus, the snapshot includes a subset of the updates to the data tree that occurred while the snapshot was in process. The snapshot, then, may not correspond to any data tree that actually existed, and for this reason we refer to it as a fuzzy snapshot. Still, ZooKeeper can recover using this snapshot because it takes advantage of the idempotent nature of its updates. By replaying the transaction log against fuzzy snapshots ZooKeeper gets the state of the system at the end of the log.</p>
+<h4 id="日志目录"><a href="#日志目录" class="headerlink" title="日志目录"></a>日志目录</h4><p>日志目录包含ZK的事务日志。当任何更新生效前，ZK会确保代表该更新的事务会被写入稳定的存储中。每创建一次快照，会创建一个新的事务日志文件，该日志文件名的后缀为第一个写入该文件的事务日志的zxid。</p>
+<h4 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h4><p>单机模式与集群模式下的快照与日志文件的格式是一样的，因此你可以从集群复制模式环境中获取相关快照及日志文件到单机开发环境中进行问题排查。</p>
+<p>通过使用旧的日志及快照文件，你可以分析ZK服务器以前的状态甚至可以恢复至该旧状态。<code>LogFormatter</code>类允许管理员分析一个日志中的相关事务。</p>
+<p>ZK负责快照及日志的创建，但其不会删除这些文件。数据及日志文件的保留策略由外部应用实现。服务器自身只需要最近一次的模糊快照以及从开始创建该快照以来的事务日志文件即可。可以查看“<a href="#2.5">维护</a>”章节来查看更详细的与保留策略相关的配置信息。</p>
+<blockquote>
+<p>存储在这些文件中的数据是未加密的。在存储敏感数据的场景下，有必要采取一定的措施来阻止未授权访问请求。这些预防措施都不属于ZK的功能范围，因此相关配置信息也是独立的，本文档不多做介绍。</p>
+</blockquote>
+<h3 id="避免踩坑"><a href="#避免踩坑" class="headerlink" title="避免踩坑"></a><span id="2.13"></span>避免踩坑</h3><p>下面是几个在配置ZK服务时经常碰到的问题及解决办法：</p>
+<p><strong>服务器列表数据不一致</strong><br>The list of ZooKeeper servers used by the clients must match the list of ZooKeeper servers that each ZooKeeper server has. Things work okay if the client list is a subset of the real list, but things will really act strange if clients have a list of ZooKeeper servers that are in different ZooKeeper clusters. Also, the server lists in each Zookeeper server configuration file should be consistent with one another.</p>
+<p><strong>incorrect placement of transasction log</strong><br>The most performance critical part of ZooKeeper is the transaction log. ZooKeeper syncs transactions to media before it returns a response. A dedicated transaction log device is key to consistent good performance. Putting the log on a busy device will adversely effect performance. If you only have one storage device, put trace files on NFS and increase the snapshotCount; it doesn’t eliminate the problem, but it should mitigate it.</p>
+<p><strong>Java堆大小配置不正确</strong><br>You should take special care to set your Java max heap size correctly. In particular, you should not create a situation in which ZooKeeper swaps to disk. The disk is death to ZooKeeper. Everything is ordered, so if processing one request swaps the disk, all other queued requests will probably do the same. the disk. DON’T SWAP.</p>
+<p>Be conservative in your estimates: if you have 4G of RAM, do not set the Java max heap size to 6G or even 4G. For example, it is more likely you would use a 3G heap for a 4G machine, as the operating system and the cache also need memory. The best and only recommend practice for estimating the heap size your system needs is to run load tests, and then make sure you are well below the usage limit that would cause the system to swap.</p>
+<p><strong>暴露在公网</strong><br>一个ZK集群应该部署在一个可靠的计算环境中，因此推荐部署在防火墙后面。</p>
+<h3 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a><span id="2.14"></span>最佳实践</h3><p>For best results, take note of the following list of good Zookeeper practices: For multi-tennant installations see the section detailing ZooKeeper “chroot” support, this canbe very useful when deploying many applications/services interfacing to a single ZooKeeper cluster.</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ZooKeeper/" rel="tag"># ZooKeeper</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/07/JVM%E6%96%B9%E6%B3%95%E5%8C%BA-PermGen-%E5%86%85%E5%AD%98%E5%BF%AB%E9%80%9F%E9%A3%99%E5%8D%87%E9%97%AE%E9%A2%98/" rel="next" title="JVM方法区(PermGen)内存快速飙升问题">
+                <i class="fa fa-chevron-left"></i> JVM方法区(PermGen)内存快速飙升问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/16/%E3%80%8A%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E8%B7%B5%E3%80%8B%E7%AC%94%E8%AE%B0-%E5%A5%BD%E7%9A%84%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="prev" title="《推荐系统实践》笔记--好的推荐系统">
+                《推荐系统实践》笔记--好的推荐系统 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/simiam.jpg"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/monkeychen" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/cza55007" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              我的收藏
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://simiam.com" title="Simiam" target="_blank">Simiam</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://ifeve.com" title="并发编程网" target="_blank">并发编程网</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://readhub.me" title="Readhub" target="_blank">Readhub</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2"><span class="nav-number">1.</span> <span class="nav-text">安装部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E8%BD%AF%E7%A1%AC%E4%BB%B6%E9%9C%80%E6%B1%82"><span class="nav-number">1.1.</span> <span class="nav-text">系统软硬件需求</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E7%9A%84OS%E5%B9%B3%E5%8F%B0"><span class="nav-number">1.1.1.</span> <span class="nav-text">支持的OS平台</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E8%A6%81%E6%B1%82"><span class="nav-number">1.1.2.</span> <span class="nav-text">软件要求</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2%EF%BC%88%E5%AE%89%E8%A3%85%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">集群部署（安装）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E6%9C%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.3.</span> <span class="nav-text">单机开发环境部署介绍</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%B4%E6%8A%A4%E7%AE%A1%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">维护管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ZooKeeper%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2%E8%A7%84%E5%88%92"><span class="nav-number">2.1.</span> <span class="nav-text">ZooKeeper集群部署规划</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B7%A8%E6%9C%BA%E5%99%A8%E8%A6%81%E6%B1%82"><span class="nav-number">2.1.1.</span> <span class="nav-text">跨机器要求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E6%9C%BA%E8%A6%81%E6%B1%82"><span class="nav-number">2.1.2.</span> <span class="nav-text">单机要求</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Provisioning"><span class="nav-number">2.2.</span> <span class="nav-text">Provisioning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ZooKeeper%E7%9A%84%E4%BC%98%E5%8A%BF%E4%B8%8E%E5%B1%80%E9%99%90"><span class="nav-number">2.3.</span> <span class="nav-text">ZooKeeper的优势与局限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%A1%E7%90%86"><span class="nav-number">2.4.</span> <span class="nav-text">管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%B4%E6%8A%A4"><span class="nav-number">2.5.</span> <span class="nav-text">维护</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%81%E7%BB%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95%E6%B8%85%E7%90%86"><span class="nav-number">2.5.1.</span> <span class="nav-text">持续的数据目录清理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E6%97%A5%E5%BF%97%E6%B8%85%E7%90%86-log4j"><span class="nav-number">2.5.2.</span> <span class="nav-text">调试日志清理 (log4j)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Supervision"><span class="nav-number">2.6.</span> <span class="nav-text">Supervision</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Monitoring"><span class="nav-number">2.7.</span> <span class="nav-text">Monitoring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A5%E5%BF%97"><span class="nav-number">2.8.</span> <span class="nav-text">日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%96%91%E9%9A%BE%E8%A7%A3%E7%AD%94"><span class="nav-number">2.9.</span> <span class="nav-text">疑难解答</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0%EF%BC%88%E9%AB%98%E7%BA%A7%E9%85%8D%E7%BD%AE%EF%BC%89"><span class="nav-number">2.10.</span> <span class="nav-text">配置参数（高级配置）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%80%E7%AE%80%EF%BC%88%E5%B0%8F%EF%BC%89%E9%85%8D%E7%BD%AE"><span class="nav-number">2.10.1.</span> <span class="nav-text">最简（小）配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E9%85%8D%E7%BD%AE"><span class="nav-number">2.10.2.</span> <span class="nav-text">高级配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ZK%E5%91%BD%E4%BB%A4%EF%BC%9A4%E5%AD%97%E7%AC%A6%E5%91%BD%E4%BB%A4"><span class="nav-number">2.11.</span> <span class="nav-text">ZK命令：4字符命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86"><span class="nav-number">2.12.</span> <span class="nav-text">数据文件管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95"><span class="nav-number">2.12.1.</span> <span class="nav-text">数据目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%A5%E5%BF%97%E7%9B%AE%E5%BD%95"><span class="nav-number">2.12.2.</span> <span class="nav-text">日志目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86"><span class="nav-number">2.12.3.</span> <span class="nav-text">文件管理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%BF%E5%85%8D%E8%B8%A9%E5%9D%91"><span class="nav-number">2.13.</span> <span class="nav-text">避免踩坑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="nav-number">2.14.</span> <span class="nav-text">最佳实践</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-cloud"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">simiam</span>
+  <span>&nbsp;
+    <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn">
+      <p style="float:left; height:20px;line-height:20px;margin: 7px 0px 0px 5px; color:#939393;">闽ICP备18023112号</p>
+    </a>
+  </span>
+  <span style="width:300px;margin:0 auto; padding:20px 0;">&nbsp;
+		<a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=35012102500070" >
+      <img src="/images/batb.png" style="float:left; padding-top:7px; padding-left:30px;"/>
+      <p style="float:left; height:20px;line-height:20px;margin: 7px 0px 0px 5px; color:#939393; padding-right: 80px;">闽公网安备 35012102500070号</p>
+    </a>
+	</span>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://cloudnoter.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://cloudnoter.com/2017/05/08/ZooKeeper-Administrator-s-Guide%E4%B8%AD%E6%96%87%E7%89%88/';
+          this.page.identifier = '2017/05/08/ZooKeeper-Administrator-s-Guide中文版/';
+          this.page.title = 'ZooKeeper Administrator\'s Guide中文版';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://cloudnoter.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
